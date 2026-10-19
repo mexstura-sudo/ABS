@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Первая помощь в экстренных ситуациях</title>
+<meta name="description" content="Пошаговые алгоритмы первой помощи: потеря сознания, обморожение, тепловой удар, отравления, утопление">
+<meta name="theme-color" content="#121C17">
+<link href="../assets/fonts/manrope.css" rel="stylesheet">
+<style>
+/* Статья «Первая помощь в экстренных ситуациях»: тёмно-зелёный фон, главы с анимированными обложками, шаги по одному. */
+:root{
+  --green:#8FCB9F;--orange:#F38A55;--navy:#A9C3DE;--sand:#34443A;--cream:#121C17;--paper:#1B2A22;--muted:#A3B5AA;--ink:#EEE6D6;
+  --line:rgba(238,230,214,.12);--shadow:rgba(0,0,0,.3);--red:#E4574A;--red-bg:#3A1F1B;--on:#121C17;
+  --peach:#43281C;--peach-c:#FFA77A;--sky:#1B3348;--sky-c:#86C2F2;--sun:#3D3216;--sun-c:#F2C55C;
+  --lav:#2C2645;--lav-c:#B9A8F5;--mint:#1D3A29;--mint-c:#7DD6A1;--aqua:#173A39;--aqua-c:#6FD3CF;
+  --font:"Manrope",Gilroy,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+/* Тёмно-зелёная подача всегда, независимо от темы устройства */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55}
+#app{overflow-x:clip}
+button{font-family:inherit;color:inherit;cursor:pointer}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.wrap{max-width:780px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.kick{font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1.5px}
+h1{font-size:clamp(34px,6vw,52px);line-height:1.05;margin:10px 0 0;font-weight:800;letter-spacing:-.5px;text-wrap:balance}
+h2{font-size:clamp(26px,4.4vw,36px);line-height:1.1;margin:0;font-weight:800;letter-spacing:-.3px;text-wrap:balance}
+h3{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;color:var(--muted);margin:0}
+.lead{font-size:18px;line-height:1.6;color:var(--muted);margin:16px 0 0;max-width:62ch}
+.blob{position:absolute;pointer-events:none;z-index:0}
+.t-faint{--tc:var(--peach-c);--tb:var(--peach)}.t-frost{--tc:var(--sky-c);--tb:var(--sky)}.t-heat{--tc:var(--sun-c);--tb:var(--sun)}
+.t-chem{--tc:var(--lav-c);--tb:var(--lav)}.t-food{--tc:var(--mint-c);--tb:var(--mint)}.t-drown{--tc:var(--aqua-c);--tb:var(--aqua)}
+
+/* появление при прокрутке */
+.rv.pre{opacity:0;transform:translateY(24px)}
+.rv{transition:opacity .6s cubic-bezier(.2,.8,.2,1),transform .6s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0ms)}
+.rv.zoom.pre{transform:scale(.94)}
+@keyframes pop{0%{transform:scale(.5);opacity:0}70%{transform:scale(1.15)}100%{transform:none;opacity:1}}
+@keyframes float{50%{transform:translateY(-6px) rotate(-3deg)}}
+@keyframes paneIn{from{opacity:0;transform:translateY(6px)}}
+@keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(.88)}}
+@keyframes ring{0%{opacity:.6;transform:scale(1)}100%{opacity:0;transform:scale(1.35)}}
+@keyframes draw{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+
+/* шапка, 103/112, оглавление */
+.hero{position:relative;padding-block:52px 6px}
+.sos{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;background:var(--red-bg);border-radius:26px;padding:18px 20px;margin-top:26px}
+.sos p{margin:0;flex:1 1 250px;font-weight:700}
+.sos .nums{display:flex;gap:10px}
+.sos a{position:relative;display:flex;flex-direction:column;align-items:center;min-width:88px;padding:10px 14px;border-radius:20px;background:var(--red);color:#fff;text-decoration:none;font-weight:800;font-size:28px;line-height:1}
+.sos a::after{content:"";position:absolute;inset:0;border-radius:20px;border:2px solid var(--red);animation:ring 2.4s ease-out infinite}
+.sos a small{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px;opacity:.95}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:22px}
+.toc a{display:flex;align-items:center;gap:12px;background:var(--tb);border-radius:22px;padding:12px 14px;text-decoration:none;font-weight:800;line-height:1.25;transition:transform .2s}
+.toc a:hover{transform:translateY(-3px)}
+.toc a span{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--tc);color:var(--on);flex:none;font-size:18px}
+.tocbtn{position:fixed;right:max(16px,env(safe-area-inset-right,0px));top:calc(14px + env(safe-area-inset-top,0px));z-index:20;border:0;border-radius:999px;background:var(--paper);box-shadow:0 6px 18px var(--shadow);padding:10px 14px;font-weight:800;font-size:14px;transition:opacity .3s,transform .3s}
+.tocbtn.hide{opacity:0;transform:translateY(-10px);pointer-events:none}
+
+/* общие блоки */
+figure{margin:0}
+.fig{border-radius:22px;overflow:hidden;background:#fff}
+.D .cover .ic{background:var(--cream)}
+.fig img{width:100%;height:auto}
+.fig figcaption{font-size:13px;font-weight:700;color:var(--muted);padding:8px 2px 0;background:var(--cream)}
+.list{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
+.list li{position:relative;padding-left:20px;font-weight:600}
+.list li::before{content:"";position:absolute;left:2px;top:.55em;width:9px;height:9px;border-radius:50%;background:var(--tc,var(--orange))}
+.list.one{grid-template-columns:1fr}
+.imp{background:var(--sun);border-radius:18px;padding:12px 16px;font-size:15px;font-weight:600}
+.nono{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;background:var(--red-bg);border-radius:22px;padding:14px 16px}
+.nono b{color:var(--red);font-size:13px;text-transform:uppercase;letter-spacing:1.2px;margin-right:4px}
+.nono span{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:15px}
+.nono span i{font-style:normal;width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.tabs{display:inline-flex;flex-wrap:wrap;gap:4px;background:var(--paper);border-radius:16px;padding:4px}
+.tab{border:0;background:transparent;border-radius:12px;padding:8px 14px;font-weight:800;font-size:15px}
+.tab[aria-selected="true"]{background:var(--tc,var(--green));color:var(--on)}
+.pane{animation:paneIn .35s both;padding-top:12px}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.branch{border-radius:22px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.branch.yes{background:var(--mint)}.branch.no{background:var(--peach)}
+.branch .lab{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.branch.yes .lab{color:var(--mint-c)}.branch.no .lab{color:var(--peach-c)}
+.branch p{margin:0;font-weight:600}
+.branch .fig{border-radius:16px}
+.q{font-weight:800;font-size:19px}
+
+/* тренажёр и таймер — по центру */
+.cpr,.timer{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;background:var(--paper);border-radius:28px;padding:22px 18px;margin-inline:auto;width:100%;max-width:420px}
+.cpr .dial{position:relative;width:170px;height:170px}
+.cpr .dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.cpr .dial .n{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:46px;line-height:1;font-variant-numeric:tabular-nums}
+.cpr .dial .n small{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.cpr .dial.beat .n{animation:beat .3s ease-out}
+.cpr b{font-size:16px}
+.cpr .row,.timer .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:16px;padding:12px 20px;font-size:15px;font-weight:800;background:var(--green);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--sand)}
+.btn[aria-pressed="true"]{background:var(--orange);color:var(--on)}
+.timer .t{font-size:44px;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+.timer .bar{width:100%;height:10px;border-radius:99px;background:var(--sky);overflow:hidden}
+.timer .bar i{display:block;height:100%;width:0;background:var(--sky-c);transition:width 1s linear}
+
+/* ===== D: Шаг за шагом ===== */
+.D .topic{display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center;scroll-margin-top:16px}
+.D .ic{width:96px;height:96px;border-radius:50%;background:var(--tb);color:var(--tc);display:flex;align-items:center;justify-content:center}
+.D .ic svg{width:52px;height:52px}
+.D .ic.on{animation:float 3.2s ease-in-out infinite}
+.D .kick{color:var(--tc)}
+
+.D .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.D .chips span{background:var(--tb);border-radius:999px;padding:7px 14px;font-weight:700;font-size:15px}
+.D .flow{display:flex;flex-direction:column;align-items:center;width:100%}
+.D .card{width:100%;background:var(--paper);border-radius:30px;padding:26px 22px;display:flex;flex-direction:column;align-items:center;gap:12px;box-shadow:0 2px 0 var(--tb)}
+.D .card>.n{font-size:54px;font-weight:800;line-height:1;color:var(--tc);font-variant-numeric:tabular-nums}
+.D .card.on>.n{animation:pop .55s both}
+.D .card>.t{font-size:22px;font-weight:800;line-height:1.3;text-wrap:balance}
+.D .card>p{margin:0;max-width:52ch}
+.D .card .fork,.D .card .tabset{text-align:left;width:100%}
+.D .link{width:4px;height:34px;border-radius:4px;background:var(--tb);transform-origin:top}
+.D .link.on{animation:draw .5s both}
+.D .nono{justify-content:center}
+.D .fig{width:100%}
+
+/* D: анимированные обложки глав */
+.D .cover{position:relative;overflow:hidden;background:var(--tb);margin-top:64px}
+.D .cover .in{position:relative;max-width:780px;margin:0 auto;padding-block:48px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+.D .cover .big{position:absolute;right:max(10px,6vw);top:-34px;font-size:clamp(190px,36vw,330px);font-weight:800;line-height:1;color:transparent;-webkit-text-stroke:3px var(--tc);opacity:.22;pointer-events:none;will-change:transform}
+.D .cover .ic{background:var(--paper);box-shadow:0 10px 26px var(--shadow);transform:scale(.6);opacity:0;transition:transform .7s cubic-bezier(.2,.9,.3,1.4),opacity .5s}
+.D .cover .kick{color:var(--tc);opacity:0;transform:translateY(10px);transition:opacity .5s .1s,transform .5s .1s}
+.D .cover h2 .w{display:inline-block;opacity:0;transform:translateY(.7em) rotate(4deg);transition:opacity .55s var(--d),transform .65s cubic-bezier(.2,.9,.3,1.3) var(--d)}
+.D .cover .sub{color:var(--muted);font-weight:700;opacity:0;transition:opacity .5s .5s}
+.D .cover.on .ic{transform:none;opacity:1;animation:float 3.2s .8s ease-in-out infinite}
+.D .cover.on .kick,.D .cover.on .sub{opacity:1;transform:none}
+.D .cover.on h2 .w{opacity:1;transform:none}
+.D .cover .waves{position:absolute;left:0;right:0;bottom:-1px;height:24px;overflow:hidden}
+.D .cover .waves svg{width:200%;height:100%;animation:wave 8s linear infinite}
+@keyframes wave{to{transform:translateX(-50%)}}
+.D .topic{padding-block:22px 0}
+#forest{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+#app{position:relative;z-index:1}
+.imp.warn{background:var(--red-bg);text-align:left}
+.end{padding-block:56px 130px;text-align:center;color:var(--muted);font-size:15px}
+@media (max-width:560px){.fork,.list{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}.rv.pre{opacity:1;transform:none}.D .cover *{opacity:1!important;transform:none!important}}
+</style>
+
+</head>
+<body>
+<canvas id="forest" aria-hidden="true"></canvas>
+<div id="app"></div>
+<button class="tocbtn hide" type="button" id="tocbtn">↑ Оглавление</button>
+
+<script>
+(function () {
+var INTRO = 'Первая помощь — это не просто набор медицинских манипуляций. Это тонкая грань между жизнью и смертью, которая часто зависит не от оборудования, а от знаний и решимости человека, оказавшегося рядом. Многие боятся навредить, оказывая помощь. Это нормально. Наша цель — не сделать из вас врачей, а дать вам уверенность в том, что вы не навредите и сможете спасти жизнь, просто следуя чёткому алгоритму.';
+var SAFETY = 'В любой критической ситуации первым делом убедитесь, что вам ничего не угрожает, и немедленно вызовите скорую.';
+var ICON = {
+  faint: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="30" r="5"/><path d="M17 31h18l6 4M23 31l4-6h7"/><path d="M6 40h36"/><path d="M28 10h6l-6 7h6M36 4h4l-4 4h4"/></svg>',
+  frost: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M24 4v40M6.7 14l34.6 20M6.7 34l34.6-20"/><path d="M19 8l5 5 5-5M19 40l5-5 5 5M7 21l7-2-2-7M41 27l-7 2 2 7M12 36l2-7-7-2M36 12l-2 7 7 2"/></svg>',
+  heat: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="24" cy="24" r="9"/><path d="M24 3v6M24 39v6M3 24h6M39 24h6M9 9l4 4M35 35l4 4M9 39l4-4M35 13l4-4"/></svg>',
+  chem: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5h12M20 5v13L8 38a4 4 0 0 0 3.5 6h25a4 4 0 0 0 3.5-6L28 18V5"/><path d="M13 30h22"/><circle cx="21" cy="36" r="1.5" fill="currentColor"/><circle cx="28" cy="34" r="1.5" fill="currentColor"/></svg>',
+  food: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="24" cy="27" r="15"/><circle cx="24" cy="27" r="8"/><path d="M6 6v12a4 4 0 0 0 8 0V6M10 6v36M40 6c-4 3-5 9-5 14h5v22"/></svg>',
+  drown: '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="24" cy="20" r="13"/><circle cx="24" cy="20" r="6"/><path d="M24 7v7M24 26v7M11 20h7M30 20h7"/><path d="M3 41c4-3 7-3 11 0s7 3 11 0 7-3 11 0 7 3 9 1"/></svg>'
+};
+var T = [
+  {id: 'faint', title: 'Потеря сознания', sub: 'обморок', c: 'c1',
+    steps: [
+      {t: 'Проверьте реакцию', d: 'Громко окликните человека, аккуратно встряхните за плечи.'},
+      {t: 'Оцените дыхание', d: 'Если нет реакции, наклонитесь ко рту и смотрите на грудную клетку в течение 10 секунд.'},
+      {t: 'Дышит или нет?', fork: true}
+    ],
+    no: ['Усаживать', 'Бить по щекам', 'Давать воду или лекарства', 'Оставлять на спине']},
+  {id: 'frost', title: 'Обморожение', c: 'c2',
+    signs: ['Изменение цвета кожи', 'Уплотнение и «деревянистость» кожи', 'Отёк и болезненность', 'Появление пузырей'],
+    signsNote: '<b>Важно:</b> потеря чувствительности — именно отсутствие боли на холоде — один из признаков. Это может означать, что нервные окончания уже пострадали.',
+    degrees: true,
+    steps: [{t: 'Перенесите пострадавшего в тёплое помещение'}, {t: 'Согревайте постепенно'}, {t: 'Дайте тёплое питьё'}],
+    no: ['Растирать снегом или руками', 'Использовать горячую воду', 'Вскрывать пузыри', 'Давать алкоголь']},
+  {id: 'heat', title: 'Тепловой и солнечный удар', c: 'c3', compare: true,
+    steps: [
+      {t: 'Переместите в прохладу'},
+      {t: 'Уложите на спину, приподняв голову', d: 'Снимите лишнюю одежду. На голову — холодный компресс, тело оберните мокрой простынёй или опрыскайте водой.'},
+      {t: 'Обильное питьё', d: 'Давайте прохладную воду.'},
+      {t: 'Если человек без сознания', d: 'Придайте устойчивое боковое положение и вызовите скорую.'}
+    ]},
+  {id: 'chem', title: 'Химическое отравление', c: 'c4',
+    signs: ['Тошнота и рвота', 'Головная боль и головокружение', 'Общая слабость, снижение работоспособности', 'Нарушения сознания', 'Судороги или мышечные подёргивания', 'Нарушения сердечного ритма и дыхания', 'Проблемы с координацией движений'],
+    steps: [{t: 'Вынесите на свежий воздух, обеспечьте покой'}, {t: 'Действуйте по тому, как вещество попало в организм', route: true}]},
+  {id: 'food', title: 'Пищевое отравление', c: 'c5', img: 'img/food.jpg',
+    signs: ['Тошнота и рвота', 'Диарея', 'Боль в животе', 'Общее недомогание', 'Повышение температуры тела', 'Головная и мышечная боль'],
+    steps: [
+      {t: 'Промывание желудка', d: 'Дайте выпить 1–2 стакана тёплой воды и вызовите рвоту.', warn: '<b>Осторожно:</b> не вызывайте рвоту, если человек без сознания или у него судороги, а также при подозрении на отравление химическими веществами. Маленьким детям — только по указанию врача или диспетчера скорой.'},
+      {t: 'Приём сорбентов', d: 'Дайте активированный уголь.'},
+      {t: 'Восполнение жидкости', d: 'Поите пострадавшего дробно, малыми порциями (Регидрон, солевые растворы).'}
+    ]},
+  {id: 'drown', title: 'Помощь утопающему', c: 'c6', img: 'img/drowning.jpg', imgCap: 'Первая помощь при утоплении',
+    steps: [
+      {t: 'Обеспечьте свою безопасность', d: 'Не бросайтесь в воду, если не уверены в своих силах. Используйте спасательный круг, верёвку или лодку.'},
+      {t: 'Достаньте пострадавшего на твёрдую поверхность'},
+      {t: 'Очистите рот от инородных предметов', d: 'Проверьте пульс на сонной артерии и дыхание.'},
+      {t: 'Если нет дыхания', d: 'Немедленно начинайте СЛР (30 нажатий / 2 вдоха).', cpr: true},
+      {t: 'Если дышит', d: 'Уложите на бок, укройте, чтобы согреть, и дождитесь медиков.'}
+    ]}
+];
+var HEAT = ['Резкое повышение температуры тела', 'Нарушение психического состояния или поведения', 'Нарушение потоотделения', 'Учащённое дыхание и пульс', 'Другие симптомы: сильная головная боль, головокружение, тошнота, рвота, покраснение кожи, мышечные судороги или слабость'];
+var SUN = ['Интенсивная головная боль', 'Покраснение кожи лица и шеи', 'Головокружение и потемнение в глазах', 'Тошнота, иногда рвота', 'Шум в ушах', 'Слабость и нарушение координации', 'Потеря сознания'];
+var DEG = [
+  ['1', 'Кожа меняет цвет и теряет чувствительность. Пузырей нет.'],
+  ['2', 'Образуются пузыри с прозрачной жидкостью.'],
+  ['3', 'Пузыри с кровянистым содержимым.'],
+  ['4', 'Поражённый участок темнеет, может развиться некроз.']
+];
+var ROUTE = [
+  ['Кожа', 'Снимите загрязнённую одежду, промывайте кожу прохладной проточной водой не менее 15 минут.', true],
+  ['Глаза', 'Промывайте открытый глаз большим количеством воды не менее 15 минут.', true],
+  ['Проглатывание', 'Не вызывайте рвоту. Прополощите рот, дайте выпить воды. Срочно звоните в токсикологическую службу.', false]
+];
+
+
+var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); };
+var uid = 0, V = 'C';
+
+function fig(src, cap) { return '<figure class="rv"><div class="fig"><img src="' + src + '" alt="' + esc(cap) + '" loading="lazy"></div>' + (cap ? '<figcaption class="note" style="font-size:13px;color:var(--muted);font-weight:700;padding-top:6px">' + esc(cap) + '</figcaption>' : '') + '</figure>'; }
+function cprW() {
+  return '<div class="cpr rv zoom" data-cpr><div class="dial"><svg viewBox="0 0 170 170"><circle cx="85" cy="85" r="76" fill="none" stroke="var(--peach)" stroke-width="12"/><circle class="arc" cx="85" cy="85" r="76" fill="none" stroke="var(--orange)" stroke-width="12" stroke-linecap="round" stroke-dasharray="478" stroke-dashoffset="478"/></svg><div class="n"><span class="v">30</span><small class="m">нажатий</small></div></div>' +
+    '<b>Тренажёр ритма СЛР</b><span class="note" style="color:var(--muted);font-size:15px">110 нажатий в минуту, глубина 5–6 см. После 30 нажатий — 2 вдоха.</span><div class="row"><button type="button" class="btn go">▶ Запустить ритм</button><button type="button" class="btn ghost snd" aria-pressed="false">🔈 Звук</button></div></div>';
+}
+function forkW() {
+  return '<div class="fork rv"><div class="branch yes"><div class="lab">Да, дышит</div><p>Придайте устойчивое боковое положение, расстегните воротник и ремень.</p>' + fig('img/recovery.jpg', 'Устойчивое боковое положение') + '</div>' +
+    '<div class="branch no"><div class="lab">Нет, не дышит</div><p>Начинайте СЛР — 30 нажатий на грудину (глубина 5–6 см, частота 100–120 в минуту) и 2 вдоха.</p>' + fig('img/cpr.jpg', 'Сердечно-лёгочная реанимация') + '</div></div>' + cprW();
+}
+function tabsW(items, render) {
+  return '<div class="tabset rv" data-tabs><div class="tabs" role="tablist">' + items.map(function (x, i) {
+    return '<button class="tab" role="tab" type="button" aria-selected="' + (i === 0) + '" data-i="' + i + '">' + esc(x[0]) + '</button>';
+  }).join('') + '</div>' + items.map(function (x, i) { return '<div class="pane" role="tabpanel"' + (i ? ' hidden' : '') + '>' + render(x) + '</div>'; }).join('') + '</div>';
+}
+function degreesW() { return fig('img/frostbite.jpg', 'Степени обморожения') + tabsW(DEG.map(function (d) { return [d[0] + ' степень', d[1]]; }), function (x) { return '<p style="margin:0;font-weight:700">' + esc(x[1]) + '</p>'; }); }
+function compareW() { return tabsW([['Тепловой удар', HEAT], ['Солнечный удар', SUN]], function (x) { return '<ul class="list' + (V === 'D' ? ' one' : '') + '">' + x[1].map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>'; }); }
+function timerW() { return '<div class="timer" data-timer><span class="t">15:00</span><div class="bar"><i></i></div><div class="row"><button type="button" class="btn go">Засечь 15 минут</button></div></div>'; }
+function routeW() {
+  return tabsW(ROUTE, function (x) { return '<div style="display:flex;flex-direction:column;gap:14px"><p style="margin:0;font-weight:700">' + esc(x[1]) + '</p>' + (x[2] ? timerW() : '<div class="imp"><b>Не вызывайте рвоту</b> — это отличие от пищевого отравления.</div>') + '</div>'; });
+}
+function extra(s) { return (s.warn ? '<div class="imp warn rv">' + s.warn + '</div>' : '') + (s.fork ? forkW() : '') + (s.route ? routeW() : '') + (s.cpr ? cprW() : ''); }
+function nonoW(t) { return t.no ? '<div class="nono rv"><b>Нельзя</b>' + t.no.map(function (x) { return '<span><i>✕</i>' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }
+function heroW() {
+  return '<div class="wrap" style="position:relative"><svg class="blob" aria-hidden="true" viewBox="0 0 200 160" style="right:-70px;top:-20px;width:230px;height:180px"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#5E9A6E"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#F08A57"/></svg>' +
+    '<header class="hero" id="top"><div class="kick"><a href="../" style="text-decoration:none">← Главная</a> · Статья</div><h1>Первая помощь в экстренных ситуациях</h1><p class="lead">' + INTRO + '</p>' +
+    '<div class="sos"><p>' + SAFETY + '</p><div class="nums"><a href="tel:103">103<small>скорая</small></a><a href="tel:112">112<small>единый</small></a></div></div>' +
+    '<nav class="toc" id="toc" aria-label="Оглавление">' + T.map(function (t, i) { return '<a class="t-' + t.id + '" href="#' + V + '-' + t.id + '"><span>' + (i + 1) + '</span>' + esc(t.title) + '</a>'; }).join('') + '</nav></header></div>';
+}
+
+function words(t) { return esc(t).split(' ').map(function (w, i) { return '<span class="w" style="--d:' + (150 + i * 90) + 'ms">' + w + '</span>'; }).join(' '); }
+function renderD() {
+  var h = heroW();
+  T.forEach(function (t, k) {
+    h += '<section class="topic-wrap t-' + t.id + '" id="D-' + t.id + '"><div class="cover"><div class="big" aria-hidden="true">' + (k + 1) + '</div><div class="in"><div class="ic">' + ICON[t.id] + '</div><div class="kick">Ситуация ' + (k + 1) + ' из ' + T.length + '</div><h2>' + words(t.title) + '</h2>' + (t.sub ? '<div class="sub">' + esc(t.sub) + '</div>' : '') + '</div>' +
+      '<div class="waves" aria-hidden="true"><svg viewBox="0 0 800 24" preserveAspectRatio="none"><path d="M0 12 Q50 0 100 12 T200 12 T300 12 T400 12 T500 12 T600 12 T700 12 T800 12 V24 H0Z" fill="var(--cream)"/></svg></div></div><div class="wrap"><div class="topic">';
+    if (t.signs) h += '<h3 class="rv">Признаки</h3><div class="chips rv">' + t.signs.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('') + '</div>' + (t.signsNote ? '<div class="imp rv">' + t.signsNote + '</div>' : '');
+    if (t.degrees) h += '<div style="width:100%;text-align:left;display:flex;flex-direction:column;gap:14px">' + degreesW() + '</div>';
+    if (t.compare) h += '<h3 class="rv">Признаки</h3><div style="width:100%;text-align:left">' + compareW() + '</div>';
+    if (t.img) h += '<div style="width:100%">' + fig(t.img, t.imgCap || '') + '</div>';
+    h += '<h3 class="rv">Что делать</h3><div class="flow">' + t.steps.map(function (s, i) {
+      return (i ? '<div class="link rv"></div>' : '') + '<div class="card rv zoom"><div class="n">' + (i + 1) + '</div><div class="t">' + esc(s.fork ? 'Человек дышит? Смотрим 10 секунд' : s.t) + '</div>' + (s.d ? '<p>' + esc(s.d) + '</p>' : '') + extra(s) + '</div>';
+    }).join('') + '</div>' + nonoW(t) + '</div></div></section>';
+  });
+  return h + '<div class="wrap end">Знание алгоритма — уже половина помощи.</div>';
+}
+
+var app = document.getElementById('app'), cleanup = [];
+function mount(v) {
+  cleanup.forEach(function (f) { f(); }); cleanup = []; V = v;
+  app.className = v; app.innerHTML = renderD();
+  window.scrollTo(0, 0);
+  var H = innerHeight, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('pre'); e.target.classList.add('on'); io.unobserve(e.target); } });
+  }, {rootMargin: '0px 0px -12% 0px'});
+  app.querySelectorAll('.rv,.D .cover').forEach(function (el) { if (!reduce && el.classList.contains('rv') && el.getBoundingClientRect().top > H * .92) el.classList.add('pre'); io.observe(el); });
+  // шаг «загорается», когда доходит до середины экрана
+  var mid = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('on'); }); }, {rootMargin: '-40% 0px -45% 0px'});
+  app.querySelectorAll('.D .card,.D .link').forEach(function (el) { mid.observe(el); });
+  cleanup.push(function () { io.disconnect(); mid.disconnect(); });
+  app.querySelectorAll('[data-tabs]').forEach(function (box) {
+    var tabs = box.querySelectorAll('.tab'), panes = box.querySelectorAll('.pane');
+    tabs.forEach(function (t) { t.onclick = function () { var i = +t.getAttribute('data-i'); tabs.forEach(function (x, j) { x.setAttribute('aria-selected', j === i); }); panes.forEach(function (p, j) { p.hidden = j !== i; }); }; });
+  });
+  app.querySelectorAll('[data-cpr]').forEach(function (box) {
+    var go = box.querySelector('.go'), snd = box.querySelector('.snd'), v = box.querySelector('.v'), m = box.querySelector('.m'), arc = box.querySelector('.arc'), dial = box.querySelector('.dial');
+    var timer = null, count = 0, breath = 0, ac = null, sound = false;
+    function tick(hi) { if (!sound) return; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); var o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = hi ? 880 : 520; g.gain.setValueAtTime(.18, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + .09); o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + .1); } catch (e) {} }
+    function show(n, label, frac) { v.textContent = n; m.textContent = label; arc.style.strokeDashoffset = 478 * (1 - frac); dial.classList.remove('beat'); void dial.offsetWidth; dial.classList.add('beat'); }
+    function step() {
+      if (breath) { breath++; if (breath > 5) { breath = 0; count = 0; } else { show('Вдох', breath <= 3 ? '1 из 2' : '2 из 2', 1); return; } }
+      count++; tick(count === 30); show(count, 'нажатие', count / 30); if (count >= 30) breath = 1;
+    }
+    function stop() { clearInterval(timer); timer = null; go.textContent = '▶ Запустить ритм'; go.setAttribute('aria-pressed', 'false'); count = 0; breath = 0; v.textContent = '30'; m.textContent = 'нажатий'; arc.style.strokeDashoffset = 478; }
+    go.onclick = function () {
+      if (timer) return stop();
+      box.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+      go.textContent = '■ Остановить'; go.setAttribute('aria-pressed', 'true'); step(); timer = setInterval(step, 545);
+    };
+    snd.onclick = function () { sound = !sound; snd.setAttribute('aria-pressed', sound); snd.textContent = sound ? '🔊 Звук' : '🔈 Звук'; };
+    cleanup.push(stop);
+  });
+  app.querySelectorAll('[data-timer]').forEach(function (box) {
+    var go = box.querySelector('.go'), t = box.querySelector('.t'), bar = box.querySelector('.bar i'), left = 900, h = null;
+    function fmt(s) { return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); }
+    function reset() { clearInterval(h); h = null; left = 900; t.textContent = '15:00'; bar.style.width = '0'; go.textContent = 'Засечь 15 минут'; }
+    go.onclick = function () {
+      if (h) return reset();
+      box.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'center'});
+      go.textContent = 'Сбросить';
+      h = setInterval(function () { left--; t.textContent = fmt(left); bar.style.width = (100 * (900 - left) / 900) + '%'; if (left <= 0) { clearInterval(h); h = null; t.textContent = 'Готово'; go.textContent = 'Ещё раз'; left = 900; } }, 1000);
+    };
+    cleanup.push(reset);
+  });
+  var toc = document.getElementById('toc'), btn = document.getElementById('tocbtn');
+  var covers = app.querySelectorAll('.D .cover .big');
+  var onScroll = function () {
+    btn.classList.toggle('hide', toc.getBoundingClientRect().bottom > 0);
+    if (!reduce) covers.forEach(function (b) { var r = b.parentNode.getBoundingClientRect(); if (r.bottom > 0 && r.top < innerHeight) b.style.transform = 'translateY(' + (r.top * -.22) + 'px)'; });
+  };
+  addEventListener('scroll', onScroll, {passive: true}); cleanup.push(function () { removeEventListener('scroll', onScroll); }); onScroll();
+}
+document.getElementById('tocbtn').onclick = function () { document.getElementById('toc').scrollIntoView({behavior: 'smooth', block: 'center'}); };
+mount('D');
+// фон: светлячки
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cv = document.getElementById('forest'), cx = cv.getContext('2d'), W, H;
+  function size() { var d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); }
+  size(); addEventListener('resize', size);
+  var cols = ['#8FCB9F', '#F38A55', '#C9B79C'];
+  var flies = Array.from({length: 22}, function () { return {x: Math.random() * W, y: Math.random() * H, t: Math.random() * 6.3, s: .3 + Math.random() * .6}; });
+  (function frame() {
+    cx.clearRect(0, 0, W, H);
+    flies.forEach(function (f) {
+      f.t += .02 * f.s; f.x += Math.cos(f.t * 1.3) * .3; f.y += Math.sin(f.t) * .3;
+      var g = .25 + .35 * Math.max(0, Math.sin(f.t * 2));
+      cx.globalAlpha = g; cx.fillStyle = cols[1]; cx.beginPath(); cx.arc(f.x, f.y, 2, 0, 6.3); cx.fill();
+      cx.globalAlpha = g * .25; cx.beginPath(); cx.arc(f.x, f.y, 7, 0, 6.3); cx.fill();
+    });
+    cx.globalAlpha = 1; requestAnimationFrame(frame);
+  })();
+})();
+})();
+</script>
+</body>
+</html>
