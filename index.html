@@ -25,7 +25,7 @@ h1{font-size:38px;line-height:1.05;margin:8px 0 0;max-width:80%;letter-spacing:-
 .go{flex:1;min-width:0;display:flex;align-items:center;gap:16px;padding:8px 0 8px 10px;text-decoration:none;color:var(--navy);border-radius:22px;transition:transform .2s}
 .go:active{transform:scale(.98)}
 .ic{flex:none;width:60px;height:60px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px}
-.c1 .ic{background:#F6D9CB}.c2 .ic{background:#D7E4D6}.c3 .ic{background:#D5DEE8}
+.c1 .ic{background:#F6D9CB}.c2 .ic{background:#D7E4D6}.c3 .ic{background:#D5DEE8}.c4 .ic{background:#EADCC8}
 .tx{flex:1;min-width:0}
 .tx b{display:block;font-size:19px;line-height:1.2;font-weight:800}
 .tx span{display:block;font-size:14px;color:var(--muted);margin-top:4px}
@@ -74,8 +74,10 @@ h1{font-size:38px;line-height:1.05;margin:8px 0 0;max-width:80%;letter-spacing:-
       <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="travy/" data-t="Травоведение"></button></div>
     <div class="card c3 in" style="animation-delay:260ms"><a class="go" href="uzly/"><span class="ic">🪢</span><span class="tx"><b>Узлы</b><span>5 узлов со схемами вязания</span></span></a>
       <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="uzly/" data-t="Узлы"></button></div>
-    <button class="btn in" style="animation-delay:340ms;margin-top:6px" type="button" onclick="printSheet()">Напечатать QR-коды (A4)</button>
-    <a class="btn ghost in" style="animation-delay:400ms" href="uzly/?print">QR-коды для каждого узла</a>
+    <div class="card c4 in" style="animation-delay:330ms"><a class="go" href="imena/"><span class="ic">🌲</span><span class="tx"><b>Лесные имена</b><span>База имён «Байкальского Скаута»</span></span></a>
+      <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="imena/" data-t="Лесные имена"></button></div>
+    <button class="btn in" style="animation-delay:400ms;margin-top:6px" type="button" onclick="printSheet()">Напечатать QR-коды (A4)</button>
+    <a class="btn ghost in" style="animation-delay:460ms" href="uzly/?print">QR-коды для каждого узла</a>
     <p class="hint">Значок <b>QR</b> на карточке — большой код на весь экран, чтобы класс отсканировал его с проектора.</p>
   </div>
 </div>
