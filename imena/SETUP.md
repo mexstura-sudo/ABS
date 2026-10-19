@@ -3,8 +3,8 @@
 Около 20 минут. Нужны: почта и аккаунт GitHub, где лежит этот репозиторий.
 
 Адреса после запуска:
-- сайт для всех — `https://mexstura-sudo.github.io/quiz/imena/`
-- управление — `https://mexstura-sudo.github.io/quiz/imena/admin.html` (в меню нет, ссылку знают только админы)
+- сайт для всех — `https://mexstura-sudo.github.io/ABS/imena/`
+- управление — `https://mexstura-sudo.github.io/ABS/imena/admin.html` (в меню нет, ссылку знают только админы)
 
 ## 1. Создать проект в Supabase
 
@@ -34,14 +34,14 @@
 ## 4. Настроить вход для админов
 
 **Authentication → URL Configuration**:
-- **Site URL**: `https://mexstura-sudo.github.io/quiz/imena/admin.html`
+- **Site URL**: `https://mexstura-sudo.github.io/ABS/imena/admin.html`
 - **Redirect URLs** → Add URL → то же самое.
 
 Без этого ссылка из письма будет вести не туда.
 
 ## 5. Выложить на GitHub
 
-1. github.com → репозиторий `quiz` → **Add file → Upload files**.
+1. github.com → репозиторий `ABS` → **Add file → Upload files**.
 2. Перетащите из архива папку `imena` и файлы `index.html`, `README.md` (главная с новой карточкой).
 3. **Commit changes**. Через 1–2 минуты GitHub Pages обновит сайт.
 
