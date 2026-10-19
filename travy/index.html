@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Травоведение</title>
+<meta name="theme-color" content="#F5EEDF">
+<link href="../assets/fonts/manrope.css" rel="stylesheet">
+<style>
+:root{--c:#284F36;--green:#284F36;--orange:#D85B21;--navy:#1F3954;--sand:#E4D5C2;--cream:#F5EEDF;--paper:#FBF8F1;
+  --ink:var(--navy);--muted:#5B6B7C;--bg:var(--cream);--card:var(--paper);--line:var(--sand);--ok:var(--green);--bad:var(--orange);--half:#B9862F}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* iPhone: кнопки без системного оформления, без задержки и двойного «зума» по быстрому касанию */
+button{-webkit-appearance:none;appearance:none;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+select,input,textarea,a,label{touch-action:manipulation}
+html,body{margin:0;min-height:100%;background:var(--bg);font-family:Gilroy,Manrope,system-ui,sans-serif;font-weight:400;color:var(--ink)}
+b,strong,h1,h2,h3{font-weight:800}
+button,input,select,textarea{font-family:inherit}
+#app{max-width:640px;margin:0 auto;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;position:relative;overflow-x:hidden;overflow-x:clip}
+.blob{position:absolute;pointer-events:none;z-index:0}
+.hero{color:var(--ink);padding:56px 20px 10px;position:relative}
+.hero h1{margin:6px 0 0;font-size:30px;font-weight:800;line-height:1.12;letter-spacing:-.3px;position:relative;z-index:1;max-width:80%}
+.hero .kick{font-size:13px;font-weight:800;color:var(--c);text-transform:uppercase;letter-spacing:1.5px;position:relative;z-index:1}
+.cover{width:100%;max-height:220px;object-fit:cover;border-radius:24px;margin:16px 0 0;display:block;position:relative;z-index:1}
+.wrap{padding:16px;flex:1;display:flex;flex-direction:column;gap:14px;position:relative;z-index:1}
+.card{background:var(--card);border-radius:28px;padding:20px;box-shadow:0 10px 30px rgba(31,57,84,.10)}
+.desc{white-space:pre-wrap;line-height:1.5;font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--sand);border-radius:99px;padding:8px 13px;font-weight:800;font-size:13px}
+label.lbl{font-weight:800;font-size:13px;color:var(--muted);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.inp{width:100%;font-size:18px;padding:15px 16px;border:2px solid var(--line);border-radius:18px;background:#fff;color:var(--ink);outline:none;transition:border-color .2s}
+.inp:focus{border-color:var(--c)}
+.btn{border:0;border-radius:20px;padding:18px 20px;font-size:18px;font-weight:800;cursor:pointer;background:var(--c);color:var(--cream);box-shadow:0 8px 20px rgba(40,79,54,.25);width:100%;transition:transform .15s}
+.btn:active{transform:scale(.98)}
+.btn[disabled]{opacity:.45;cursor:default}
+.btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.btn.red{background:var(--bad)}
+.msg{text-align:center;padding:40px 20px;font-weight:800;font-size:17px;line-height:1.5}
+.msg .big{font-size:56px}
+.err{color:var(--bad);font-weight:800;font-size:14px;min-height:18px;margin-top:6px}
+/* вопрос */
+.topbar{display:flex;align-items:center;gap:10px;padding:16px 16px 6px;position:sticky;top:0;background:var(--bg);z-index:5}
+.count{font-weight:800;font-size:13px;color:var(--c);white-space:nowrap;text-transform:uppercase;letter-spacing:1.5px;flex:1}
+.progress{display:flex;gap:5px;padding:0 16px 4px}
+.progress i{flex:1;height:6px;border-radius:6px;background:var(--sand);transition:background .3s}
+.progress i.done{background:var(--c)}.progress i.now{background:var(--orange)}
+.progress.long i{height:6px;border-radius:0}.progress.long{gap:0}.progress.long i:first-child{border-radius:6px 0 0 6px}.progress.long i:last-child{border-radius:0 6px 6px 0}
+.timer{font-weight:800;font-size:15px;background:var(--paper);border-radius:14px;padding:8px 12px;font-variant-numeric:tabular-nums;box-shadow:0 2px 8px rgba(31,57,84,.08)}
+.timer.low{background:var(--orange);color:var(--paper)}
+.snd{width:44px;height:44px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;padding:0}
+.snd.on{background:var(--ink);color:var(--cream)}
+.dots{display:flex;flex-wrap:wrap;gap:6px;padding:6px 16px 0}
+.dots button{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:var(--paper);font-weight:800;font-size:12px;color:var(--muted);cursor:pointer}
+.dots button.ans{background:var(--c);border-color:var(--c);color:var(--cream)}
+.dots button.cur{border-color:var(--ink);color:var(--ink)}
+.dots button.ans.cur{border-color:var(--orange);color:var(--cream)}
+.qtext{font-size:24px;font-weight:800;line-height:1.2;white-space:pre-wrap}
+.qmeta{display:flex;gap:8px;align-items:center;margin-bottom:10px;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.qtimer{display:flex;align-items:center;gap:10px;margin-top:16px}
+.qtimer .bar{flex:1;height:8px;border-radius:8px;background:var(--sand);overflow:hidden}
+.qtimer .bar i{display:block;height:100%;width:100%;background:var(--green);border-radius:8px;transform-origin:left center;animation:qBar linear forwards;transition:background .3s}
+@keyframes qBar{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+.qtimer b{font-size:15px;min-width:40px;text-align:right;font-variant-numeric:tabular-nums;color:var(--green)}
+.qtimer.low .bar i{background:var(--orange)}.qtimer.low b{color:var(--orange)}
+.qimg{display:block;width:100%;height:auto;border-radius:18px;margin-top:14px;max-height:340px;object-fit:contain;background:var(--cream)}
+/* небольшие iPhone: картинка и текст компактнее, чтобы варианты ответа были видны без прокрутки */
+@media(max-height:760px){.qimg{max-height:30vh}.qtext{font-size:20px}.card{padding:16px}.opt{min-height:54px;padding:9px 14px;font-size:16px}.topbar{padding-top:10px}.hero{padding-top:40px}}
+.imgfail{display:flex;align-items:center;justify-content:center;gap:8px;min-height:120px;border-radius:18px;margin-top:14px;background:var(--cream);color:var(--muted);font-weight:800;font-size:14px;border:2px dashed var(--line);cursor:pointer;width:100%;text-align:center;padding:12px}
+.media{margin-top:14px}
+.media iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:18px}
+.media a{display:inline-flex;gap:6px;align-items:center;font-weight:800;color:var(--ink);text-decoration:none;background:var(--sand);padding:11px 15px;border-radius:14px}
+.hint{font-size:13px;font-weight:800;color:var(--muted);margin-top:2px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opts.grid{display:grid;grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:14px;background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:11px 16px;min-height:62px;font-size:17px;text-align:left;cursor:pointer;color:var(--ink);width:100%;transition:background .2s,color .2s,border-color .2s}
+.opt .mark{width:36px;height:36px;border-radius:50%;background:var(--sand);color:var(--ink);flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;transition:background .2s,color .2s}
+.opt.sq .mark{border-radius:12px}
+@media(hover:hover){.opt:not([disabled]):hover{border-color:var(--c)}}
+.opt.on{background:var(--c);border-color:var(--c);color:var(--cream)}
+.opt.on .mark{background:var(--cream);color:var(--c)}
+.opt.img{flex-direction:column;align-items:stretch;padding:8px}
+.opt.img img{display:block;width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:14px;pointer-events:none}
+.opt .mark,.opt span{pointer-events:none}
+.opt.img .row{display:flex;align-items:center;gap:10px;padding:2px 4px}
+.opt[disabled]{opacity:.6;cursor:default}
+.tf{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tf .opt{justify-content:center;font-size:19px;font-weight:800;padding:24px 10px}
+.ord{display:flex;align-items:center;gap:10px;background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:10px 10px 10px 14px;font-size:17px}
+.ord .n{width:32px;height:32px;border-radius:50%;background:var(--sand);color:var(--ink);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:none}
+.ord .t{flex:1}
+.ord button{width:42px;height:42px;border-radius:14px;border:0;background:var(--cream);color:var(--ink);font-size:18px;font-weight:800;cursor:pointer}
+.ord button[disabled]{opacity:.3}
+.ord.moved{animation:qPick .3s ease}
+.pair{background:var(--paper);border:2px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:8px;transition:border-color .2s}
+.pair b{font-size:17px}
+.pair select{font-size:16px;padding:12px;border-radius:14px;border:2px solid var(--line);background:#fff;color:var(--ink)}
+.pair.done{border-color:var(--c)}
+textarea.inp{min-height:130px;resize:vertical;font-size:17px}
+.nav{display:flex;gap:10px;padding:14px 16px 20px;padding-bottom:calc(20px + env(safe-area-inset-bottom));position:sticky;bottom:0;background:linear-gradient(rgba(245,238,223,0),var(--bg) 30%);z-index:4;pointer-events:none}
+.nav .btn{pointer-events:auto}   /* прозрачный край панели не перехватывает касания по вариантам ответа */
+.nav .btn{flex:1}
+.locked{font-size:13px;font-weight:800;color:var(--bad);text-align:center}
+.preview{background:var(--orange);color:#fff;font-weight:800;font-size:13px;text-align:center;padding:8px;position:relative;z-index:6}
+/* анимации */
+@keyframes qUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes qIn{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:none}}
+@keyframes qInBack{from{opacity:0;transform:translateX(-48px)}to{opacity:1;transform:none}}
+@keyframes qOut{to{opacity:0;transform:translateX(-48px)}}
+@keyframes qOutBack{to{opacity:0;transform:translateX(48px)}}
+@keyframes qPick{0%{transform:scale(1)}40%{transform:scale(.96)}100%{transform:scale(1)}}
+@keyframes qPop{0%{opacity:0;transform:scale(.85)}70%{opacity:1;transform:scale(1.04)}100%{transform:none}}
+.anim .card{animation:qIn .42s cubic-bezier(.2,.8,.2,1) both}
+.anim.back .card{animation-name:qInBack}
+.in{animation:qUp .45s cubic-bezier(.2,.8,.2,1) both}
+.leave{animation:qOut .24s ease-in forwards}
+.leave.back{animation-name:qOutBack}
+.opt.picked{animation:qPick .25s ease}
+.pop{animation:qPop .6s cubic-bezier(.2,.8,.2,1) both}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ответ сразу */
+.opt.right{background:var(--green);border-color:var(--green);color:var(--cream);opacity:1}
+.opt.right .mark{background:var(--cream);color:var(--green)}
+.opt.wrong{background:var(--orange);border-color:var(--orange);color:#fff;opacity:1;animation:qShake .4s ease}
+.opt.wrong .mark{background:#fff;color:var(--orange)}
+.opt.dim{opacity:.45}
+.fb{border-radius:24px;overflow:hidden;background:var(--paper);box-shadow:0 10px 30px rgba(31,57,84,.12);animation:qFb .5s cubic-bezier(.2,.9,.25,1.1) both}
+.fb-bar{display:flex;align-items:center;gap:14px;padding:16px 18px;color:#fff;background:var(--green)}
+.fb.bad .fb-bar,.fb.time .fb-bar{background:var(--orange)}
+.fb.half .fb-bar{background:var(--half)}
+.fb.open .fb-bar{background:var(--navy)}
+.fb-bar b{display:block;font-size:22px}
+.fb-joke{display:block;font-size:15px;opacity:.95;margin-top:2px}
+.fb-ic{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex:none;animation:qPop .5s .15s both}
+.fb-right{padding:14px 18px 0;font-size:16px}
+.fb-e{padding:12px 18px 18px;font-size:15px;line-height:1.5;color:var(--ink)}
+.fb-right+.fb-e,.fb-bar+.fb-e{padding-top:14px}
+.fb-bar:last-child{border-radius:0}
+@keyframes qFb{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes qShake{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(3px)}}
+/* напряжённый режим */
+body.tense{background:#EFE4D0}
+body.tense .topbar{background:#EFE4D0}
+body.tense .nav{background:linear-gradient(rgba(239,228,208,0),#EFE4D0 30%)}
+body.tense .qtimer .bar{height:12px}
+body.tense .qtimer b{font-size:20px}
+body.tense::after{content:'';position:fixed;top:0;right:0;bottom:0;left:0;pointer-events:none;z-index:30;box-shadow:inset 0 0 90px 24px rgba(216,91,33,.55);opacity:0;transition:opacity .3s;will-change:opacity}
+body.tense.danger::after{animation:qPulse 1s ease-in-out infinite}
+body.tense.danger .qtimer{animation:qShake .5s ease infinite}
+body.tense.danger .card{box-shadow:0 0 0 3px var(--orange),0 10px 30px rgba(216,91,33,.25)}
+/* пульсирует только прозрачность готовой тени — iPhone не перерисовывает весь экран 60 раз в секунду */
+@keyframes qPulse{0%,100%{opacity:.35}50%{opacity:1}}
+/* итог */
+.ring{width:170px;height:170px;margin:4px auto 0;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .arc{transition:stroke-dasharray 1.2s cubic-bezier(.2,.8,.2,1)}
+.ring .v{position:absolute;top:0;right:0;bottom:0;left:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .v b{font-size:42px;font-weight:800}
+.ring .v span{font-size:13px;font-weight:800;color:var(--muted)}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center}
+.res-grid div{background:var(--cream);border-radius:18px;padding:12px 4px}
+.res-grid b{display:block;font-size:21px;font-weight:800}
+.res-grid span{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.rv{border-left:5px solid var(--line);padding:4px 0 4px 12px;margin:14px 0}
+.rv.ok{border-color:var(--ok)}.rv.bad{border-color:var(--bad)}.rv.half{border-color:var(--half)}
+.rv .t{font-weight:800}
+.rv .y,.rv .c{font-size:15px;margin-top:4px}
+.rv .c{color:var(--ok);font-weight:800}
+.rv .e{font-size:14px;color:var(--muted);margin-top:6px;background:var(--cream);border-radius:14px;padding:9px 11px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));pointer-events:none;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:12px 18px;border-radius:16px;font-weight:800;z-index:50;max-width:90%;text-align:center}
+.modal-bg{position:fixed;top:0;right:0;bottom:0;left:0;background:rgba(31,57,84,.5);display:flex;align-items:center;justify-content:center;padding:20px;z-index:40}
+.modal{background:var(--paper);border-radius:28px;padding:22px;max-width:380px;width:100%;text-align:center;animation:qPop .35s ease both}
+.modal h3{margin:0 0 8px}
+.modal .row{display:flex;gap:10px;margin-top:16px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var CODE = 'travy';
+var PREVIEW = false;
+var ADMIN_TOKEN = (function () { try { return localStorage.getItem('quiz_admin_token') || ''; } catch (e) { return ''; } })();
+var S = {fb: {}, sound: (function () { try { return localStorage.getItem('quiz_sound') === '1'; } catch (e) { return false; } })(), anim: '', lastSec: null, used: {}, meta: null, att: null, i: 0, answers: {}, saved: {}, timedOut: {}, qStart: 0, result: null, error: null, busy: false, offset: 0};
+
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]; }); }
+function toast(m) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(function () { t.remove(); }, 2600); }
+function device() {
+  try { var d = localStorage.getItem('quiz_device'); if (!d) { d = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('quiz_device', d); } return d; }
+  catch (e) { return ''; }
+}
+var QUIZ = {"title": "Травоведение", "description": "Перед вами баночки с травами под номерами 1–5. Рассмотрите, понюхайте и угадайте, какая трава в каждой. После каждого ответа — правильный ответ и интересный факт.", "color": "#284F36", "cover": null, "settings": {"timeTotal": null, "shuffleQuestions": false, "shuffleOptions": true, "randomCount": null, "oneAttempt": false, "allowBack": false, "partialCredit": true, "speedBonus": false, "showAnswers": false, "instantFeedback": true, "mood": "calm", "grades": [], "certificate": {"enabled": false, "minPercent": 0, "text": "за успешное прохождение квиза"}}, "questions": [{"id": 31, "type": "single", "text": "Какое растение под номером 1?", "image": null, "media": null, "options": [{"id": "o1", "text": "Иван-чай", "image": null}, {"id": "o2", "text": "Чабрец", "image": null}, {"id": "o3", "text": "Мята", "image": null}, {"id": "o4", "text": "Саган-дайля", "image": null}], "answer": "o2", "explanation": "Чабрец (также известный как тимьян) в Древней Греции считался травой мужества — атлеты натирались его маслом перед состязаниями, веря, что он придаёт им силы. На Руси его называли «богородской травой» и зашивали в подушки — считалось, что это приносит здоровье и долголетие. А ещё чабрец — один из главных компонентов знаменитой смеси «прованские травы».", "points": 1, "timeLimit": null}, {"id": 32, "type": "single", "text": "Какое растение под номером 2?", "image": null, "media": null, "options": [{"id": "o1", "text": "Лаванда", "image": null}, {"id": "o2", "text": "Лук медвежий", "image": null}, {"id": "o3", "text": "Крапива", "image": null}, {"id": "o4", "text": "Душица", "image": null}], "answer": "o4", "explanation": "Душица, которую в Европе знают как «орегано», в переводе с греческого означает «украшение горы». Древние греки верили, что душица — трава любви, и использовали её в зельях, связанных с чувствами. А ещё душица — природный консервант: в её составе есть вещества, которые не дают размножаться бактериям. Именно поэтому орегано так популярно в итальянской кухне — оно не только вкусно, но и помогает еде дольше оставаться свежей.", "points": 1, "timeLimit": null}, {"id": 33, "type": "single", "text": "Какое растение под номером 3?", "image": null, "media": null, "options": [{"id": "o1", "text": "Мята", "image": null}, {"id": "o2", "text": "Ромашка", "image": null}, {"id": "o3", "text": "Можжевельник", "image": null}, {"id": "o4", "text": "Подорожник", "image": null}], "answer": "o1", "explanation": "Мята — одно из самых древних растений, известных человеку. Её название связано с греческим мифом о нимфе Минфе, которую богиня Персефона из ревности превратила в растение. На Руси мяту использовали не только для чая, но и для свежести в доме — ею мыли полы и посуду. А ещё мята содержит ментол, который даёт тот самый «холодок» — именно поэтому её добавляют в зубные пасты и жвачки.", "points": 1, "timeLimit": null}, {"id": 34, "type": "single", "text": "Какое растение под номером 4?", "image": null, "media": null, "options": [{"id": "o1", "text": "Иван-чай", "image": null}, {"id": "o2", "text": "Одуванчик", "image": null}, {"id": "o3", "text": "Ромашка", "image": null}, {"id": "o4", "text": "Клевер", "image": null}], "answer": "o3", "explanation": "Ромашка — символ русской природы, хотя её нынешнее название пришло к нам из Европы только в XVI веке. До этого её называли «пупавкой», «белоцветом» или «солнечником». В старину отваром ромашки умывались, чтобы кожа была чище, и мыли голову для золотистого оттенка волос. А чай с ромашкой до сих пор считается в Англии традиционным успокаивающим напитком.", "points": 1, "timeLimit": null}, {"id": 35, "type": "single", "text": "Какое растение под номером 5?", "image": null, "media": null, "options": [{"id": "o1", "text": "Клевер", "image": null}, {"id": "o2", "text": "Можжевельник", "image": null}, {"id": "o3", "text": "Лаванда", "image": null}, {"id": "o4", "text": "Саган-дайля", "image": null}], "answer": "o3", "explanation": "Лаванда известна человечеству уже тысячи лет. Её название происходит от латинского «lava» — «мыть», потому что ещё в Древнем Риме лавандовую воду добавляли в ванны для свежести и аромата. В 1922 году археологи нашли лаванду в гробнице Тутанхамона — запах сохранился спустя три тысячи лет. А сухие веточки лаванды до сих пор кладут в шкафы — она отлично отпугивает моль.", "points": 1, "timeLimit": null}]};
+/* ---------- квиз без сервера ----------
+   Всё, что раньше делал сервер (порядок вопросов, проверка, баллы, оценка, сертификат), считается прямо в телефоне.
+   Попытка хранится в памяти телефона: перезагрузили страницу — продолжаем с того же места. */
+var LOCAL = (function () {
+  var DEF = {timeTotal: null, shuffleQuestions: true, shuffleOptions: true, randomCount: null, oneAttempt: false, allowBack: true,
+             partialCredit: true, speedBonus: false, showAnswers: false, instantFeedback: false, mood: 'calm', grades: [],
+             certificate: {enabled: false, minPercent: 0, text: 'за успешное прохождение квиза'}};
+  var mem = {};
+  function store(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem(k) || 'null'); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) { if (v === undefined) return mem[k] || null; mem[k] = v; } }
+  function settings() {
+    var d = QUIZ.settings || {}, s = JSON.parse(JSON.stringify(DEF));
+    function num(k, lo, hi) { var v = d[k]; if (v == null || v === '' || +v === 0 || isNaN(+v)) return null; return Math.max(lo, Math.min(hi, Math.round(+v))); }
+    s.timeTotal = num('timeTotal', 1, 600); s.randomCount = num('randomCount', 1, 500);
+    ['shuffleQuestions', 'shuffleOptions', 'oneAttempt', 'allowBack', 'partialCredit', 'speedBonus', 'showAnswers', 'instantFeedback'].forEach(function (k) { if (k in d) s[k] = !!d[k]; });
+    s.mood = d.mood === 'tense' ? 'tense' : 'calm';
+    if (s.instantFeedback) s.allowBack = false;
+    s.grades = (d.grades || []).filter(function (g) { return g && String(g.label || '').trim() && !isNaN(parseFloat(g.min)); })
+      .map(function (g) { return {min: Math.max(0, Math.min(100, parseFloat(g.min))), label: String(g.label).trim().slice(0, 20)}; })
+      .sort(function (a, b) { return b.min - a.min; });
+    var c = d.certificate || {};
+    s.certificate = {enabled: !!c.enabled, minPercent: Math.max(0, Math.min(100, parseFloat(String(c.minPercent || 0).replace(',', '.')) || 0)),
+                     text: String(c.text || DEF.certificate.text).trim().slice(0, 150)};
+    return s;
+  }
+  var ST = settings(), QS = QUIZ.questions.map(function (q, i) { q._pos = i; q.options = q.options || []; return q; });
+  var BY = {}; QS.forEach(function (q) { BY[q.id] = q; });
+  var KEY = 'quiz_local_' + CODE, DONE = 'quiz_done_' + CODE;
+
+  function fail(status, msg) { var e = new Error(msg); e.status = status; throw e; }
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function nowIso() { return new Date().toISOString(); }
+  function token() { return Math.random().toString(36).slice(2) + Date.now().toString(36); }
+  function norm(s) { return String(s == null ? '' : s).toLowerCase().replace(/ё/g, 'е').trim().replace(/\s+/g, ' ').replace(/^[ .!;]+|[ .!;]+$/g, ''); }
+  function numv(s) { var v = String(s == null ? '' : s).replace(',', '.').replace(/ /g, ''); return v !== '' && !isNaN(+v) ? +v : null; }
+  function ids(q) { return q.options.map(function (o) { return o.id; }); }
+  function same(a, b) { return a.length === b.length && a.every(function (x, i) { return x === b[i]; }); }
+
+  function plan() {
+    var qs = QS.slice();
+    if (ST.randomCount && ST.randomCount < qs.length) {
+      qs = shuffle(qs).slice(0, ST.randomCount);
+      if (!ST.shuffleQuestions) qs.sort(function (a, b) { return a._pos - b._pos; });
+    } else if (ST.shuffleQuestions) shuffle(qs);
+    return qs.map(function (q) {
+      var o = ids(q), order = o.slice();
+      if (q.type === 'order' || q.type === 'match') { var n = 0; while (order.length > 1 && same(order, o) && n++ < 50) shuffle(order); }
+      else if (ST.shuffleOptions) shuffle(order);
+      return {q: q.id, o: order};
+    });
+  }
+  function pub(q, order) {
+    var by = {}; q.options.forEach(function (o) { by[o.id] = o; });
+    var out = {id: q.id, type: q.type, text: q.text, image: q.image, media: q.media, points: q.points, timeLimit: q.timeLimit};
+    if (q.type === 'single' || q.type === 'multi' || q.type === 'order')
+      out.options = order.filter(function (i) { return by[i]; }).map(function (i) { return {id: i, text: by[i].text, image: by[i].image || null}; });
+    else if (q.type === 'match') {
+      out.left = q.options.map(function (o) { return {id: o.id, text: o.left}; });
+      out.right = order.filter(function (i) { return by[i]; }).map(function (i) { return {id: i, text: by[i].right}; });
+    }
+    return out;
+  }
+  function check(q, g) {
+    var t = q.type, partial = ST.partialCredit;
+    if (t === 'open') return null;
+    if (g == null) return 0;
+    if (t === 'single') return g === q.answer ? 1 : 0;
+    if (t === 'multi') {
+      var right = q.answer || [], ch = Array.isArray(g) ? g : [];
+      var hit = ch.filter(function (x) { return right.indexOf(x) >= 0; }).length, miss = ch.filter(function (x) { return right.indexOf(x) < 0; }).length;
+      if (hit === right.length && !miss) return 1;
+      return partial ? Math.max(0, (hit - miss) / right.length) : 0;
+    }
+    if (t === 'truefalse') return g === q.answer ? 1 : 0;
+    if (t === 'text') {
+      var a = q.answer || {values: []};
+      if (a.tolerance != null) { var x = numv(g); if (x != null && a.values.some(function (v) { var y = numv(v); return y != null && Math.abs(x - y) <= a.tolerance + 1e-9; })) return 1; }
+      return a.values.map(norm).indexOf(norm(g)) >= 0 ? 1 : 0;
+    }
+    if (t === 'order') {
+      var r = ids(q), gg = Array.isArray(g) ? g : [];
+      if (same(gg, r)) return 1;
+      return partial ? r.filter(function (x, i) { return gg[i] === x; }).length / r.length : 0;
+    }
+    if (t === 'match') {
+      var m = g && typeof g === 'object' ? g : {}, ok = q.options.filter(function (o) { return m[o.id] === o.id; }).length;
+      if (ok === q.options.length) return 1;
+      return partial ? ok / q.options.length : 0;
+    }
+    return 0;
+  }
+  function pointsFor(q, fr, ms) {
+    if (fr == null) return 0;
+    var p = q.points * fr;
+    if (ST.speedBonus && q.timeLimit && fr >= 1 && ms != null) p += q.points * 0.5 * Math.max(0, 1 - Math.min(ms, q.timeLimit * 1000) / (q.timeLimit * 1000));
+    return Math.round(p * 100) / 100;
+  }
+  function maxPoints(q) { return q.type === 'open' ? 0 : q.points * (ST.speedBonus && q.timeLimit ? 1.5 : 1); }
+  function gradeOf(p) { for (var i = 0; i < ST.grades.length; i++) if (p >= ST.grades[i].min) return ST.grades[i].label; return null; }
+  function optText(q, id) { var o = q.options.filter(function (x) { return x.id === id; })[0]; return o ? (o.text || '(картинка)') : null; }
+  function correctView(q) {
+    var t = q.type;
+    if (t === 'single') return optText(q, q.answer) || '';
+    if (t === 'multi') return (q.answer || []).map(function (i) { return optText(q, i); }).filter(Boolean).join(', ');
+    if (t === 'truefalse') return q.answer ? 'Верно' : 'Неверно';
+    if (t === 'text') return (q.answer.values || []).join(' / ');
+    if (t === 'order') return q.options.map(function (o) { return o.text; }).join(' → ');
+    if (t === 'match') return q.options.map(function (o) { return o.left + ' — ' + o.right; }).join('; ');
+    return '';
+  }
+  function givenView(q, g) {
+    var t = q.type;
+    if (g == null || g === '' || (Array.isArray(g) && !g.length)) return '—';
+    if (t === 'single') return optText(q, g) || '—';
+    if (t === 'multi') return g.map(function (i) { return optText(q, i) || '?'; }).join(', ');
+    if (t === 'truefalse') return g ? 'Верно' : 'Неверно';
+    if (t === 'text' || t === 'open') return String(g);
+    if (t === 'order') return g.map(function (i) { return optText(q, i) || '?'; }).join(' → ');
+    if (t === 'match') return q.options.map(function (o) { var r = q.options.filter(function (x) { return x.id === g[o.id]; })[0]; return o.left + ' — ' + (r ? r.right : '?'); }).join('; ');
+    return String(g);
+  }
+  function cleanGiven(q, a) {
+    var t = q.type, o = ids(q);
+    if (t === 'single') return o.indexOf(a) >= 0 ? a : null;
+    if (t === 'multi') return o.filter(function (x) { return (Array.isArray(a) ? a : []).indexOf(x) >= 0; });
+    if (t === 'truefalse') return a === true || a === false ? a : null;
+    if (t === 'text' || t === 'open') return a == null || a === '' ? null : String(a).slice(0, 2000);
+    if (t === 'order') { var aa = Array.isArray(a) ? a : []; return same(aa.slice().sort(), o.slice().sort()) ? aa.filter(function (x) { return o.indexOf(x) >= 0; }) : null; }
+    if (t === 'match') { var m = a && typeof a === 'object' ? a : {}, out = {}; Object.keys(m).forEach(function (k) { if (o.indexOf(k) >= 0 && o.indexOf(m[k]) >= 0) out[k] = m[k]; }); return out; }
+    return null;
+  }
+
+  function meta() {
+    var count = ST.randomCount ? Math.min(QS.length, ST.randomCount) : QS.length, done = store(DONE);
+    return {code: CODE, title: QUIZ.title, description: QUIZ.description || '', color: QUIZ.color || '#284F36', cover: QUIZ.cover || null,
+            state: 'open', opensAt: null, closesAt: null, count: count, timeTotal: ST.timeTotal, allowBack: ST.allowBack,
+            oneAttempt: ST.oneAttempt, instantFeedback: ST.instantFeedback, mood: ST.mood,
+            perQuestionTimers: QS.some(function (q) { return q.timeLimit; }), doneToken: ST.oneAttempt && done ? done.token : null};
+  }
+  function payload(a) {
+    var ans = {};
+    Object.keys(a.answers).forEach(function (k) { ans[k] = a.answers[k].a; });
+    return {token: a.token, name: a.name, startedAt: a.startedAt, deadline: a.deadline, serverNow: nowIso(),
+            questions: a.plan.filter(function (p) { return BY[p.q]; }).map(function (p) { return pub(BY[p.q], p.o); }), answers: ans, finished: !!a.finishedAt};
+  }
+  function attempt(tok) { var a = store(KEY); if (!a || a.token !== tok) fail(404, 'Попытка не найдена — начните заново'); return a; }
+  function start(b) {
+    var name = String(b.name || '').split(/\s+/).filter(Boolean).join(' ').slice(0, 60);
+    if (name.length < 2) fail(400, 'Напишите имя');
+    if (ST.oneAttempt && store(DONE)) fail(409, 'С этого телефона квиз уже пройден — можно только один раз');
+    var cur = store(KEY);
+    if (cur && !cur.finishedAt && !(cur.deadline && cur.deadline < nowIso())) return payload(cur);   // перезагрузили страницу — продолжаем
+    if (!QS.length) fail(400, 'В квизе нет вопросов');
+    var started = new Date(), a = {token: token(), name: name, startedAt: started.toISOString(), plan: plan(), answers: {}, finishedAt: null,
+      deadline: ST.timeTotal ? new Date(started.getTime() + ST.timeTotal * 60000).toISOString() : null};
+    store(KEY, a);
+    return payload(a);
+  }
+  function answer(b) {
+    var a = attempt(b.token);
+    if (a.finishedAt) fail(409, 'Квиз уже завершён');
+    if (a.deadline && Date.now() > new Date(a.deadline).getTime() + 10000) fail(409, 'Время вышло');
+    var qid = +b.questionId, inPlan = a.plan.some(function (p) { return p.q === qid; });
+    if (!inPlan) fail(400, 'Этого вопроса нет в вашем квизе');
+    var old = a.answers[String(qid)];
+    if (old && !ST.allowBack && old.locked) fail(409, 'Ответ на этот вопрос уже дан');
+    var q = BY[qid], ms = Math.max(0, +b.ms || 0);
+    if (q.timeLimit) ms = Math.min(ms, q.timeLimit * 1000);
+    var given = cleanGiven(q, b.answer);
+    a.answers[String(qid)] = {a: given, ms: ms, at: nowIso(), locked: !ST.allowBack};
+    store(KEY, a);
+    if (!ST.instantFeedback) return {ok: true};
+    var empty = given == null || given === '' || (Array.isArray(given) && !given.length) || (typeof given === 'object' && !Array.isArray(given) && given !== null && !Object.keys(given).length);
+    var fb = {ok: check(q, given), correct: correctView(q), yours: givenView(q, given), explanation: q.explanation || '', timedOut: !!(b.timedOut && empty)};
+    if (q.type === 'single' || q.type === 'multi' || q.type === 'truefalse') fb.correctIds = Array.isArray(q.answer) ? q.answer : [q.answer];
+    return {ok: true, feedback: fb};
+  }
+  function result(a) {
+    var out = {name: a.name, score: a.score, maxScore: a.maxScore, percent: a.percent, grade: a.grade, durationS: a.durationS,
+               finishedAt: a.finishedAt, title: QUIZ.title, color: QUIZ.color || '#284F36'};
+    if (ST.certificate.enabled && (a.percent || 0) >= ST.certificate.minPercent) out.certificate = {text: ST.certificate.text};
+    if (ST.showAnswers) out.review = a.plan.filter(function (p) { return BY[p.q]; }).map(function (p) {
+      var q = BY[p.q], g = (a.answers[String(q.id)] || {}).a, fr = check(q, g);
+      return {text: q.text, type: q.type, image: q.image, yours: givenView(q, g), correct: correctView(q),
+              ok: fr == null ? null : fr >= 1 ? 1 : fr > 0 ? 0.5 : 0, explanation: q.explanation};
+    });
+    return out;
+  }
+  function finish(b) {
+    var a = attempt(b.token);
+    if (!a.finishedAt) {
+      var score = 0, mx = 0;
+      a.plan.forEach(function (p) { var q = BY[p.q]; if (!q) return; var g = a.answers[String(q.id)] || {}; score += pointsFor(q, check(q, g.a), g.ms); mx += maxPoints(q); });
+      var end = new Date(); if (a.deadline && end > new Date(a.deadline)) end = new Date(a.deadline);
+      a.score = Math.round(score * 100) / 100; a.maxScore = Math.round(mx * 100) / 100;
+      a.percent = mx ? Math.round(1000 * score / mx) / 10 : 100; a.grade = gradeOf(a.percent);
+      a.durationS = Math.max(0, Math.round((end - new Date(a.startedAt)) / 1000)); a.finishedAt = end.toISOString();
+      store(KEY, null); store(DONE, a);
+    }
+    return result(a);
+  }
+  return {call: function (path, body) {
+    return new Promise(function (ok) { setTimeout(ok, 0); }).then(function () {
+      if (path.indexOf('?device=') === 0) return meta();
+      if (path.indexOf('/result') === 0) { var d = store(DONE), t = decodeURIComponent((path.split('token=')[1] || '')); if (!d || d.token !== t) fail(404, 'Результат не найден'); return result(d); }
+      if (path === '/start') return start(body || {});
+      if (path === '/answer') return answer(body || {});
+      if (path === '/finish') { var a = store(KEY); if (!a) { var d2 = store(DONE); if (d2 && d2.token === (body || {}).token) return result(d2); } return finish(body || {}); }
+      fail(404, 'Неизвестный запрос');
+    });
+  }};
+})();
+function api(path, body) { return LOCAL.call(path, body); }
+function setTheme(c) { document.documentElement.style.setProperty('--c', c || '#284F36'); }
+var BLOB_TR = '<svg class="blob" aria-hidden="true" viewBox="0 0 200 160" style="right:-40px;top:-30px;width:210px;height:170px"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#284F36"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#D85B21"/></svg>';
+var BLOB_BL = '<svg class="blob" aria-hidden="true" viewBox="0 0 200 200" style="left:-60px;bottom:-50px;width:220px;height:220px;position:fixed"><path d="M0 30c50-10 95 20 110 70 12 40 40 70 90 100H0z" fill="#1F3954"/><path d="M0 110c35 0 60 25 70 90H0z" fill="#284F36"/></svg>';
+var BLOB_BR = '<svg class="blob" aria-hidden="true" viewBox="0 0 120 160" style="right:-30px;bottom:-40px;width:120px;height:160px;position:fixed"><path d="M120 0v160H10c20-30 25-60 50-90C80 45 95 10 120 0z" fill="#D85B21"/></svg>';
+var ICON_SND = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/><path d="M19 6a8.5 8.5 0 0 1 0 12"/></svg>';
+var ICON_MUTE = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M17 9l5 6"/><path d="M22 9l-5 6"/></svg>';
+
+/* ---------- звук таймера ---------- */
+var AC = null;
+function audio() { try { AC = AC || new (window.AudioContext || window.webkitAudioContext)(); if (AC.state !== 'running' && AC.resume) AC.resume().catch(function () {}); } catch (e) {} return AC; }
+// iPhone включает звук только после касания экрана — «будим» звук при каждом касании, если он включён
+['touchend', 'click'].forEach(function (ev) { document.addEventListener(ev, function () { if (S.sound && AC && AC.state !== 'running') audio(); }, {passive: true}); });
+document.addEventListener('visibilitychange', function () { if (!document.hidden && S.att && !S.result) { S.lastSec = null; tick(); } });
+function beep(urgent, tock) {
+  var C = audio(); if (!C) return;
+  var o = C.createOscillator(), g = C.createGain(), t = C.currentTime;
+  o.type = 'triangle'; o.frequency.value = urgent ? 1320 : (tock ? 760 : 980);
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(urgent ? 0.25 : 0.14, t + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
+  o.connect(g); g.connect(C.destination); o.start(t); o.stop(t + 0.08);
+}
+function toggleSound() {
+  S.sound = !S.sound; try { localStorage.setItem('quiz_sound', S.sound ? '1' : '0'); } catch (e) {}
+  if (S.sound) { audio(); beep(false, false); }
+  var b = document.getElementById('snd'); if (b) { b.classList.toggle('on', S.sound); b.innerHTML = S.sound ? ICON_SND : ICON_MUTE; b.setAttribute('aria-label', S.sound ? 'Выключить звук таймера' : 'Включить звук таймера'); }
+}
+function hasTimers() { return !!(S.att && (S.att.deadline || S.att.questions.some(function (q) { return q.timeLimit; }))); }
+function shade(hex) { var n = parseInt(hex.slice(1), 16), r = n >> 16, g = (n >> 8) & 255, b = n & 255; var f = function (x) { return Math.min(255, Math.round(x + (255 - x) * .25)); }; return '#' + [f(r), f(g), f(b)].map(function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); }
+function fmtDT(s) { if (!s) return ''; var d = new Date(s); return d.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long'}) + ' в ' + d.toTimeString().slice(0, 5); }
+function mmss(sec) { sec = Math.max(0, Math.ceil(sec)); return Math.floor(sec / 60) + ':' + ('0' + sec % 60).slice(-2); }
+function word(n, a, b, c) { var x = n % 10, y = n % 100; return x === 1 && y !== 11 ? a : x >= 2 && x <= 4 && (y < 12 || y > 14) ? b : c; }
+
+/* ---------- касания на iPhone ----------
+   Safari на iPhone иногда «съедает» click, если в этот момент на странице что-то меняется (идёт таймер).
+   Поэтому короткое касание кнопки обрабатываем сами: на touchend нажимаем кнопку программно, а обычный click гасим. */
+(function () {
+  var t0 = null, fastAt = 0, fastX = 0, fastY = 0;
+  document.addEventListener('touchstart', function (e) { var p = e.touches[0]; t0 = e.touches.length === 1 ? {x: p.clientX, y: p.clientY, at: Date.now()} : null; }, {passive: true});
+  document.addEventListener('touchmove', function (e) { if (!t0) return; var p = e.touches[0]; if (Math.abs(p.clientX - t0.x) > 10 || Math.abs(p.clientY - t0.y) > 10) t0 = null; }, {passive: true});
+  document.addEventListener('touchend', function (e) {
+    var start = t0; t0 = null;
+    if (!start || Date.now() - start.at > 800) return;
+    var b = e.target.closest && e.target.closest('button');
+    if (!b || b.disabled || !document.getElementById('app').contains(b) && !b.closest('.modal-bg')) return;
+    e.preventDefault();          // не будет второго, «родного» нажатия
+    var ct = e.changedTouches && e.changedTouches[0]; fastX = ct ? ct.clientX : 0; fastY = ct ? ct.clientY : 0; fastAt = Date.now(); b.click();
+  }, {passive: false});
+  // если браузер всё же пришлёт своё нажатие следом — гасим его, чтобы вариант не выбрался дважды
+  document.addEventListener('click', function (e) { if (e.isTrusted && Date.now() - fastAt < 600 && Math.abs(e.clientX - fastX) < 20 && Math.abs(e.clientY - fastY) < 20) { e.stopPropagation(); e.preventDefault(); } }, true);
+})();
+
+/* ---------- загрузка ---------- */
+function load() {
+  if (!CODE) { S.error = 'В ссылке нет кода квиза'; return render(); }
+  api('?device=' + encodeURIComponent(device())).then(function (m) {
+    S.meta = m; setTheme(m.color); document.title = m.title;
+    if (m.doneToken) return api('/result?token=' + encodeURIComponent(m.doneToken)).then(function (r) { S.result = r; render(); });
+    var saved = null; try { saved = localStorage.getItem('quiz_att_' + CODE); } catch (e) {}
+    if (saved && m.state === 'open' && !PREVIEW) return begin(null, true);   // продолжить начатый
+    render();
+  }).catch(function (e) { S.error = e.message; render(); });
+}
+
+/* ---------- старт ---------- */
+function begin(name, resume) {
+  if (S.busy) return;
+  var nm = name != null ? name : ((function () { try { return localStorage.getItem('quiz_name') || ''; } catch (e) { return ''; } })());
+  if (!resume && nm.trim().length < 2) { document.getElementById('err').textContent = 'Напишите имя — хотя бы 2 буквы'; return; }
+  S.busy = true;
+  if (S.meta.mood === 'tense') { var pref = null; try { pref = localStorage.getItem('quiz_sound'); } catch (e) {} if (pref !== '0') { S.sound = true; audio(); } }
+  api('/start', {name: nm || 'Участник', device: device()}).then(function (a) {
+    S.busy = false; S.att = a; S.answers = {}; S.saved = {}; S.fb = {};
+    Object.keys(a.answers || {}).forEach(function (k) { S.answers[k] = a.answers[k]; S.saved[k] = true; });
+    S.offset = new Date(a.serverNow).getTime() - Date.now();
+    try { localStorage.setItem('quiz_att_' + CODE, a.token); localStorage.setItem('quiz_name', nm); } catch (e) {}
+    S.i = 0; var firstOpen = a.questions.findIndex(function (q) { return !(String(q.id) in S.answers); });
+    if (resume && firstOpen > 0) S.i = firstOpen;
+    S.qStart = Date.now(); S.anim = 'anim'; render(); S.anim = ''; tick();
+  }).catch(function (e) {
+    S.busy = false;
+    if (resume) { try { localStorage.removeItem('quiz_att_' + CODE); } catch (x) {} return render(); }
+    document.getElementById('err').textContent = e.message;
+  });
+}
+
+/* ---------- таймеры ---------- */
+var tickT = null;
+function tick() {
+  clearTimeout(tickT); if (!S.att || S.result) return;
+  var q = cur(), now = Date.now();
+  if (S.att.deadline) {
+    var left = (new Date(S.att.deadline).getTime() - (now + S.offset)) / 1000;
+    var el = document.getElementById('ttotal'), tt = '⏱ ' + mmss(left); if (el && el.textContent !== tt) { el.textContent = tt; el.classList.toggle('low', left < 60); }
+    if (left <= 0) { toast('Время вышло'); return finish(true); }
+  }
+  if (q && q.timeLimit && !S.timedOut[q.id] && !isLocked(q)) {
+    var ql = q.timeLimit - ((S.used[q.id] || 0) + now - S.qStart) / 1000, box = document.getElementById('qtimer');
+    // полоска едет сама (CSS-анимация); здесь только цифра и только когда она меняется — частые изменения страницы
+    // заставляли Safari на iPhone «не замечать» касаний по вариантам, пока идёт таймер
+    if (box) { var bt = String(ql >= 60 ? mmss(ql) : Math.max(0, Math.ceil(ql))), bb = box.querySelector('b'); if (bb.textContent !== bt) bb.textContent = bt;
+      if ((ql <= 5) !== box.classList.contains('low')) box.classList.toggle('low', ql <= 5); }
+    if (ql <= 0) {
+      S.timedOut[q.id] = true; setDanger(false);
+      if (!S.meta.instantFeedback) toast('Время на вопрос вышло');
+      saveCurrent(true).then(function (r) { if (r && r.feedback) showFeedback(q, r.feedback); else next(true); }); return;
+    }
+  }
+  var perQ = q && q.timeLimit && !S.timedOut[q.id] && !isLocked(q), rem = perQ ? ql : (S.att.deadline ? left : null);
+  if (rem != null) {
+    var sec = Math.ceil(rem);
+    var hot = sec <= (perQ ? 5 : 10);
+    if (S.sound && S.lastSec != null && sec !== S.lastSec && sec > 0) { beep(hot, sec % 2 === 0); if (hot && S.meta.mood === 'tense') thump(); }
+    S.lastSec = sec; setDanger(hot && sec > 0);
+  }
+  tickT = setTimeout(tick, 250);
+}
+function cur() { return S.att && S.att.questions[S.i]; }
+function isLocked(q) { return S.timedOut[q.id] || !!S.fb[q.id] || (!S.meta.allowBack && S.saved[q.id] && S.lockedAfter && S.lockedAfter[q.id]); }
+
+/* ---------- ответы ---------- */
+function setAns(v) { var q = cur(); if (isLocked(q)) return; S.answers[q.id] = v; S.saved[q.id] = false; renderQ(); S.picked = null; S.moved = null; }
+function pick(id) { S.picked = id; var q = cur(); if (q.type === 'single') setAns(id); else { var a = (S.answers[q.id] || []).slice(), k = a.indexOf(id); if (k >= 0) a.splice(k, 1); else a.push(id); setAns(a); } }
+function moveItem(k, d) { var q = cur(), a = (S.answers[q.id] || q.options.map(function (o) { return o.id; })).slice(), j = k + d; if (j < 0 || j >= a.length) return; var t = a[k]; a[k] = a[j]; a[j] = t; S.moved = a[j]; setAns(a); }
+function matchSet(left, right) { var q = cur(), a = Object.assign({}, S.answers[q.id] || {}); if (right) a[left] = right; else delete a[left]; setAns(a); }
+function typed(v) { var q = cur(); S.answers[q.id] = v; S.saved[q.id] = false; markDots(); }
+function hasAnswer(q) {
+  var a = S.answers[q.id];
+  if (q.type === 'order') return a != null;
+  if (a == null || a === '') return false;
+  if (q.type === 'multi') return a.length > 0;
+  if (q.type === 'match') return Object.keys(a).length === q.left.length;
+  return true;
+}
+function saveCurrent(force) {
+  var q = cur(); if (!q || isLocked(q) && !force) return Promise.resolve();
+  if (S.saved[q.id] && !force) return Promise.resolve();
+  var a = S.answers[q.id];
+  if (q.type === 'order' && a == null) { a = q.options.map(function (o) { return o.id; }); S.answers[q.id] = a; }  // оставил порядок как есть — это тоже ответ
+  var ms = (S.used[q.id] || 0) + Date.now() - S.qStart;
+  return api('/answer', {token: S.att.token, questionId: q.id, answer: a == null ? null : a, ms: ms, timedOut: !!S.timedOut[q.id]}).then(function (r) {
+    S.saved[q.id] = true; if (!S.meta.allowBack) { S.lockedAfter = S.lockedAfter || {}; S.lockedAfter[q.id] = true; }
+    return r;
+  }).catch(function (e) { if (e.status === 409) { S.saved[q.id] = true; return; } toast(e.message); throw e; });
+}
+function go(i) {
+  if (i === S.i || S.going) return;
+  if (!S.meta.allowBack && i < S.i) return;
+  var back = i < S.i; S.going = true;
+  saveCurrent().then(function () {
+    var q = cur(); S.used[q.id] = (S.used[q.id] || 0) + Date.now() - S.qStart;
+    var w = document.getElementById('qwrap');
+    var show = function () { S.going = false; S.i = i; S.qStart = Date.now(); S.lastSec = null; S.anim = 'anim' + (back ? ' back' : ''); render(); S.anim = ''; window.scrollTo(0, 0); tick(); };
+    if (w && !matchMedia('(prefers-reduced-motion: reduce)').matches) { clearTimeout(tickT); w.classList.add('leave'); if (back) w.classList.add('back'); setTimeout(show, 230); } else show();
+  }).catch(function () { S.going = false; });
+}
+function next(auto) {
+  var q = cur();
+  if (S.meta.instantFeedback && q && !S.fb[q.id] && !S.timedOut[q.id]) {
+    if (!auto && !hasAnswer(q) && q.type !== 'open' && q.type !== 'order') { toast('Сначала выберите ответ'); return; }
+    if (S.busy) return; S.busy = true;
+    return saveCurrent(true).then(function (r) { S.busy = false; if (r && r.feedback) showFeedback(q, r.feedback); else advance(auto); })
+      .catch(function () { S.busy = false; });
+  }
+  advance(auto);
+}
+var JOKES = {
+  tense: {ok: ['Жизнь спасена!', 'Скорая может не торопиться 😎', 'Прирождённый спасатель!', 'Пострадавший благодарно моргает 🙂', 'Врачи аплодируют 👏'],
+          bad: ['Пострадавший смотрит на вас с укором 😬', 'Доктор хватается за голову 🤦', 'В кино так не делают…', 'Ничего, следующий вопрос — шанс всё исправить'],
+          time: ['Секунды решают всё! ⏳', 'Пока вы думали, скорая уже приехала 🚑', 'Тут надо быстрее!']},
+  calm: {ok: [''], bad: [''], time: ['']}
+};
+function pickOne(a) { return a[Math.floor(Math.random() * a.length)]; }
+function showFeedback(q, fb) {
+  fb.kind = fb.timedOut ? 'time' : fb.ok === null ? 'open' : fb.ok >= 1 ? 'ok' : fb.ok > 0 ? 'half' : 'bad';
+  var pool = JOKES[S.meta.mood === 'tense' ? 'tense' : 'calm'];
+  fb.joke = pickOne(pool[fb.kind === 'half' ? 'bad' : fb.kind === 'open' ? 'ok' : fb.kind] || ['']);
+  S.fb[q.id] = fb; setDanger(false);
+  if (S.sound) chime(fb.kind === 'ok' || fb.kind === 'open');
+  render();
+  var el = document.getElementById('fb'); if (el) setTimeout(function () { el.scrollIntoView({behavior: 'smooth', block: 'nearest'}); }, 60);
+}
+function chime(good) {
+  var C = audio(); if (!C) return;
+  (good ? [660, 880, 1320] : [330, 220]).forEach(function (f, i) {
+    var o = C.createOscillator(), g = C.createGain(), t = C.currentTime + i * (good ? .09 : .14);
+    o.type = good ? 'triangle' : 'sawtooth'; o.frequency.value = f;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(good ? .2 : .12, t + .01); g.gain.exponentialRampToValueAtTime(0.0001, t + (good ? .18 : .22));
+    o.connect(g); g.connect(C.destination); o.start(t); o.stop(t + .25);
+  });
+}
+function thump() {
+  var C = audio(); if (!C) return;
+  [0, .16].forEach(function (d, i) {
+    var o = C.createOscillator(), g = C.createGain(), t = C.currentTime + d;
+    o.type = 'sine'; o.frequency.setValueAtTime(i ? 120 : 150, t); o.frequency.exponentialRampToValueAtTime(60, t + .12);
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(i ? .35 : .5, t + .01); g.gain.exponentialRampToValueAtTime(0.0001, t + .14);
+    o.connect(g); g.connect(C.destination); o.start(t); o.stop(t + .16);
+  });
+}
+function setDanger(on) { document.body.classList.toggle('danger', !!on && S.meta && S.meta.mood === 'tense'); }
+function advance(auto) {
+  if (S.i < S.att.questions.length - 1) return go(S.i + 1);
+  if (S.meta.instantFeedback) return finish();
+  if (auto) return confirmFinish(true);
+  saveCurrent().then(function () { confirmFinish(); }).catch(function () {});
+}
+function prev() { if (S.meta.allowBack && S.i > 0) go(S.i - 1); }
+function confirmFinish(auto) {
+  var left = S.att.questions.filter(function (q) { return !hasAnswer(q) && !S.timedOut[q.id]; }).length;
+  if (auto || !left) return finish();
+  S.modal = '<div class="modal-bg"><div class="modal"><div style="font-size:40px">🤔</div><h3>Без ответа: ' + left + ' ' + word(left, 'вопрос', 'вопроса', 'вопросов') + '</h3>' +
+    '<div>Завершить квиз всё равно?</div><div class="row"><button class="btn ghost" onclick="S.modal=null;render()">Вернуться</button>' +
+    '<button class="btn" onclick="S.modal=null;finish()">Завершить</button></div></div></div>';
+  render();
+}
+function finish(timeUp) {
+  if (S.finishing) return; S.finishing = true; clearTimeout(tickT);
+  saveCurrent(timeUp).catch(function () {}).then(function () {
+    return api('/finish', {token: S.att.token});
+  }).then(function (r) {
+    S.result = r; S.finishing = false; try { localStorage.removeItem('quiz_att_' + CODE); } catch (e) {} render(); window.scrollTo(0, 0);
+  }).catch(function (e) { S.finishing = false; toast(e.message); });
+}
+
+/* картинка не загрузилась (плохая связь) — пробуем ещё раз сами, потом кнопкой */
+function imgFail(im) {
+  var n = +(im.getAttribute('data-try') || 0), src = (im.getAttribute('data-src') || im.getAttribute('src')).split('?')[0];
+  im.setAttribute('data-src', src);
+  if (n < 2) { im.setAttribute('data-try', n + 1); setTimeout(function () { im.src = src + '?r=' + Date.now(); }, 800 * (n + 1)); return; }
+  if (im.parentNode && im.parentNode.classList && im.parentNode.classList.contains('opt')) { im.style.visibility = 'hidden'; return; }
+  var b = document.createElement('button'); b.type = 'button'; b.className = 'imgfail'; b.textContent = '🖼 Картинка не загрузилась — нажмите, чтобы повторить';
+  b.onclick = function () { var x = document.createElement('img'); x.className = im.className; x.alt = ''; x.onerror = function () { imgFail(x); }; x.src = src + '?r=' + Date.now(); b.replaceWith(x); };
+  im.replaceWith(b);
+}
+
+/* ---------- отрисовка ---------- */
+function render() {
+  var app = document.getElementById('app'), pv = PREVIEW ? '<div class="preview">👁 Предпросмотр — так увидит участник. Результат не сохранится.</div>' : '';
+  if (S.error) { app.innerHTML = pv + '<div class="msg"><div class="big">😕</div>' + esc(S.error) + '</div>'; return; }
+  if (!S.meta) { app.innerHTML = '<div class="msg"><div class="big">⏳</div>Загружаю квиз…</div>'; return; }
+  document.body.classList.toggle('tense', !!(S.meta.mood === 'tense' && S.att && !S.result));
+  if (S.result) { setDanger(false); app.innerHTML = pv + BLOB_TR + renderResult(); animateRing(); return; }
+  if (S.att) { app.innerHTML = pv + BLOB_BL + BLOB_BR + renderQuestionPage() + (S.modal || ''); return; }
+  app.innerHTML = pv + BLOB_TR + BLOB_BL + BLOB_BR + renderStart();
+}
+function renderStart() {
+  var m = S.meta, chips = ['❓ ' + m.count + ' ' + word(m.count, 'вопрос', 'вопроса', 'вопросов')];
+  if (m.timeTotal) chips.push('⏱ ' + m.timeTotal + ' мин на всё');
+  if (m.perQuestionTimers) chips.push('⏳ время на вопрос ограничено');
+  if (!m.allowBack) chips.push('➡️ вернуться к вопросу нельзя');
+  if (m.oneAttempt) chips.push('1️⃣ одна попытка');
+  var closed = {closed: 'Квиз закрыт. Спросите у ведущего, когда он откроется.', notyet: 'Квиз откроется ' + fmtDT(m.opensAt) + '.',
+                ended: 'Квиз закончился ' + fmtDT(m.closesAt) + '.', draft: 'Квиз ещё не опубликован.'}[m.state];
+  if (PREVIEW) closed = null;
+  return '<div class="hero"><div class="kick">Квиз</div><h1>' + esc(m.title) + '</h1>' + (m.cover ? '<img class="cover" src="' + esc(m.cover) + '" alt="" onerror="this.style.display=\'none\'">' : '') + '</div>' +
+    '<div class="wrap">' + (m.description ? '<div class="card desc">' + esc(m.description) + '</div>' : '') +
+    '<div class="chips">' + chips.map(function (c, i) { return '<span class="chip in" style="animation-delay:' + (120 + i * 60) + 'ms">' + c + '</span>'; }).join('') + '</div>' +
+    (closed ? '<div class="card msg" style="padding:24px"><div class="big">🔒</div>' + closed + '</div>' :
+      '<div class="card"><label class="lbl" for="nm">Как вас зовут?</label>' +
+      '<input id="nm" class="inp" maxlength="60" autocomplete="name" placeholder="Имя и фамилия" value="' + esc((function () { try { return localStorage.getItem('quiz_name') || ''; } catch (e) { return ''; } })()) + '" onkeydown="if(event.key===\'Enter\')begin(this.value)">' +
+      '<div class="err" id="err"></div><button class="btn" style="margin-top:6px" onclick="begin(document.getElementById(\'nm\').value)">Начать квиз ▶</button></div>') +
+    (m.closesAt && !closed ? '<div class="hint" style="text-align:center">Квиз открыт до ' + fmtDT(m.closesAt) + '</div>' : '') + '</div>';
+}
+function mediaHtml(u) {
+  if (!u) return '';
+  var y = u.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/shorts\/)([\w-]{6,})/);
+  if (y) return '<div class="media"><iframe src="https://www.youtube.com/embed/' + y[1] + '" allowfullscreen></iframe></div>';
+  var rt = u.match(/rutube\.ru\/video\/([\w]+)/);
+  if (rt) return '<div class="media"><iframe src="https://rutube.ru/play/embed/' + rt[1] + '" allowfullscreen></iframe></div>';
+  return '<div class="media"><a href="' + esc(u) + '" target="_blank" rel="noopener">🔗 Открыть материал</a></div>';
+}
+function renderQuestionPage() {
+  var a = S.att, n = a.questions.length, q = cur();
+  var dots = S.meta.allowBack ? '<div class="dots">' + a.questions.map(function (x, i) {
+    return '<button class="' + (hasAnswer(x) ? 'ans' : '') + (i === S.i ? ' cur' : '') + '" onclick="go(' + i + ')" aria-label="Вопрос ' + (i + 1) + '">' + (i + 1) + '</button>'; }).join('') + '</div>' : '';
+  var last = S.i === n - 1, segs = '';
+  for (var k = 0; k < n; k++) segs += '<i class="' + (k < S.i ? 'done' : k === S.i ? 'now' : '') + '"></i>';
+  var snd = hasTimers() ? '<button id="snd" class="snd' + (S.sound ? ' on' : '') + '" onclick="toggleSound()" aria-label="' + (S.sound ? 'Выключить' : 'Включить') + ' звук таймера">' + (S.sound ? ICON_SND : ICON_MUTE) + '</button>' : '';
+  return '<div class="topbar"><div class="count">Вопрос ' + (S.i + 1) + ' из ' + n + '</div>' +
+      (a.deadline ? '<div class="timer" id="ttotal">⏱</div>' : '') + snd + '</div>' +
+    '<div class="progress' + (n > 20 ? ' long' : '') + '">' + segs + '</div>' + dots +
+    '<div class="wrap ' + S.anim + '" id="qwrap">' + renderQ(true) + '</div>' +
+    '<div class="nav">' + (S.meta.allowBack && S.i > 0 ? '<button class="btn ghost" onclick="prev()">Назад</button>' : '') +
+      '<button class="btn" onclick="next()">' + (S.meta.instantFeedback && !S.fb[q.id] && !S.timedOut[q.id] ? 'Ответить' : last ? 'Завершить' : S.meta.instantFeedback ? 'Дальше' : 'Далее') + '</button></div>';
+}
+function renderQ(returnHtml) {
+  var q = cur(), a = S.answers[q.id], lock = isLocked(q), h = '', k0 = 0, fb = S.fb[q.id];
+  var animOn = returnHtml === true && !!S.anim;
+  function inn() { if (!animOn) return ''; var d = 140 + (k0++) * 80; return ' in" style="animation-delay:' + d + 'ms'; }
+  h += '<div class="card"><div class="qmeta"><span>' + q.points + ' ' + word(q.points, 'балл', 'балла', 'баллов') + '</span>' +
+    (q.type === 'multi' ? '<span>· несколько ответов</span>' : '') + '</div>' +
+    '<div class="qtext">' + esc(q.text) + '</div>' + (q.image ? '<img class="qimg" src="' + esc(q.image) + '" alt="" decoding="async" onerror="imgFail(this)">' : '') + mediaHtml(q.media) +
+    (q.timeLimit && !lock ? qtimerHtml(q) : '') + '</div>';
+  if (lock && !fb && !S.meta.instantFeedback) h += '<div class="locked">' + (S.timedOut[q.id] ? 'Время на этот вопрос вышло' : 'Ответ уже отправлен') + '</div>';
+  var dis = lock ? ' disabled' : '';
+  if (q.type === 'single' || q.type === 'multi') {
+    var imgs = q.options.some(function (o) { return o.image; });
+    h += (q.type === 'multi' ? '<div class="hint">Отметьте все верные варианты</div>' : '') + '<div class="opts' + (imgs ? ' grid' : '') + '">' + q.options.map(function (o, k) {
+      var on = q.type === 'single' ? a === o.id : (a || []).indexOf(o.id) >= 0, letter = k < 26 ? String.fromCharCode(65 + k) : k + 1;
+      var mk = fb && fb.correctIds ? (fb.correctIds.indexOf(o.id) >= 0 ? ' right' : on ? ' wrong' : ' dim') : '';
+      var mark = '<span class="mark">' + (on && q.type === 'multi' ? '✓' : letter) + '</span>';
+      return '<button class="opt' + (q.type === 'multi' ? ' sq' : '') + (on ? ' on' : '') + mk + (o.image ? ' img' : '') + (S.picked === o.id ? ' picked' : '') + inn() + '"' + dis + ' onclick="pick(\'' + o.id + '\')">' +
+        (o.image ? '<img src="' + esc(o.image) + '" alt="" decoding="async" onerror="imgFail(this)"><span class="row">' + mark + esc(o.text) + '</span>' : mark + '<span>' + esc(o.text) + '</span>') + '</button>';
+    }).join('') + '</div>';
+  } else if (q.type === 'truefalse') {
+    h += '<div class="tf">' + [[true, 'Верно'], [false, 'Неверно']].map(function (x) {
+      var mk = fb && fb.correctIds ? (fb.correctIds.indexOf(x[0]) >= 0 ? ' right' : a === x[0] ? ' wrong' : ' dim') : '';
+      return '<button class="opt' + (a === x[0] ? ' on' : '') + mk + (S.picked === x[0] ? ' picked' : '') + inn() + '"' + dis + ' onclick="S.picked=' + x[0] + ';setAns(' + x[0] + ')">' + x[1] + '</button>'; }).join('') + '</div>';
+  } else if (q.type === 'text') {
+    h += '<input class="inp' + inn() + '" id="ans" placeholder="Ваш ответ"' + dis + ' value="' + esc(a || '') + '" oninput="typed(this.value)" onkeydown="if(event.key===\'Enter\')next()">';
+  } else if (q.type === 'open') {
+    h += '<textarea class="inp' + inn() + '" id="ans" placeholder="Напишите ответ"' + dis + ' oninput="typed(this.value)">' + esc(a || '') + '</textarea>';
+  } else if (q.type === 'order') {
+    var ids = a || q.options.map(function (o) { return o.id; }), by = {};
+    q.options.forEach(function (o) { by[o.id] = o; });
+    h += '<div class="hint">Расставьте по порядку стрелками ↑↓</div><div class="opts">' + ids.map(function (id, k) {
+      return '<div class="ord' + (S.moved === id ? ' moved' : '') + inn() + '"><span class="n">' + (k + 1) + '</span><span class="t">' + esc(by[id].text) + '</span>' +
+        '<button aria-label="Выше"' + (k === 0 || lock ? ' disabled' : '') + ' onclick="moveItem(' + k + ',-1)">↑</button><button aria-label="Ниже"' + (k === ids.length - 1 || lock ? ' disabled' : '') + ' onclick="moveItem(' + k + ',1)">↓</button></div>';
+    }).join('') + '</div>';
+  } else if (q.type === 'match') {
+    var m = a || {};
+    h += '<div class="hint">Для каждого пункта выберите пару</div><div class="opts">' + q.left.map(function (l) {
+      return '<div class="pair' + (m[l.id] ? ' done' : '') + inn() + '"><b>' + esc(l.text) + '</b><select' + dis + ' onchange="matchSet(\'' + l.id + '\',this.value)"><option value="">— выберите —</option>' +
+        q.right.map(function (r) { return '<option value="' + r.id + '"' + (m[l.id] === r.id ? ' selected' : '') + '>' + esc(r.text) + '</option>'; }).join('') + '</select></div>';
+    }).join('') + '</div>';
+  }
+  if (fb) {
+    var head = {ok: 'Правильно!', bad: 'Неправильно', half: 'Почти!', time: 'Время вышло', open: 'Ответ принят'}[fb.kind];
+    var icon = {ok: '✓', bad: '✕', half: '½', time: '⏳', open: '✓'}[fb.kind];
+    h += '<div class="fb ' + fb.kind + '" id="fb"><div class="fb-bar"><span class="fb-ic">' + icon + '</span><div><b>' + head + '</b>' +
+      (fb.joke ? '<span class="fb-joke">' + esc(fb.joke) + '</span>' : '') + '</div></div>' +
+      (fb.kind !== 'ok' && fb.kind !== 'open' && fb.correct ? '<div class="fb-right">Правильный ответ: <b>' + esc(fb.correct) + '</b></div>' : '') +
+      (fb.explanation ? '<div class="fb-e">' + esc(fb.explanation) + '</div>' : '') + '</div>';
+  }
+  if (returnHtml === true) return h;
+  var w = document.getElementById('qwrap'); if (w) { w.classList.remove('anim', 'back'); w.innerHTML = h; markDots(); tick(); }
+}
+function qtimerHtml(q) {
+  var gone = ((S.used[q.id] || 0) + Date.now() - S.qStart) / 1000, left = Math.max(0, q.timeLimit - gone);
+  return '<div class="qtimer' + (left <= 5 ? ' low' : '') + '" id="qtimer"><span class="bar"><i style="animation-duration:' + q.timeLimit + 's;animation-delay:-' + gone.toFixed(2) + 's"></i></span><b>' +
+    (left >= 60 ? mmss(left) : Math.ceil(left)) + '</b></div>';
+}
+function markDots() {
+  var bs = document.querySelectorAll('.dots button');
+  S.att.questions.forEach(function (x, i) { if (bs[i]) bs[i].classList.toggle('ans', hasAnswer(x)); });
+}
+function renderResult() {
+  var r = S.result, p = r.percent || 0, R = 72, C = 2 * Math.PI * R;
+  var col = p >= 80 ? '#284F36' : p >= 50 ? '#B9862F' : '#D85B21';
+  var emoji = p >= 90 ? '🏆' : p >= 70 ? '🎉' : p >= 50 ? '👍' : '💪';
+  var review = (r.review || []).map(function (x, i) {
+    var cls = x.ok === null ? '' : x.ok === 1 ? 'ok' : x.ok === 0.5 ? 'half' : 'bad';
+    return '<div class="rv ' + cls + '"><div class="t">' + (i + 1) + '. ' + esc(x.text) + '</div>' +
+      '<div class="y">Ваш ответ: ' + esc(x.yours) + (x.ok === 1 ? ' ✅' : x.ok === 0.5 ? ' 🟡 частично' : x.ok === 0 ? ' ❌' : '') + '</div>' +
+      (x.ok !== 1 && x.correct ? '<div class="c">Правильно: ' + esc(x.correct) + '</div>' : '') +
+      (x.explanation ? '<div class="e">💡 ' + esc(x.explanation) + '</div>' : '') + '</div>';
+  }).join('');
+  return '<div class="hero"><div class="kick">' + esc(r.title) + '</div><h1>' + emoji + ' Готово, ' + esc(r.name) + '!</h1></div><div class="wrap">' +
+    '<div class="card pop"><div class="ring"><svg width="170" height="170"><circle cx="85" cy="85" r="' + R + '" fill="none" stroke="#E4D5C2" stroke-width="16"/>' +
+      '<circle class="arc" id="arc" data-to="' + (C * p / 100) + '" cx="85" cy="85" r="' + R + '" fill="none" stroke="' + col + '" stroke-width="16" stroke-linecap="round" stroke-dasharray="0 ' + C + '"/></svg>' +
+      '<div class="v"><b>' + Math.round(p) + '%</b><span>результат</span></div></div>' +
+      '<div class="res-grid" style="margin-top:14px"><div><b>' + fmtN(r.score) + '</b><span>из ' + fmtN(r.maxScore) + '</span></div>' +
+      '<div><b>' + (r.grade || '—') + '</b><span>оценка</span></div><div><b>' + (r.durationS != null ? mmss(r.durationS) : '—') + '</b><span>время</span></div></div></div>' +
+    (r.certificate ? '<button class="btn in" style="animation-delay:300ms" onclick="certificate()">Скачать сертификат</button>' : '') +
+    (review ? '<div class="card"><h3 style="margin:0">Разбор ответов</h3>' + review + '</div>' : '') +
+    (PREVIEW ? '<button class="btn ghost" onclick="location.reload()">Пройти ещё раз</button>' : '') + '</div>';
+}
+function animateRing() {
+  var el = document.getElementById('arc'); if (!el) return;
+  requestAnimationFrame(function () { requestAnimationFrame(function () { el.setAttribute('stroke-dasharray', el.dataset.to + ' 999'); }); });
+}
+function fmtN(x) { return x == null ? '—' : (Math.round(x * 10) / 10).toString().replace('.', ','); }
+
+/* ---------- сертификат (картинка PNG) ---------- */
+function certificate() {
+  var F = 'Gilroy, Manrope, Arial';
+  var ready = document.fonts && document.fonts.load ? Promise.all(['800 40px Gilroy', '400 40px Gilroy', '800 40px Manrope', '400 40px Manrope'].map(function (f) { return document.fonts.load(f).catch(function () {}); })) : Promise.resolve();
+  ready.then(function () { drawCertificate(F); });
+}
+function drawCertificate(F) {
+  var r = S.result, c = document.createElement('canvas'), W = 1600, H = 1130; c.width = W; c.height = H;
+  var x = c.getContext('2d'), col = r.color || '#284F36';
+  x.fillStyle = '#F5EEDF'; x.fillRect(0, 0, W, H);
+  function blob(path, fill) { x.fillStyle = fill; x.fill(new Path2D(path)); }
+  x.save(); x.translate(W - 330, -40); x.scale(1.9, 1.9);
+  blob('M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z', '#284F36'); blob('M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z', '#D85B21'); x.restore();
+  x.save(); x.translate(-90, H - 330); x.scale(1.8, 1.8);
+  blob('M0 30c50-10 95 20 110 70 12 40 40 70 90 100H0z', '#1F3954'); blob('M0 110c35 0 60 25 70 90H0z', '#284F36'); x.restore();
+  x.save(); x.translate(W - 190, H - 250); x.scale(1.7, 1.7); blob('M120 0v160H10c20-30 25-60 50-90C80 45 95 10 120 0z', '#D85B21'); x.restore();
+  x.textAlign = 'center'; x.fillStyle = col;
+  x.font = '800 104px ' + F; x.fillText('СЕРТИФИКАТ', W / 2, 270);
+  x.fillStyle = '#1F3954'; x.font = '400 38px ' + F; x.fillText('подтверждает, что', W / 2, 360);
+  x.font = '800 84px ' + F; fitText(x, r.name, W / 2, 480, W - 420, 84);
+  x.font = '400 38px ' + F; x.fillText(r.certificate.text, W / 2, 570);
+  x.fillStyle = '#D85B21'; x.font = '800 54px ' + F; fitText(x, '«' + r.title + '»', W / 2, 660, W - 420, 54);
+  x.fillStyle = '#1F3954'; x.font = '800 40px ' + F;
+  x.fillText('Результат: ' + Math.round(r.percent) + '%' + (r.grade ? ' · оценка ' + r.grade : ''), W / 2, 790);
+  x.fillStyle = '#5B6B7C'; x.font = '400 32px ' + F;
+  x.fillText(new Date(r.finishedAt || Date.now()).toLocaleDateString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'}), W / 2, 900);
+  var fname = 'Сертификат — ' + r.name + '.png';
+  c.toBlob(function (blob) {
+    if (!blob) return;
+    // iPhone: «Поделиться» → «Сохранить изображение» (в Фото); остальные — обычное скачивание
+    try {
+      var file = new File([blob], fname, {type: 'image/png'});
+      if (navigator.canShare && navigator.canShare({files: [file]}) && /iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        navigator.share({files: [file], title: 'Сертификат'}).catch(function () {}); return;
+      }
+    } catch (e) {}
+    var url = URL.createObjectURL(blob), link = document.createElement('a');
+    link.download = fname; link.href = url; document.body.appendChild(link); link.click(); link.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+  }, 'image/png');
+}
+function fitText(x, t, cx, y, maxW, size) {
+  var f = x.font; while (x.measureText(t).width > maxW && size > 30) { size -= 4; x.font = f.replace(/\d+px/, size + 'px'); }
+  x.fillText(t, cx, y);
+}
+
+load(); render();
+</script>
+</body>
+</html>
