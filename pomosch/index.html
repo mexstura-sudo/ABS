@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Первая помощь в экстренных ситуациях</title>
 <meta name="description" content="Пошаговые алгоритмы первой помощи: потеря сознания, обморожение, тепловой удар, отравления, утопление">
-<meta name="theme-color" content="#121C17">
+<meta name="theme-color" content="#F7F1E6">
 <link href="../assets/fonts/manrope.css" rel="stylesheet">
 <style>
-/* Статья «Первая помощь в экстренных ситуациях»: тёмно-зелёный фон, главы с анимированными обложками, шаги по одному. */
+/* Статья «Первая помощь в экстренных ситуациях»: бежевый фон и плашки цвета слоновой кости, главы с анимированными обложками, шаги по одному. */
 :root{
-  --green:#8FCB9F;--orange:#F38A55;--navy:#A9C3DE;--sand:#34443A;--cream:#121C17;--paper:#1B2A22;--muted:#A3B5AA;--ink:#EEE6D6;
-  --line:rgba(238,230,214,.12);--shadow:rgba(0,0,0,.3);--red:#E4574A;--red-bg:#3A1F1B;--on:#121C17;
-  --peach:#43281C;--peach-c:#FFA77A;--sky:#1B3348;--sky-c:#86C2F2;--sun:#3D3216;--sun-c:#F2C55C;
-  --lav:#2C2645;--lav-c:#B9A8F5;--mint:#1D3A29;--mint-c:#7DD6A1;--aqua:#173A39;--aqua-c:#6FD3CF;
+  --green:#284F36;--orange:#E2602A;--navy:#1F3954;--sand:#E8DCCB;--cream:#F7F1E6;--paper:#FFFDF8;--muted:#5B6B7C;--ink:#1F3954;
+  --line:rgba(31,57,84,.10);--shadow:rgba(31,57,84,.08);--red:#D93A2B;--red-bg:#FFE8E3;--on:#FFFFFF;
+  --peach:#FFE4D6;--peach-c:#E2602A;--sky:#DCEEFC;--sky-c:#1F78C1;--sun:#FFF0C2;--sun-c:#C98400;
+  --lav:#ECE6FC;--lav-c:#6A4FD0;--mint:#DCF3E3;--mint-c:#23935A;--aqua:#D4F2F1;--aqua-c:#108784;
   --font:"Manrope",Gilroy,system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:dark;
+  color-scheme:light;
 }
 /* Тёмно-зелёная подача всегда, независимо от темы устройства */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -65,7 +65,7 @@ h3{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.3px;
 /* общие блоки */
 figure{margin:0}
 .fig{border-radius:22px;overflow:hidden;background:#fff}
-.D .cover .ic{background:var(--cream)}
+.D .cover .ic{background:var(--paper)}
 .fig img{width:100%;height:auto}
 .fig figcaption{font-size:13px;font-weight:700;color:var(--muted);padding:8px 2px 0;background:var(--cream)}
 .list{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 20px}
@@ -336,7 +336,7 @@ mount('D');
   var cv = document.getElementById('forest'), cx = cv.getContext('2d'), W, H;
   function size() { var d = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * d; cv.height = H * d; cx.setTransform(d, 0, 0, d, 0, 0); }
   size(); addEventListener('resize', size);
-  var cols = ['#8FCB9F', '#F38A55', '#C9B79C'];
+  var cols = ['#5E9A6E', '#E2602A', '#C9B79C'];
   var flies = Array.from({length: 22}, function () { return {x: Math.random() * W, y: Math.random() * H, t: Math.random() * 6.3, s: .3 + Math.random() * .6}; });
   (function frame() {
     cx.clearRect(0, 0, W, H);
