@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Как подготовиться к походу?</title>
+<meta name="description" content="Подготовка к походу по шагам: маршрут, регистрация в МЧС, снаряжение, еда и вода, безопасность, укладка рюкзака">
+<meta name="theme-color" content="#121C17">
+<link href="../assets/fonts/manrope.css" rel="stylesheet">
+<style>
+/* «Как подготовиться к походу?» — читатель сам выполняет шаги: отмечает дела от первого лица,
+   рюкзак вверху наполняется, по ходу — калькуляторы и схема укладки. Тёмно-зелёная тема сайта. */
+:root{
+  --green:#8FCB9F;--orange:#F38A55;--sand:#34443A;--cream:#121C17;--paper:#1B2A22;--muted:#A3B5AA;--ink:#EEE6D6;
+  --line:rgba(238,230,214,.12);--shadow:rgba(0,0,0,.35);--on:#121C17;--red:#E4574A;--red-bg:#3A1F1B;
+  --mint:#1D3A29;--mint-c:#7DD6A1;--sky:#1B3348;--sky-c:#86C2F2;--peach:#43281C;--peach-c:#FFA77A;
+  --sun:#3D3216;--sun-c:#F2C55C;--lav:#2C2645;--lav-c:#B9A8F5;--coral:#3F2124;--coral-c:#FF8F84;--aqua:#173A39;--aqua-c:#6FD3CF;
+  --font:"Manrope",Gilroy,system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.55;overflow-x:clip}
+button,input{font-family:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+#forest{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.c1{--tc:var(--mint-c);--tb:var(--mint)}.c2{--tc:var(--sky-c);--tb:var(--sky)}.c3{--tc:var(--peach-c);--tb:var(--peach)}.c4{--tc:var(--sun-c);--tb:var(--sun)}
+.c5{--tc:var(--lav-c);--tb:var(--lav)}.c6{--tc:var(--coral-c);--tb:var(--coral)}.c7{--tc:var(--aqua-c);--tb:var(--aqua)}
+.kick{font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1.5px}
+h1{font-size:clamp(34px,6vw,52px);line-height:1.05;margin:10px 0 0;font-weight:800;letter-spacing:-.5px;text-wrap:balance}
+h2{font-size:clamp(24px,4.4vw,32px);line-height:1.15;margin:0;font-weight:800;text-wrap:balance}
+.lead{font-size:18px;color:var(--muted);margin:14px 0 0;max-width:56ch}
+.blob{position:absolute;pointer-events:none;right:-60px;top:-30px;width:230px;height:180px}
+
+/* верхняя панель готовности */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(18,28,23,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 1px 0 var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:11;background:var(--cream)}
+.bar .in{display:flex;align-items:center;gap:12px;padding-block:10px}
+.pack{width:40px;height:44px;flex:none;position:relative}
+.pack svg{width:100%;height:100%}
+.pack.bump{animation:bump .5s cubic-bezier(.2,.9,.3,1.5)}
+@keyframes bump{40%{transform:scale(1.18) rotate(-6deg)}}
+.meter{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px}
+.meter b{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
+.meter .track{height:8px;border-radius:99px;background:var(--sand);overflow:hidden}
+.meter .track i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--orange));transition:width .6s cubic-bezier(.4,0,.2,1)}
+.back{flex:none;width:40px;height:40px;border-radius:14px;background:var(--paper);display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800}
+
+.hero{position:relative;padding-block:38px 6px}
+.toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:22px}
+.toc a{display:flex;align-items:center;gap:10px;background:var(--tb);border-radius:20px;padding:11px 12px;text-decoration:none;font-weight:800;line-height:1.25;transition:transform .2s}
+.toc a:hover{transform:translateY(-3px)}
+.toc a span{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--tc);color:var(--on);flex:none;transition:background .3s}
+.toc a.full span{background:var(--tc)}
+.toc a.full span::after{content:"✓";position:absolute}
+.toc a.full span{color:transparent;position:relative}
+.toc a.full span::after{color:var(--on)}
+
+/* главы */
+.chap{padding-top:54px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:64px}
+.chead{display:flex;align-items:center;gap:14px;margin-bottom:6px}
+.chead .num{width:56px;height:56px;border-radius:20px;background:var(--tb);color:var(--tc);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;flex:none;transition:background .4s,color .4s}
+.chap.full .chead .num{background:var(--tc);color:var(--on)}
+.chead small{display:block;color:var(--muted);font-weight:700;font-size:14px;margin-top:2px;font-variant-numeric:tabular-nums}
+.task{display:flex;flex-direction:column;gap:12px;background:var(--paper);border-radius:22px;padding:14px 16px;box-shadow:0 8px 24px var(--shadow);transition:box-shadow .3s,background .3s}
+.task.done{background:color-mix(in srgb,var(--paper) 82%,var(--tb))}
+.trow{display:flex;gap:14px;align-items:flex-start;cursor:pointer;user-select:none}
+.box{flex:none;width:34px;height:34px;border-radius:12px;box-shadow:inset 0 0 0 2.5px var(--tc);display:flex;align-items:center;justify-content:center;transition:background .25s;background:transparent;border:0;padding:0}
+.box svg{width:20px;height:20px;stroke:var(--on);stroke-width:3.5;fill:none;stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .35s .05s}
+.task.done .box{background:var(--tc)}
+.task.done .box svg{stroke-dashoffset:0}
+.task.pop .box{animation:bump .45s cubic-bezier(.2,.9,.3,1.5)}
+.ttx{font-size:18px;font-weight:700;line-height:1.4;padding-top:4px}
+.task.done .ttx{color:var(--muted)}
+.ttx small{display:block;font-size:14px;font-weight:600;color:var(--muted);margin-top:3px}
+.fly{position:fixed;z-index:30;width:12px;height:12px;border-radius:50%;background:var(--tc);pointer-events:none;transition:transform .65s cubic-bezier(.5,-0.3,.6,1),opacity .65s}
+
+/* виджеты */
+.tool{background:var(--cream);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.tool label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.tool input{width:100%;border:0;border-radius:14px;background:var(--paper);padding:12px 14px;font-size:16px;font-weight:700;outline:none;box-shadow:inset 0 0 0 2px transparent}
+.tool input:focus{box-shadow:inset 0 0 0 2px var(--tc)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.res{font-size:17px;font-weight:700;line-height:1.45}
+.res b{color:var(--tc);font-size:22px;font-variant-numeric:tabular-nums}
+.msg{background:var(--paper);border-radius:14px;padding:12px 14px;font-weight:600;white-space:pre-wrap}
+.btn{align-self:flex-start;border:0;border-radius:14px;padding:11px 16px;font-size:15px;font-weight:800;background:var(--tc);color:var(--on);cursor:pointer}
+.step{display:flex;align-items:center;gap:8px}
+.step button{width:40px;height:40px;border-radius:12px;border:0;background:var(--paper);font-size:20px;font-weight:800;cursor:pointer}
+.step b{min-width:34px;text-align:center;font-size:20px;font-variant-numeric:tabular-nums}
+.sos{display:flex;align-items:center;gap:14px;background:var(--red-bg);border-radius:18px;padding:12px 14px}
+.sos .n{font-size:34px;font-weight:800;color:#fff;background:var(--red);border-radius:16px;padding:6px 14px;line-height:1}
+.warn{font-size:14px;color:var(--muted);font-weight:600}
+
+/* схема укладки рюкзака */
+.packmap{display:grid;grid-template-columns:200px 1fr;gap:16px;align-items:center;background:var(--paper);border-radius:22px;padding:16px;box-shadow:0 8px 24px var(--shadow)}
+.packmap svg{width:100%;max-width:200px;height:auto;justify-self:center}
+.zone{fill:rgba(238,230,214,.06);stroke:rgba(238,230,214,.25);stroke-width:1.5;stroke-dasharray:4 4;transition:fill .5s,stroke .5s}
+.zone.on{stroke-dasharray:none;stroke:var(--zc)}
+.zone.on{fill:var(--zf)}
+.zt{font:800 10px var(--font);fill:rgba(238,230,214,.55);text-anchor:middle;pointer-events:none;transition:fill .4s}
+.zt.on{fill:#121C17}
+.legend{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:8px}
+.legend i{width:12px;height:12px;border-radius:4px;flex:none}
+.packmap.pulse{animation:bump .5s}
+
+
+/* иллюстрации глав 3, 4, 6 */
+.vis{background:var(--paper);border-radius:22px;padding:16px;box-shadow:0 8px 24px var(--shadow);display:flex;flex-direction:column;gap:12px}
+.vis svg{width:100%;height:auto;display:block}
+.vis .cap{font-size:14px;font-weight:600;color:var(--muted)}
+.base{fill:#26392E}
+.gi{transform-box:fill-box;transform-origin:center}
+.gi .sh{fill:transparent;stroke:rgba(238,230,214,.3);stroke-width:1.6;stroke-dasharray:4 3;transition:fill .5s,stroke .5s}
+.gi.on .sh{fill:var(--f);stroke:var(--f);stroke-dasharray:none}
+.gi .ln{fill:none!important;stroke-width:3}
+.gi.on{animation:gpop .55s cubic-bezier(.2,.9,.3,1.5)}
+.gi.nopop.on{animation:none}
+.dt{opacity:0;transition:opacity .5s .25s}.gi.on .dt{opacity:1}
+.route{stroke-dasharray:520;stroke-dashoffset:520;transition:stroke-dashoffset 2s ease-in-out}.gi.on .route{stroke-dashoffset:0}
+.pin{opacity:0;transform:scale(.4);transform-box:fill-box;transform-origin:center bottom;transition:opacity .4s var(--d,0ms),transform .55s cubic-bezier(.2,.9,.3,1.5) var(--d,0ms)}.gi.on .pin{opacity:1;transform:none}
+@keyframes gpop{0%{transform:scale(.7)}100%{transform:none}}
+.vchips{display:flex;flex-wrap:wrap;gap:6px}
+.vchips span{padding:5px 11px;border-radius:999px;font-size:13px;font-weight:700;background:var(--cream);color:var(--muted);transition:background .4s,color .4s}
+.vchips span.on{background:var(--tc);color:var(--on)}
+.beam{opacity:0;transition:opacity .6s .3s}.gi.on .beam{opacity:.45}
+.needle{transform-box:fill-box;transform-origin:center;animation:wander 2.6s ease-in-out infinite alternate}
+.gi.on .needle{animation:settle 1.8s cubic-bezier(.3,.7,.4,1) forwards}
+@keyframes wander{from{transform:rotate(-60deg)}to{transform:rotate(70deg)}}
+@keyframes settle{0%{transform:rotate(70deg)}45%{transform:rotate(-30deg)}70%{transform:rotate(12deg)}85%{transform:rotate(-4deg)}100%{transform:rotate(0)}}
+.ring{fill:none;stroke:#A3B5AA;stroke-width:3;transition:stroke .6s}.gi.on .ring{stroke:#7DD6A1}
+.batt{transform-box:fill-box;transform-origin:center bottom;transform:scaleY(.14);fill:#E4574A;transition:transform 1.6s ease,fill 1.6s}
+.gi.on .batt{transform:none;fill:#7DD6A1}
+.wave{fill:none;stroke:#FF8F84;stroke-width:3;stroke-linecap:round;opacity:0;transform-box:fill-box;transform-origin:center bottom}
+.gi.on .wave{animation:wv 1.8s ease-out infinite}.gi.on .wave:nth-of-type(2){animation-delay:.3s}.gi.on .wave:nth-of-type(3){animation-delay:.6s}
+@keyframes wv{0%{opacity:0;transform:scale(.6)}30%{opacity:1}100%{opacity:0;transform:scale(1.15)}}
+.steam path{fill:none;stroke:#EEE6D6;stroke-width:2;stroke-linecap:round;opacity:0}
+.gi.on .steam path{animation:stm 2.4s ease-out infinite}.gi.on .steam path:nth-child(2){animation-delay:.8s}
+@keyframes stm{0%{opacity:0;transform:translateY(4px)}40%{opacity:.6}100%{opacity:0;transform:translateY(-10px)}}
+
+/* телефон: иллюстрация главы прилипает под шапкой, чтобы анимация была видна при отметке пунктов */
+@media (max-width:700px){
+  .vis,.packmap{position:sticky;top:calc(64px + env(safe-area-inset-top,0px));z-index:5;box-shadow:0 10px 24px rgba(0,0,0,.55)}
+  .vis{padding:10px}
+  .vis .vchips,.vis .cap,.packmap .legend{display:none}
+  .packmap{padding:10px}
+  .packmap svg{max-width:150px}
+}
+.final{margin-top:54px;text-align:center;background:var(--paper);border-radius:28px;padding:30px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;box-shadow:0 10px 30px var(--shadow)}
+.final .big{font-size:56px;line-height:1}
+.final.ready{box-shadow:0 0 0 3px var(--green),0 10px 30px var(--shadow)}
+.final .reset{background:transparent;color:var(--muted);box-shadow:inset 0 0 0 2px var(--sand);align-self:center}
+.end{padding-block:24px 80px;text-align:center;color:var(--muted);font-size:14px}
+.conf{position:fixed;top:-10px;width:9px;height:14px;z-index:40;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.rv.pre{opacity:0;transform:translateY(22px)}
+.rv{transition:opacity .55s cubic-bezier(.2,.8,.2,1),transform .55s cubic-bezier(.2,.8,.2,1)}
+@media (max-width:560px){.packmap{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv.pre{opacity:1;transform:none}}
+</style>
+
+</head>
+<body>
+<canvas id="forest" aria-hidden="true"></canvas>
+<div class="bar"><div class="wrap in">
+  <a class="back" href="../" aria-label="На главную">←</a>
+  <div class="pack" id="pack" aria-hidden="true"><svg viewBox="0 0 40 44"><defs><clipPath id="pc"><rect x="7" y="9" width="26" height="31" rx="7"/></clipPath></defs>
+    <path d="M14 9 V6 a6 6 0 0 1 12 0 V9" fill="none" stroke="#A3B5AA" stroke-width="2.4"/>
+    <rect x="7" y="9" width="26" height="31" rx="7" fill="#24372C" stroke="#A3B5AA" stroke-width="2"/>
+    <rect id="packfill" clip-path="url(#pc)" x="7" y="40" width="26" height="0" fill="#F38A55" style="transition:y .6s,height .6s"/>
+    <rect x="12" y="24" width="16" height="9" rx="3" fill="none" stroke="#121C17" stroke-opacity=".35" stroke-width="1.6"/></svg></div>
+  <div class="meter"><b id="mtxt">Готовность: 0 из 0</b><div class="track"><i id="mbar"></i></div></div>
+</div></div>
+
+<div class="wrap">
+  <header class="hero">
+    <svg class="blob" aria-hidden="true" viewBox="0 0 200 160"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#5E9A6E"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#F08A57"/></svg>
+    <div class="kick"><a href="../" style="text-decoration:none">← Главная</a> · Статья</div>
+    <h1>Как подготовиться к походу?</h1>
+    <p class="lead">Готовимся вместе: отмечайте то, что уже сделали, — рюкзак вверху будет наполняться.</p>
+    <nav class="toc" id="toc" aria-label="Оглавление"></nav>
+  </header>
+  <main id="chaps"></main>
+  <section class="final rv" id="final">
+    <div class="big" id="fbig">🎒</div>
+    <h2 id="ftitle">Почти готово</h2>
+    <p class="lead" id="flead" style="margin:0">Отметьте все пункты — и можно выходить на маршрут.</p>
+    <button type="button" class="btn reset" id="reset">Начать сначала</button>
+  </section>
+  <p class="end">Хорошего похода и безопасного возвращения!</p>
+</div>
+
+<script>
+(function () {
+var CH = [
+  {t: 'Планирую маршрут', vis: 'plan', items: [
+    'Выбираю маршрут по силам.',
+    'Изучаю тропы, источники воды, опасные участки, места ночёвок.',
+    'Проверяю прогноз погоды на весь срок.',
+    'Узнаю о природных опасностях в районе.']},
+  {t: 'Регистрирую маршрут в МЧС', items: [
+    {x: 'Регистрирую маршрут в МЧС — это обязательно. Минимум за 10 дней.', tool: 'date'},
+    'Подаю заявку онлайн на сайте МЧС или в территориальном органе.',
+    {x: 'Сообщаю близким: куда иду, с кем, когда вернусь.', tool: 'msg'}]},
+  {t: 'Собираю снаряжение', vis: 'gear', items: ['Беру рюкзак.', 'Кладу спальник, коврик, палатку.', 'Беру верёвку, фонарь, спички или огниво.']},
+  {t: 'Беру личные вещи', vis: 'dress', items: ['Кружку, ложку, котелок.', 'Тёплый слой, дождевик, сменную обувь.', 'Гигиену: мыло, щётку, бумагу.']},
+  {t: 'Забочусь о питании и воде', items: [
+    'Собираю еду: крупы, тушёнку, сублиматы, орехи, сухофрукты, шоколад, чай, соль, сахар.',
+    {x: 'Беру воду — не меньше 1,5–2 л на человека в день.', tool: 'water'},
+    'Сыпучее упаковываю в гермомешки.']},
+  {t: 'Проверяю навигацию и безопасность', vis: 'nav', items: [
+    'Беру карту, компас, свисток.',
+    'Собираю аптечку.',
+    {x: 'Заряжаю телефон и беру пауэрбанк.', tool: 'power'},
+    {x: 'Запоминаю: 112 — единый номер спасения (работает даже без сети).', tool: 'sos'}]},
+  {t: 'Укладываю рюкзак правильно', map: true, items: [
+    {x: 'Тяжёлое — вниз и к спине.', z: 'heavy'},
+    {x: 'Среднее — в середину.', z: 'mid'},
+    {x: 'Лёгкое и нужное — наверх и в карманы.', z: 'light'},
+    {x: 'Мягкое — по стенкам.', z: 'soft'},
+    {x: 'Еда — отдельно и герметично.', z: 'food'},
+    {x: 'Вода — в боковом кармане.', z: 'water'}]}
+];
+var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); };
+var TASKS = []; CH.forEach(function (c, ci) { c.items.forEach(function (it, ii) { var o = typeof it === 'string' ? {x: it} : it; o.id = (ci + 1) + '-' + (ii + 1); o.ci = ci; TASKS.push(o); }); });
+var KEY = 'hike-prep-v1', done = {};
+try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+
+document.getElementById('toc').innerHTML = CH.map(function (c, i) { return '<a class="c' + (i + 1) + '" href="#ch' + (i + 1) + '" data-ci="' + i + '"><span>' + (i + 1) + '</span>' + esc(c.t) + '</a>'; }).join('');
+
+var ZONES = {heavy: ['Тяжёлое', '#F38A55', 'rgba(243,138,85,.85)'], mid: ['Среднее', '#F2C55C', 'rgba(242,197,92,.85)'], light: ['Лёгкое', '#7DD6A1', 'rgba(125,214,161,.85)'],
+  soft: ['Мягкое', '#B9A8F5', 'rgba(185,168,245,.7)'], food: ['Еда', '#FF8F84', 'rgba(255,143,132,.85)'], water: ['Вода', '#86C2F2', 'rgba(134,194,242,.9)']};
+function packMap() {
+  var z = function (id, shape, tx, ty, label) { var Z = ZONES[id]; return '<g data-z="' + id + '" style="--zc:' + Z[1] + ';--zf:' + Z[2] + '">' + shape.replace('<SH', '<' ).replace('class="zone"', 'class="zone"') + '<text class="zt" x="' + tx + '" y="' + ty + '">' + label + '</text></g>'; };
+  var svg = '<svg viewBox="0 0 200 242" aria-label="Схема укладки рюкзака">' +
+    '<path d="M70 22 V14 a30 14 0 0 1 60 0 V22" fill="none" stroke="#A3B5AA" stroke-width="4"/>' +
+    '<rect x="40" y="20" width="120" height="216" rx="26" fill="#24372C" stroke="#A3B5AA" stroke-width="3"/>' +
+    
+    z('soft', '<rect class="zone" x="46" y="30" width="12" height="198" rx="6"/><rect class="zone" x="142" y="30" width="12" height="198" rx="6"/>', 100, 18, '') +
+    z('light', '<rect class="zone" x="62" y="30" width="76" height="40" rx="12"/>', 100, 54, 'лёгкое') +
+    z('mid', '<rect class="zone" x="62" y="76" width="76" height="52" rx="10"/>', 100, 106, 'среднее') +
+    z('food', '<rect class="zone" x="62" y="134" width="76" height="36" rx="8"/>', 100, 156, 'еда') +
+    z('heavy', '<rect class="zone" x="62" y="176" width="76" height="52" rx="10"/>', 100, 206, 'тяжёлое') +
+    z('water', '<rect class="zone" x="160" y="120" width="26" height="70" rx="10"/>', 173, 160, 'вода') +
+    '</svg>';
+  var leg = '<div class="legend">' + Object.keys(ZONES).map(function (k) { return '<span><i style="background:' + ZONES[k][1] + '"></i>' + ZONES[k][0] + '</span>'; }).join('') + '<span style="margin-top:6px;font-weight:600">Отмечайте пункты ниже — зоны будут заполняться.</span></div>';
+  return '<div class="packmap rv" id="packmap">' + svg + leg + '</div>';
+}
+
+var VIS = {
+  plan: function () {
+    var pin = function (d, x, y, inner) { return '<g transform="translate(' + x + ' ' + y + ')"><g class="pin" style="--d:' + d + 'ms">' + inner + '</g></g>'; };
+    var drop = '<path d="M0 -14 C5 -7 7 -4 7 0 a7 7 0 0 1 -14 0 c0 -4 2 -7 7 -14z" fill="#86C2F2" stroke="#1B2A22" stroke-width="1.5"/><path d="M-3 -1 a3 3 0 0 0 2 3" stroke="#EEF7FF" stroke-width="1.5" fill="none"/>';
+    var tent = '<path d="M-11 0 L0 -16 L11 0Z" fill="#F38A55" stroke="#1B2A22" stroke-width="1.5"/><path d="M0 -16 L4 0 H-4Z" fill="#2A1C14"/>';
+    var warn = '<path d="M0 -16 L12 4 H-12Z" fill="#F2C55C" stroke="#1B2A22" stroke-width="1.5"/><rect x="-1.4" y="-9" width="2.8" height="7" rx="1.2" fill="#1B2A22"/><circle cx="0" cy="0.5" r="1.6" fill="#1B2A22"/>';
+    var bolt = '<circle r="11" fill="#3F2124" stroke="#FF8F84" stroke-width="1.5"/><path d="M2 -8 L-5 1 H0 L-2 8 L5 -1 H0Z" fill="#FFD36E"/>';
+    var rocks = '<circle r="11" fill="#3F2124" stroke="#FF8F84" stroke-width="1.5"/><ellipse cx="-3" cy="3" rx="4" ry="3" fill="#A3A397"/><ellipse cx="3" cy="-2" rx="3" ry="2.5" fill="#C9C9BC"/><ellipse cx="4" cy="5" rx="2.5" ry="2" fill="#8E9085"/>';
+    var paw = '<circle r="11" fill="#3F2124" stroke="#FF8F84" stroke-width="1.5"/><ellipse cx="0" cy="3" rx="4.5" ry="3.5" fill="#EEE6D6"/><circle cx="-5" cy="-3" r="1.8" fill="#EEE6D6"/><circle cx="-1.8" cy="-5.5" r="1.8" fill="#EEE6D6"/><circle cx="1.8" cy="-5.5" r="1.8" fill="#EEE6D6"/><circle cx="5" cy="-3" r="1.8" fill="#EEE6D6"/>';
+    var sun = '<circle r="5" fill="#FFD36E"/><path d="M0 -9v2M0 7v2M-9 0h2M7 0h2M-6.4 -6.4l1.4 1.4M5 5l1.4 1.4M-6.4 6.4l1.4 -1.4M5 -5l1.4 -1.4" stroke="#FFD36E" stroke-width="1.6" stroke-linecap="round"/>';
+    var cloud = '<path d="M-8 3 a4 4 0 0 1 1 -8 a6 6 0 0 1 11 0 a4 4 0 0 1 4 8z" fill="#C9D3DC"/>';
+    var rain = cloud + '<path d="M-5 6 l-2 4 M0 6 l-2 4 M5 6 l-2 4" stroke="#86C2F2" stroke-width="1.6" stroke-linecap="round"/>';
+    var day = function (i, icon) { var x = 16 + i * 52; return '<g class="pin" style="--d:' + (i * 140) + 'ms"><rect x="' + x + '" y="8" width="46" height="34" rx="9" fill="#1B3348"/><g transform="translate(' + (x + 23) + ' 22)">' + icon + '</g><text x="' + (x + 23) + '" y="38" text-anchor="middle" style="font:800 7px var(--font);fill:#A9C3DE">' + (i + 1) + ' день</text></g>'; };
+    var R = 'M30 166 C70 156 80 124 110 122 S150 146 176 124 S200 84 232 88 S270 72 286 58 S304 44 312 40';
+    return '<div class="vis rv"><svg viewBox="0 0 340 190" aria-label="Карта маршрута">' +
+      '<rect x="4" y="4" width="332" height="182" rx="16" fill="#22352A"/>' +
+      '<g fill="none" stroke="#2F4A3A" stroke-width="1.6"><ellipse cx="262" cy="62" rx="66" ry="32"/><ellipse cx="266" cy="60" rx="42" ry="19"/><ellipse cx="270" cy="58" rx="20" ry="8"/><ellipse cx="90" cy="150" rx="56" ry="24"/><ellipse cx="88" cy="150" rx="30" ry="11"/><path d="M120 30 q40 20 80 6"/></g>' +
+      '<path d="M8 72 C70 92 120 50 170 70 S262 120 334 108" fill="none" stroke="#2F6E8F" stroke-width="7" stroke-linecap="round"/>' +
+      '<g class="gi nopop" data-t="1-1"><path d="' + R + '" fill="none" stroke="rgba(238,230,214,.3)" stroke-width="3" stroke-dasharray="4 5" stroke-linecap="round"/>' +
+      '<path class="route" d="' + R + '" fill="none" stroke="#F38A55" stroke-width="4.5" stroke-linecap="round"/>' +
+      pin(0, 30, 166, '<circle r="6" fill="#7DD6A1" stroke="#1B2A22" stroke-width="2"/>') +
+      pin(1800, 312, 40, '<path d="M0 0 V-22" stroke="#EEE6D6" stroke-width="2"/><path d="M0 -22 h14 l-4 5 l4 5 h-14z" fill="#F38A55"/>') + '</g>' +
+      '<g class="gi nopop" data-t="1-2">' + pin(0, 152, 66, drop) + pin(150, 292, 108, drop) + pin(300, 110, 120, tent) + pin(450, 232, 86, tent) + pin(600, 270, 76, warn) + '</g>' +
+      '<g class="gi nopop" data-t="1-3">' + day(0, sun) + day(1, cloud) + day(2, rain) + day(3, sun) + '</g>' +
+      '<g class="gi nopop" data-t="1-4">' + pin(0, 56, 104, bolt) + pin(180, 318, 82, rocks) + pin(360, 160, 168, paw) + '</g>' +
+      '</svg><div class="vchips">' + [['1-1', 'Маршрут'], ['1-2', 'Вода'], ['1-2', 'Ночёвки'], ['1-2', 'Опасный участок'], ['1-3', 'Погода'], ['1-4', 'Гроза'], ['1-4', 'Камнепад'], ['1-4', 'Звери']].map(function (x) { return '<span data-t="' + x[0] + '">' + x[1] + '</span>'; }).join('') + '</div><div class="cap">Прокладываю маршрут на карте — отметьте пункты ниже.</div></div>';
+  },
+  gear: function () {
+    return '<div class="vis rv"><svg viewBox="0 0 340 170" aria-label="Раскладка снаряжения">' +
+      '<rect x="8" y="10" width="324" height="150" rx="16" fill="#22352A"/><path d="M8 26 H332 M8 144 H332" stroke="#2A4232" stroke-width="2" stroke-dasharray="2 6"/>' +
+      // рюкзак
+      '<g class="gi" data-t="3-1"><path class="sh ln" style="--f:#8A4A26" d="M46 40 v-8 a11 8 0 0 1 22 0 v8"/>' +
+      '<rect class="sh" style="--f:#E2602A" x="28" y="40" width="58" height="98" rx="16"/><rect class="sh" style="--f:#C24E1D" x="30" y="38" width="54" height="24" rx="11"/><rect class="sh" style="--f:#C24E1D" x="38" y="90" width="38" height="36" rx="9"/>' +
+      '<g class="dt"><rect x="42" y="56" width="5" height="18" rx="2" fill="#2A1C14"/><rect x="67" y="56" width="5" height="18" rx="2" fill="#2A1C14"/><rect x="41" y="70" width="7" height="5" rx="1.5" fill="#EEE6D6"/><rect x="66" y="70" width="7" height="5" rx="1.5" fill="#EEE6D6"/>' +
+      '<path d="M43 96 h28" stroke="#F3C9A8" stroke-width="2" stroke-linecap="round"/><rect x="68" y="94" width="4" height="7" rx="1.5" fill="#EEE6D6"/><path d="M28 72 h4 M28 104 h4 M82 72 h4 M82 104 h4" stroke="#2A1C14" stroke-width="3"/>' +
+      '<path d="M50 130 q7 8 14 0" stroke="#2A1C14" stroke-width="3" fill="none"/><path d="M36 50 h42" stroke="#E2602A" stroke-width="1.5" stroke-dasharray="3 3"/></g></g>' +
+      // спальник, коврик, палатка
+      '<g class="gi" data-t="3-2"><rect class="sh" style="--f:#86C2F2" x="104" y="24" width="80" height="34" rx="17"/><ellipse class="sh" style="--f:#5C9BD1" cx="184" cy="41" rx="10" ry="17"/>' +
+      '<g class="dt" fill="none" stroke="#5C9BD1" stroke-width="2"><path d="M122 26 q-4 15 0 30 M140 25 q-4 16 0 32 M158 25 q-4 16 0 32"/><path d="M184 35 a5 6 0 1 0 2 10" stroke="#2C6FA8"/><path d="M193 45 q6 4 2 10" stroke="#EEE6D6" stroke-width="1.5"/><circle cx="195" cy="56" r="2" fill="#EEE6D6" stroke="none"/></g>' +
+      '<rect class="sh" style="--f:#7DD6A1" x="104" y="66" width="86" height="24" rx="12"/><circle class="sh" style="--f:#4FA877" cx="190" cy="78" r="12"/>' +
+      '<g class="dt"><path d="M190 78 m-2 0 a2 2 0 1 1 4 0 a5 5 0 1 1 -10 0 a8 8 0 1 1 16 0" fill="none" stroke="#2E7A51" stroke-width="1.6"/><rect x="122" y="66" width="7" height="24" fill="#2A4A38"/><rect x="164" y="66" width="7" height="24" fill="#2A4A38"/><path d="M136 70 v16 M146 70 v16 M156 70 v16" stroke="#5FBF8A" stroke-width="1.5"/></g>' +
+      '<rect class="sh" style="--f:#F2C55C" x="106" y="100" width="74" height="34" rx="15"/>' +
+      '<g class="dt"><rect x="94" y="108" width="14" height="3" rx="1.5" fill="#A3A397"/><rect x="96" y="114" width="12" height="3" rx="1.5" fill="#A3A397"/><rect x="98" y="120" width="10" height="3" rx="1.5" fill="#A3A397"/>' +
+      '<rect x="124" y="100" width="6" height="34" fill="#C99A2E"/><rect x="156" y="100" width="6" height="34" fill="#C99A2E"/><path d="M138 124 l5 -9 l5 9z" fill="#8A6A18"/><path d="M180 112 q8 2 6 10 q-2 6 2 8" stroke="#8A6A18" stroke-width="1.6" fill="none"/></g></g>' +
+      // верёвка, фонарь, спички, огниво
+      '<g class="gi" data-t="3-3"><circle class="sh ln" style="--f:#C9B79C;stroke-width:6" cx="232" cy="46" r="19"/>' +
+      '<g class="dt" fill="none" stroke-linecap="round"><circle cx="232" cy="46" r="13" stroke="#B8A486" stroke-width="4"/><circle cx="232" cy="46" r="7.5" stroke="#A88A63" stroke-width="3.5"/><path d="M247 58 q10 8 4 18" stroke="#C9B79C" stroke-width="4"/><rect x="226" y="24" width="12" height="7" rx="2" fill="#8A6A48" stroke="none"/></g>' +
+      '<rect class="sh" style="--f:#B9A8F5" x="214" y="90" width="44" height="16" rx="6"/><path class="sh" style="--f:#9A86E8" d="M258 86 h12 a3 3 0 0 1 3 3 v18 a3 3 0 0 1 -3 3 h-12z"/>' +
+      '<g class="dt"><path d="M222 92 v12 M227 92 v12 M232 92 v12 M237 92 v12" stroke="#8C78D8" stroke-width="1.6"/><circle cx="248" cy="98" r="2.6" fill="#EEE6D6"/><rect x="270" y="88" width="3" height="20" rx="1" fill="#FFF3C4"/><path d="M214 96 q-6 0 -6 6" stroke="#5A6066" stroke-width="1.6" fill="none"/></g>' +
+      '<path class="beam" d="M274 89 L322 74 L322 122 L274 107Z" fill="#FFF3C4"/>' +
+      '<rect class="sh" style="--f:#FF8F84" x="280" y="28" width="38" height="24" rx="4"/>' +
+      '<g class="dt"><rect x="280" y="28" width="38" height="5" fill="#7A3A35"/><path d="M299 36 q5 6 0 12 q-5 -6 0 -12" fill="#FFD36E"/><rect x="306" y="12" width="2.6" height="16" rx="1" fill="#E8D7B0" transform="rotate(20 307 20)"/><circle cx="310" cy="12" r="2.6" fill="#D93A2B"/></g>' +
+      '<rect class="sh" style="--f:#8E9085" x="292" y="124" width="5" height="22" rx="2"/><rect class="sh" style="--f:#A88A63" x="289" y="138" width="11" height="12" rx="3"/><rect class="sh" style="--f:#C9C9C9" x="304" y="128" width="14" height="14" rx="3"/>' +
+      '<g class="dt"><path d="M294 150 q-6 6 2 8 q8 2 12 -6 q2 -6 4 -10" stroke="#EEE6D6" stroke-width="1.4" fill="none"/><path d="M304 132 h14" stroke="#8E9085" stroke-width="1.5"/></g></g>' +
+      '</svg><div class="vchips">' + [['3-1', 'Рюкзак'], ['3-2', 'Спальник'], ['3-2', 'Коврик'], ['3-2', 'Палатка'], ['3-3', 'Верёвка'], ['3-3', 'Фонарь'], ['3-3', 'Спички / огниво']].map(function (x) { return '<span data-t="' + x[0] + '">' + x[1] + '</span>'; }).join('') + '</div><div class="cap">Раскладка: отмечайте пункты ниже — вещи появятся на коврике.</div></div>';
+  },
+  dress: function () {
+    return '<div class="vis rv"><svg viewBox="0 0 340 180" aria-label="Личные вещи">' +
+      // турист: база (футболка, брюки, лицо)
+      '<rect x="62" y="108" width="17" height="44" rx="7" fill="#3C5A82"/><rect x="81" y="108" width="17" height="44" rx="7" fill="#3C5A82"/><path d="M79 112 v36" stroke="#2C4466" stroke-width="2"/>' +
+      '<rect x="58" y="50" width="44" height="62" rx="14" fill="#5E7F6B"/><rect x="46" y="54" width="12" height="44" rx="6" fill="#5E7F6B"/><rect x="102" y="54" width="12" height="44" rx="6" fill="#5E7F6B"/>' +
+      '<rect x="74" y="42" width="12" height="10" rx="3" fill="#E7B98F"/>' +
+      '<circle cx="80" cy="30" r="14" fill="#E7B98F"/><path d="M66 28 a14 14 0 0 1 28 0 q-6 -6 -14 -5 q-8 -1 -14 5z" fill="#6B4A2A"/>' +
+      '<circle cx="75" cy="31" r="1.6" fill="#2A1C14"/><circle cx="85" cy="31" r="1.6" fill="#2A1C14"/><path d="M76 37 q4 3 8 0" stroke="#A8664A" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="72" cy="35" r="2" fill="#F2A08A" opacity=".5"/><circle cx="88" cy="35" r="2" fill="#F2A08A" opacity=".5"/>' +
+      '<rect x="60" y="150" width="20" height="8" rx="4" fill="#2F4537"/><rect x="80" y="150" width="20" height="8" rx="4" fill="#2F4537"/>' +
+      '<g class="gi" data-t="4-2">' +
+      // флиска
+      '<rect class="sh" style="--f:#F38A55" x="57" y="50" width="46" height="62" rx="14"/>' +
+      '<g class="dt"><path d="M68 50 l12 11 l12 -11" fill="#E27040" stroke="#C24E1D" stroke-width="2" stroke-linejoin="round"/><path d="M80 61 v48" stroke="#C24E1D" stroke-width="2"/><rect x="78" y="62" width="4" height="6" rx="1" fill="#EEE6D6"/><path d="M60 100 h40" stroke="#E27040" stroke-width="3"/></g>' +
+      // дождевик
+      '<path class="sh" style="--f:#3F8FD0" d="M62 32 a18 20 0 0 1 36 0 v8 a18 14 0 0 0 -36 0z"/>' +
+      '<rect class="sh" style="--f:#3F8FD0" x="48" y="50" width="20" height="66" rx="9"/><rect class="sh" style="--f:#3F8FD0" x="92" y="50" width="20" height="66" rx="9"/>' +
+      '<rect class="sh" style="--f:#3F8FD0" x="36" y="54" width="15" height="46" rx="7"/><rect class="sh" style="--f:#3F8FD0" x="109" y="54" width="15" height="46" rx="7"/>' +
+      '<g class="dt"><path d="M67 54 v60 M93 54 v60" stroke="#2C6FA8" stroke-width="2" stroke-dasharray="2 2"/><rect x="51" y="80" width="12" height="4" rx="2" fill="#2C6FA8"/><rect x="97" y="80" width="12" height="4" rx="2" fill="#2C6FA8"/>' +
+      '<path d="M36 92 h15 M109 92 h15" stroke="#E6F1FA" stroke-width="2"/><path d="M68 42 l-2 10 M92 42 l2 10" stroke="#EEE6D6" stroke-width="1.4"/><circle cx="66" cy="53" r="1.8" fill="#EEE6D6"/><circle cx="94" cy="53" r="1.8" fill="#EEE6D6"/></g>' +
+      // ботинки
+      '<path class="sh" style="--f:#7A5230" d="M60 142 h18 v8 h4 a4 4 0 0 1 4 4 v4 h-26z"/><path class="sh" style="--f:#7A5230" d="M82 142 h18 v8 h4 a4 4 0 0 1 4 4 v4 h-26z"/>' +
+      '<g class="dt"><rect x="59" y="156" width="28" height="4" rx="1.5" fill="#2A1C14"/><rect x="81" y="156" width="28" height="4" rx="1.5" fill="#2A1C14"/><path d="M64 145 l8 4 M72 145 l-8 4 M86 145 l8 4 M94 145 l-8 4" stroke="#EEE6D6" stroke-width="1.3"/></g>' +
+      // сменная обувь
+      '<path class="sh" style="--f:#F2C55C" d="M118 160 v-8 q0 -4 5 -4 h6 q4 0 6 4 l4 3 q4 1 4 5z"/><path class="sh" style="--f:#F2C55C" d="M118 142 v-8 q0 -4 5 -4 h6 q4 0 6 4 l4 3 q4 1 4 5z"/>' +
+      '<g class="dt"><rect x="118" y="158" width="25" height="3" rx="1.5" fill="#EEE6D6"/><rect x="118" y="140" width="25" height="3" rx="1.5" fill="#EEE6D6"/><circle cx="126" cy="152" r="1" fill="#8A6A18"/><circle cx="130" cy="152" r="1" fill="#8A6A18"/><circle cx="126" cy="134" r="1" fill="#8A6A18"/><circle cx="130" cy="134" r="1" fill="#8A6A18"/></g></g>' +
+      '<circle cx="43" cy="102" r="5" fill="#E7B98F"/><circle cx="117" cy="102" r="5" fill="#E7B98F"/>' +
+      // полка
+      '<rect x="152" y="14" width="182" height="156" rx="16" fill="#22352A"/><path d="M160 88 H326" stroke="#2A4232" stroke-width="3" stroke-linecap="round"/>' +
+      '<g class="gi" data-t="4-1"><rect class="sh" style="--f:#EEE6D6" x="166" y="44" width="32" height="34" rx="5"/><path class="sh ln" style="--f:#EEE6D6;stroke-width:4" d="M198 50 q12 0 12 10 q0 10 -12 10"/>' +
+      '<g class="dt"><rect x="166" y="44" width="32" height="4" rx="2" fill="#2B5C8A"/><rect x="166" y="74" width="32" height="4" rx="2" fill="#2B5C8A"/><path d="M182 58 l3 5 l-3 5 l-3 -5z" fill="#3F8FD0"/><path d="M168 50 v20" stroke="#FFFFFF" stroke-width="2" opacity=".6"/></g>' +
+      '<g class="steam"><path d="M176 40 q-4 -8 0 -14"/><path d="M188 40 q4 -8 0 -14"/></g>' +
+      '<ellipse class="sh" style="--f:#D8D8D8" cx="222" cy="44" rx="7" ry="10"/><rect class="sh" style="--f:#D8D8D8" x="220" y="52" width="4" height="28" rx="2"/>' +
+      '<g class="dt"><ellipse cx="220" cy="41" rx="2" ry="4" fill="#FFFFFF" opacity=".7"/><rect x="219" y="70" width="6" height="10" rx="3" fill="#A8B4BF"/></g>' +
+      '<path class="sh ln" style="--f:#6E7A86" d="M170 120 q30 -46 60 0"/><rect class="sh" style="--f:#8E9AA6" x="170" y="114" width="60" height="44" rx="8"/><rect class="sh" style="--f:#A8B4BF" x="166" y="108" width="68" height="9" rx="4"/><rect class="sh" style="--f:#5A6066" x="194" y="101" width="12" height="8" rx="3"/>' +
+      '<g class="dt"><rect x="170" y="146" width="60" height="12" rx="6" fill="#3A3F44"/><path d="M178 120 v22" stroke="#C9D3DC" stroke-width="2.4" opacity=".7"/><rect x="166" y="124" width="6" height="4" rx="2" fill="#5A6066"/><rect x="228" y="124" width="6" height="4" rx="2" fill="#5A6066"/></g>' +
+      '<g class="steam"><path d="M192 98 q-4 -8 0 -14"/><path d="M208 98 q4 -8 0 -14"/></g></g>' +
+      '<g class="gi" data-t="4-3"><rect class="sh" style="--f:#F7B5C8" x="250" y="54" width="42" height="22" rx="10"/>' +
+      '<g class="dt"><rect x="246" y="72" width="50" height="8" rx="4" fill="#86C2F2"/><path d="M262 64 h18" stroke="#E58AA6" stroke-width="2" stroke-linecap="round"/><circle cx="258" cy="46" r="4" fill="none" stroke="#EEE6D6" stroke-width="1.4"/><circle cx="268" cy="40" r="3" fill="none" stroke="#EEE6D6" stroke-width="1.4"/><circle cx="276" cy="46" r="2.4" fill="none" stroke="#EEE6D6" stroke-width="1.4"/></g>' +
+      '<rect class="sh" style="--f:#B9A8F5" x="308" y="44" width="8" height="40" rx="4"/><rect class="sh" style="--f:#9A86E8" x="306" y="30" width="12" height="16" rx="4"/>' +
+      '<g class="dt"><path d="M308 26 v6 M311 25 v7 M314 25 v7 M317 26 v6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/><rect x="307" y="62" width="10" height="12" rx="4" fill="#7C66D0"/><path d="M314 30 v-6" stroke="#86C2F2" stroke-width="2" stroke-linecap="round"/></g>' +
+      '<circle class="sh" style="--f:#F5F0E6" cx="274" cy="124" r="22"/><path class="sh" style="--f:#F5F0E6" d="M294 128 h10 v34 h-10z"/>' +
+      '<g class="dt"><circle cx="274" cy="124" r="15" fill="none" stroke="#E2DACB" stroke-width="1.4"/><circle cx="274" cy="124" r="7" fill="#C9B79C"/><circle cx="274" cy="124" r="3" fill="#8A7458"/><path d="M294 140 h10 M294 152 h10" stroke="#C9C0AE" stroke-width="1.2" stroke-dasharray="2 2"/></g></g>' +
+      '</svg><div class="vchips">' + [['4-1', 'Кружка'], ['4-1', 'Ложка'], ['4-1', 'Котелок'], ['4-2', 'Тёплый слой'], ['4-2', 'Дождевик'], ['4-2', 'Сменная обувь'], ['4-3', 'Мыло'], ['4-3', 'Щётка'], ['4-3', 'Бумага']].map(function (x) { return '<span data-t="' + x[0] + '">' + x[1] + '</span>'; }).join('') + '</div><div class="cap">Одеваюсь и собираю мелочи — отметьте пункты ниже.</div></div>';
+  },
+  nav: function () {
+    return '<div class="vis rv"><svg viewBox="0 0 340 170" aria-label="Навигация и безопасность">' +
+      '<g class="gi" data-t="6-1"><path class="sh" style="--f:#C9B79C" d="M12 30 L52 22 L92 30 L132 22 L132 140 L92 148 L52 140 L12 148Z"/><path class="sh ln" style="--f:#A88A63" d="M52 22 V140 M92 30 V148"/><path class="sh ln" style="--f:#5E9A6E" d="M22 110 q20 -30 40 -10 t40 -20"/>' +
+      '<circle cx="72" cy="84" r="38" fill="#1B2A22"/><circle class="ring" cx="72" cy="84" r="38"/>' +
+      '<text x="72" y="58" text-anchor="middle" style="font:800 11px var(--font);fill:#EEE6D6">С</text><text x="72" y="118" text-anchor="middle" style="font:800 10px var(--font);fill:#A3B5AA">Ю</text>' +
+      '<g class="needle"><path d="M72 58 L80 84 L72 110 L64 84Z" fill="#EEE6D6"/><path d="M72 58 L80 84 L64 84Z" fill="#E4574A"/><circle cx="72" cy="84" r="3.5" fill="#1B2A22"/></g>' +
+      '<rect class="sh" style="--f:#F2C55C" x="104" y="134" width="22" height="10" rx="5"/><circle class="sh" style="--f:#F2C55C" cx="128" cy="139" r="8"/></g>' +
+      '<g class="gi" data-t="6-2"><path class="sh ln" style="--f:#B3261E" d="M162 66 v-8 a8 8 0 0 1 8 -8 h20 a8 8 0 0 1 8 8 v8"/><rect class="sh" style="--f:#E4574A" x="150" y="64" width="60" height="50" rx="10"/><path class="sh" style="--f:#FFFFFF" d="M175 74 h10 v10 h10 v10 h-10 v10 h-10 v-10 h-10 v-10 h10z"/></g>' +
+      '<g class="gi" data-t="6-3"><rect x="240" y="42" width="46" height="92" rx="10" fill="#1B2A22" stroke="#A3B5AA" stroke-width="2.5"/><rect class="batt" x="248" y="52" width="30" height="72" rx="4"/>' +
+      '<rect class="sh" style="--f:#B9A8F5" x="300" y="90" width="28" height="50" rx="7"/><path class="sh ln" style="--f:#B9A8F5" d="M314 90 q0 -16 -16 -8 q-8 4 -12 4"/></g>' +
+      '<g class="gi" data-t="6-4"><path class="wave" d="M252 34 q11 -10 22 0"/><path class="wave" d="M246 26 q17 -14 34 0"/><path class="wave" d="M240 18 q23 -18 46 0"/>' +
+      '<rect class="sh" style="--f:#E4574A" x="244" y="146" width="38" height="16" rx="8"/></g>' +
+      '<text x="263" y="158" text-anchor="middle" style="font:800 10px var(--font);fill:#EEE6D6">112</text>' +
+      '</svg><div class="vchips">' + [['6-1', 'Карта'], ['6-1', 'Компас'], ['6-1', 'Свисток'], ['6-2', 'Аптечка'], ['6-3', 'Телефон'], ['6-3', 'Пауэрбанк'], ['6-4', '112']].map(function (x) { return '<span data-t="' + x[0] + '">' + x[1] + '</span>'; }).join('') + '</div><div class="cap">Компас найдёт север, телефон зарядится — отметьте пункты ниже.</div></div>';
+  }
+};
+function tool(o) {
+  if (o.tool === 'date') return '<div class="tool"><div class="grid2"><div class="f"><label for="dStart">Выхожу в поход</label><input type="date" id="dStart"></div><div class="f"><label>Зарегистрировать до</label><div class="res" id="dOut">Укажите дату выхода</div></div></div></div>';
+  if (o.tool === 'msg') return '<div class="tool"><div class="grid2"><div class="f"><label for="mWhere">Куда иду</label><input type="text" id="mWhere" placeholder="Например, пик Черского"></div><div class="f"><label for="mWho">С кем</label><input type="text" id="mWho" placeholder="Имена спутников"></div></div><div class="f"><label for="mBack">Когда вернусь</label><input type="date" id="mBack"></div><div class="msg" id="mText"></div><button type="button" class="btn" id="mCopy">Скопировать сообщение</button></div>';
+  if (o.tool === 'water') return '<div class="tool"><div class="grid2"><div class="f"><label>Человек</label><div class="step" data-k="ppl"><button type="button" aria-label="Меньше">−</button><b>2</b><button type="button" aria-label="Больше">+</button></div></div><div class="f"><label>Дней</label><div class="step" data-k="days"><button type="button" aria-label="Меньше">−</button><b>3</b><button type="button" aria-label="Больше">+</button></div></div></div><div class="res" id="wOut"></div></div>';
+  if (o.tool === 'power') return '<div class="tool"><div class="grid2"><div class="f"><label for="pPhone">Батарея телефона, мА·ч</label><input type="number" id="pPhone" value="4500" min="500" max="20000" step="100" inputmode="numeric"></div><div class="f"><label for="pBank">Пауэрбанк, мА·ч</label><input type="number" id="pBank" value="10000" min="1000" max="50000" step="1000" inputmode="numeric"></div></div><div class="res" id="pOut"></div><div class="warn">Примерно: при зарядке теряется около трети ёмкости. Экономьте заряд — авиарежим, когда связь не нужна.</div></div>';
+  if (o.tool === 'sos') return '<div class="sos"><span class="n">112</span><span class="warn">Единый номер спасения. Запишите его и номера близких на бумаге — на случай, если телефон разрядится.</span></div>';
+  return '';
+}
+document.getElementById('chaps').innerHTML = CH.map(function (c, ci) {
+  var n = c.items.length;
+  return '<section class="chap c' + (ci + 1) + '" id="ch' + (ci + 1) + '"><div class="chead rv"><div class="num">' + (ci + 1) + '</div><div><h2>' + esc(c.t) + '</h2><small data-cnt="' + ci + '">0 из ' + n + '</small></div></div>' +
+    (c.map ? packMap() : '') + (c.vis ? VIS[c.vis]() : '') +
+    TASKS.filter(function (t) { return t.ci === ci; }).map(function (t) {
+      return '<div class="task rv" data-id="' + t.id + '"' + (t.z ? ' data-z="' + t.z + '"' : '') + '><div class="trow" role="checkbox" tabindex="0" aria-checked="false"><button class="box" type="button" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><div class="ttx">' + esc(t.x) + '</div></div>' + tool(t) + '</div>';
+    }).join('') + '</section>';
+}).join('');
+
+// ----- отметки и прогресс -----
+var packEl = document.getElementById('pack'), packfill = document.getElementById('packfill');
+function render(animId) {
+  var total = TASKS.length, cnt = 0;
+  TASKS.forEach(function (t) {
+    var el = document.querySelector('.task[data-id="' + t.id + '"]'), on = !!done[t.id]; if (on) cnt++;
+    el.classList.toggle('done', on); el.querySelector('.trow').setAttribute('aria-checked', on);
+  });
+  document.getElementById('mtxt').textContent = 'Готовность: ' + cnt + ' из ' + total;
+  document.getElementById('mbar').style.width = (100 * cnt / total) + '%';
+  var h = 31 * cnt / total; packfill.setAttribute('y', 40 - h); packfill.setAttribute('height', h);
+  CH.forEach(function (c, ci) {
+    var ts = TASKS.filter(function (t) { return t.ci === ci; }), d = ts.filter(function (t) { return done[t.id]; }).length;
+    document.querySelector('[data-cnt="' + ci + '"]').textContent = d + ' из ' + ts.length;
+    document.getElementById('ch' + (ci + 1)).classList.toggle('full', d === ts.length);
+    document.querySelector('#toc a[data-ci="' + ci + '"]').classList.toggle('full', d === ts.length);
+  });
+  document.querySelectorAll('#packmap [data-z]').forEach(function (g) {
+    var on = TASKS.some(function (t) { return t.z === g.getAttribute('data-z') && done[t.id]; });
+    g.querySelectorAll('.zone,.zt').forEach(function (e) { e.classList.toggle('on', on); });
+  });
+  document.querySelectorAll('.gi[data-t],.vchips span[data-t]').forEach(function (e) { e.classList.toggle('on', !!done[e.getAttribute('data-t')]); });
+  var fin = document.getElementById('final'), ready = cnt === total;
+  fin.classList.toggle('ready', ready);
+  document.getElementById('fbig').textContent = ready ? '🏕️' : '🎒';
+  document.getElementById('ftitle').textContent = ready ? 'Я готов(а) к походу!' : 'Почти готово';
+  document.getElementById('flead').textContent = ready ? 'Все ' + total + ' пунктов выполнены. Хорошего маршрута!' : 'Осталось отметить: ' + (total - cnt) + '.';
+  return ready;
+}
+function toggle(task) {
+  var id = task.getAttribute('data-id'); done[id] = !done[id]; if (!done[id]) delete done[id]; save();
+  var wasReady = TASKS.every(function (t) { return t.id === id ? !done[id] : done[t.id]; });
+  var ready = render();
+  if (done[id]) {
+    task.classList.remove('pop'); void task.offsetWidth; task.classList.add('pop');
+    flyToPack(task.querySelector('.box'));
+    var z = task.getAttribute('data-z'); if (z) { var pm = document.getElementById('packmap'); pm.classList.remove('pulse'); void pm.offsetWidth; pm.classList.add('pulse'); }
+    if (ready && !wasReady) confetti();
+  }
+}
+function flyToPack(from) {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var a = from.getBoundingClientRect(), b = packEl.getBoundingClientRect(), d = document.createElement('div');
+  d.className = 'fly'; d.style.setProperty('--tc', getComputedStyle(from).getPropertyValue('--tc'));
+  d.style.left = (a.left + a.width / 2 - 6) + 'px'; d.style.top = (a.top + a.height / 2 - 6) + 'px'; document.body.appendChild(d);
+  requestAnimationFrame(function () { d.style.transform = 'translate(' + (b.left + b.width / 2 - a.left - a.width / 2) + 'px,' + (b.top + b.height / 2 - a.top - a.height / 2) + 'px) scale(.5)'; d.style.opacity = '.2'; });
+  setTimeout(function () { d.remove(); packEl.classList.remove('bump'); void packEl.offsetWidth; packEl.classList.add('bump'); }, 650);
+}
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cols = ['#F38A55', '#F2C55C', '#7DD6A1', '#86C2F2', '#B9A8F5', '#FF8F84'];
+  for (var i = 0; i < 70; i++) { var c = document.createElement('div'); c.className = 'conf'; c.style.left = Math.random() * 96 + 'vw'; c.style.background = cols[i % cols.length]; c.style.animationDuration = (1.8 + Math.random() * 1.8) + 's'; c.style.animationDelay = Math.random() * .5 + 's'; document.body.appendChild(c); setTimeout(c.remove.bind(c), 4200); }
+}
+document.getElementById('chaps').addEventListener('click', function (e) {
+  if (e.target.closest('.tool,.sos')) return;
+  var row = e.target.closest('.trow'); if (row) toggle(row.closest('.task'));
+});
+document.getElementById('chaps').addEventListener('keydown', function (e) {
+  var row = e.target.closest && e.target.closest('.trow'); if (row && (e.key === ' ' || e.key === 'Enter')) { e.preventDefault(); toggle(row.closest('.task')); }
+});
+document.getElementById('reset').onclick = function () { done = {}; save(); render(); scrollTo({top: 0, behavior: 'smooth'}); };
+
+// ----- инструменты -----
+var fmt = function (d) { return d.toLocaleDateString('ru-RU', {day: 'numeric', month: 'long', year: 'numeric'}); };
+var dS = document.getElementById('dStart');
+dS.oninput = function () {
+  var out = document.getElementById('dOut'); if (!dS.value) { out.textContent = 'Укажите дату выхода'; return; }
+  var d = new Date(dS.value + 'T12:00:00'), dl = new Date(d); dl.setDate(dl.getDate() - 10);
+  var today = new Date(); today.setHours(12, 0, 0, 0); var left = Math.round((dl - today) / 864e5);
+  out.innerHTML = '<b>' + fmt(dl) + '</b><br>' + (left > 0 ? 'Осталось дней: ' + left : left === 0 ? 'Это сегодня!' : 'Срок уже прошёл — регистрируйте как можно скорее.');
+};
+var mW = document.getElementById('mWhere'), mP = document.getElementById('mWho'), mB = document.getElementById('mBack'), mT = document.getElementById('mText');
+function msg() {
+  var back = mB.value ? fmt(new Date(mB.value + 'T12:00:00')) : '…';
+  mT.textContent = 'Иду в поход: ' + (mW.value.trim() || '…') + '.\nСо мной: ' + (mP.value.trim() || '…') + '.\nВернусь: ' + back.replace(/\.$/, '') + '.\nМаршрут зарегистрирован в МЧС. Если не выйду на связь в срок — звоните 112.';
+}
+[mW, mP, mB].forEach(function (i) { i.oninput = msg; }); msg();
+document.getElementById('mCopy').onclick = function () {
+  var b = this, t = mT.textContent;
+  (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { b.textContent = 'Скопировано'; }, function () {
+    var r = document.createRange(); r.selectNodeContents(mT); var s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = 'Выделено — скопируйте';
+  }).then(function () { setTimeout(function () { b.textContent = 'Скопировать сообщение'; }, 2000); });
+};
+function power() {
+  var ph = +document.getElementById('pPhone').value, pb = +document.getElementById('pBank').value, out = document.getElementById('pOut');
+  if (!(ph > 0 && pb > 0)) { out.textContent = 'Введите ёмкость телефона и пауэрбанка'; return; }
+  var n = Math.floor(pb * .65 / ph * 10) / 10;
+  out.innerHTML = 'Хватит примерно на <b>' + String(n).replace('.', ',') + '</b> ' + (n >= 2 && n < 5 ? 'полные зарядки' : n >= 1 && n < 2 ? 'полную зарядку' : 'полных зарядок');
+}
+document.getElementById('pPhone').oninput = power; document.getElementById('pBank').oninput = power; power();
+var W = {ppl: 2, days: 3};
+function water() {
+  var lo = W.ppl * W.days * 1.5, hi = W.ppl * W.days * 2, f = function (x) { return String(x).replace('.', ','); };
+  document.getElementById('wOut').innerHTML = 'Нужно воды: <b>' + f(lo) + '–' + f(hi) + ' л</b> на всю группу';
+}
+document.querySelectorAll('.step').forEach(function (st) {
+  var k = st.getAttribute('data-k'), bs = st.querySelectorAll('button'), v = st.querySelector('b');
+  bs[0].onclick = function () { W[k] = Math.max(1, W[k] - 1); v.textContent = W[k]; water(); };
+  bs[1].onclick = function () { W[k] = Math.min(k === 'ppl' ? 30 : 30, W[k] + 1); v.textContent = W[k]; water(); };
+});
+water();
+
+// ----- появление при прокрутке -----
+var H = innerHeight, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.remove('pre'); io.unobserve(e.target); } }); }, {rootMargin: '0px 0px -10% 0px'});
+document.querySelectorAll('.rv').forEach(function (el) { if (!reduce && el.getBoundingClientRect().top > H * .92) el.classList.add('pre'); io.observe(el); });
+render();
+
+// ----- светлячки -----
+if (!reduce) (function () {
+  var cv = document.getElementById('forest'), cx = cv.getContext('2d'), W2, H2;
+  function size() { var d = Math.min(devicePixelRatio || 1, 2); W2 = innerWidth; H2 = innerHeight; cv.width = W2 * d; cv.height = H2 * d; cx.setTransform(d, 0, 0, d, 0, 0); }
+  size(); addEventListener('resize', size);
+  var flies = Array.from({length: 22}, function () { return {x: Math.random() * W2, y: Math.random() * H2, t: Math.random() * 6.3, s: .3 + Math.random() * .6}; });
+  (function frame() {
+    cx.clearRect(0, 0, W2, H2);
+    flies.forEach(function (f) { f.t += .02 * f.s; f.x += Math.cos(f.t * 1.3) * .3; f.y += Math.sin(f.t) * .3; var g = .25 + .35 * Math.max(0, Math.sin(f.t * 2));
+      cx.globalAlpha = g; cx.fillStyle = '#F38A55'; cx.beginPath(); cx.arc(f.x, f.y, 2, 0, 6.3); cx.fill(); cx.globalAlpha = g * .25; cx.beginPath(); cx.arc(f.x, f.y, 7, 0, 6.3); cx.fill(); });
+    cx.globalAlpha = 1; requestAnimationFrame(frame);
+  })();
+})();
+})();
+</script>
+</body>
+</html>
