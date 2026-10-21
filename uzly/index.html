@@ -7,6 +7,11 @@
 <meta name="theme-color" content="#F5EEDF">
 <link href="../assets/fonts/manrope.css" rel="stylesheet">
 <style>
+.shot{padding:12px;display:flex;flex-direction:column;gap:10px;margin:0}
+.photo{position:relative;border-radius:16px;overflow:hidden;background:#F5EEDF;aspect-ratio:16/9;max-width:100%}
+.photo img{display:block;width:100%;height:100%;object-fit:contain}
+.photo .retry{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:0;background:#fff;color:var(--muted);font-family:inherit;font-weight:800;font-size:14px}
+.shot figcaption{font-size:17px;font-weight:800;text-align:center;padding:0 4px 4px}
 :root{--green:#284F36;--orange:#D85B21;--navy:#1F3954;--sand:#E4D5C2;--cream:#F5EEDF;--paper:#FBF8F1;--muted:#5B6B7C}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -238,27 +243,27 @@ if (typeof module !== 'undefined') module.exports = QR;
 </script>
 <script>
 var KNOTS = [
-  {slug: 'pryamoy', title: 'Прямой (рифовый) узел', img: 'reef', steps: 4, caps: ['1-й способ, шаг 1', '1-й способ, готово', '2-й способ, шаг 1', '2-й способ, готово'],
+  {slug: 'pryamoy', title: 'Прямой (рифовый) узел', photos: [['reef-v1', 'Вариант 1'], ['reef-v2', 'Вариант 2']],
    lead: 'Самый первый узел, которому учат скаутов. Два конца верёвок одинаковой толщины: обвязать концы друг вокруг друга дважды и вывести параллельно. Завязывать концы — например, при перевязке узелков в «верёвочной змейке» или связывании шнуров. Важно: без контрольных узлов может ползти, на мокрой верёвке затягивается туго. Правило: первое скрещивание «лево на право», второе — «право на лево», иначе получится ненадёжный «бабий» вариант.',
    plus: 'Вяжется мгновенно, плоский — не мешает под верёвочным «тромбоном» груза.',
    minus: 'Под рывком может «переворачиваться» в два полуштыка и развязаться; на мокрых и жёстких верёвках ползёт и затягивается намертво — без контрольных узлов недопустим.',
    use: 'Связывание шнуров одинаковой толщины; завязывание «тромбона» — связки скатанного коврика и рюкзака; перевязка мешков и свёртков; фиксация бинта или жгута (как в медицине); быстрая починка порванной бечёвки в лагере.'},
-  {slug: 'vosmerka-provodnik', title: 'Восьмёрка-проводник', img: 'eight', steps: 4,
+  {slug: 'vosmerka-provodnik', title: 'Восьмёрка-проводник', photos: [['eight']],
    lead: 'Самый первый узел, которому учат скаутов. Вяжется так: конец верёвки обводят вокруг коренной части и продевают в получившуюся петлю, повторяя форму восьмёрки. Базовый стопорный узел и основа многих других.',
    plus: 'Вяжется за секунду, не затягивается намертво, сам не развязывается, работает на любой верёвке.',
    minus: 'Лишь немного утолщает верёвку — как стопор на скользкой опоре может поползти.',
    use: 'Узел формирует петлю, которую в альпинизме, например, используют для ввязывания в неё другой верёвки (создание бекетового узла) или подвеса; стопор на конце верёвки, чтобы она не выскользнула из петли или отверстия; утолщение конца для держателя; элемент декоративных и фиксирующих вязок; простая ручка-ограничитель на шнуре палатки.'},
-  {slug: 'bulin', title: 'Булинь', img: 'bowline', steps: 4,
+  {slug: 'bulin', title: 'Булинь', photos: [['bowline']],
    lead: 'Королевский узел: делает незатягивающуюся петлю на конце верёвки. Вяжется одной рукой, не ползёт под нагрузкой, легко развязывается после любого веса. Незатягивающаяся петля на конце верёвки: ходовой конец делает ход вокруг коренного и возвращается в начальную петлю. Не случайно называется «королём узлов».',
    plus: 'Не затягивается под любой нагрузкой, легко вяжется даже одной рукой, всегда можно развязать; петля не сжимает груз.',
    minus: 'На гладкой скользкой верёвке ползёт — нужен контрольный узел; легко ошибиться, если ходовой конец вышел «не туда» (вязать надо в определённом направлении).',
    use: 'Спасательная петля под грудь и подмышки; обвязка и опора вокруг дерева, столба, кольца; крепление перил переправы к камню или бревну; швырковая петля — если надо набросить верёвку на опору снизу; петля под рюкзак, канистру, банку для вытягивания; «удавка наоборот» для бочек и габаритных грузов.'},
-  {slug: 'avstriyskiy-provodnik', title: 'Австрийский проводник', img: 'austrian', steps: 4,
+  {slug: 'avstriyskiy-provodnik', title: 'Австрийский проводник', photos: [['austrian']],
    lead: 'На сложенной вдвое верёвке делают оборот и продевают петлю в получившееся «окно», расправляют узел — получается незатягивающаяся петля в середине верёвки, а не на конце. Именно это отличает его от обычного проводника: нагрузка идёт в обе стороны вдоль верёвки, а узел не деформируется и не затягивается.',
    plus: 'Единственный по-настоящему надёжный способ получить петлю в середине верёвки — держит даже при рывках в обе стороны; почти не ослабляет верёвку; легко развязывается после нагрузки.',
    minus: 'Требует тренировки — в спешке легко завязать «не ту» петлю или перекрутить верёвку; занимает больше длины, чем простой узел.',
    use: 'Ступени для подъёма по верёвке (петли для ног — «лестница» из австрийских проводников); точка крепления в середине верёвки — закрепить карабин на перилах или навесной переправе, не имея свободного конца; изоляция повреждённого участка — перетёртый кусок верёвки оставляют без нагрузки, завязав петли по обе стороны; переноска грузов — петли под жерди для переноски брёвен или носилок; аварийная «ручка» на перилах, за которую можно держаться.'},
-  {slug: 'greypvayn', title: 'Грейпвайн (двойной рыбацкий)', img: 'grapevine', steps: 7,
+  {slug: 'greypvayn', title: 'Грейпвайн (двойной рыбацкий)', photos: [['grapevine']],
    lead: 'Два конца поочерёдно обвивают друг друга вокруг коренной части, затем продеваются в петли. Отлично соединяет две верёвки одинакового диаметра — в том числе тонкие репшнуры и «слёзы» для петель. Один из самых надёжных узлов для связывания, но почти не развязывается после серьёзной нагрузки — обычно режут.',
    plus: 'Один из самых надёжных для связывания; хорошо держит и на тонких репшнурах; не требует контрольных узлов.',
    minus: 'Почти не развязывается после серьёзной нагрузки — обычно узел срезают; требует внимательности и расправления, в спешке легко связать «кривой» грейпвайн.',
@@ -270,8 +275,7 @@ var BLOBS = '<svg class="blob" aria-hidden="true" viewBox="0 0 200 160" style="r
 var ROPE = '<svg class="rope" viewBox="0 0 640 84" preserveAspectRatio="none" aria-hidden="true">' +
   '<path class="r1" d="M8 60 C110 60 170 58 230 50 C300 40 300 6 262 8 C222 10 236 70 300 66 C360 62 352 20 320 24 C290 28 312 58 380 56 C470 54 540 58 632 56"/>' +
   '<path class="r2" d="M8 60 C110 60 170 58 230 50 C300 40 300 6 262 8 C222 10 236 70 300 66 C360 62 352 20 320 24 C290 28 312 58 380 56 C470 54 540 58 632 56"/></svg>';
-var STEP_MS = 2600;
-var P = {i: 0, playing: true, t: null, k: null};
+var P = {k: null};
 
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]; }); }
 function slug() { return (location.hash.match(/^#([\w-]+)/) || [])[1] || ''; }
@@ -282,7 +286,7 @@ function renderList() {
   document.getElementById('app').innerHTML = BLOBS + '<div class="hero"><div class="kick">Туристические узлы</div><h1>Узлы на столе</h1>' + ROPE + '</div>' +
     '<div class="wrap"><p class="lead in" style="padding:0 4px">Наведите камеру телефона на QR-код у узла — откроется его страница со схемой вязания. Или выберите узел здесь.</p>' +
     '<div class="list">' + KNOTS.map(function (k, i) {
-      return '<a class="item in" style="animation-delay:' + (150 + i * 70) + 'ms" href="#' + k.slug + '"><img src="img/' + k.img + '-' + k.steps + '.jpg" alt="" onerror="imgRetry(this)"><span class="n">Узел ' + (i + 1) + '</span><b>' + esc(k.title) + '</b></a>';
+      return '<a class="item in" style="animation-delay:' + (150 + i * 70) + 'ms" href="#' + k.slug + '"><img src="img/' + k.photos[0][0] + '.jpg" alt="" onerror="imgRetry(this)"><span class="n">Узел ' + (i + 1) + '</span><b>' + esc(k.title) + '</b></a>';
     }).join('') + '</div>' + (/[?&]print/.test(location.search) ? '<button class="btn in" style="animation-delay:600ms" onclick="printQR()">Напечатать QR-коды (A4)</button>' : '') + '</div>';
 }
 function printQR() {
@@ -297,7 +301,7 @@ function printQR() {
 function imgRetry(im) {
   var n = +(im.getAttribute('data-try') || 0), src = im.getAttribute('src').split('?')[0];
   if (n < 3) { im.setAttribute('data-try', n + 1); setTimeout(function () { im.src = src + '?r=' + Date.now(); }, 900 * (n + 1)); return; }
-  var stage = im.closest && im.closest('.stage');
+  var stage = im.closest && im.closest('.photo');
   if (stage && !stage.querySelector('.retry')) {
     var b = document.createElement('button'); b.className = 'retry'; b.textContent = '🖼 Картинка не загрузилась — нажмите';
     b.onclick = function () { b.remove(); stage.querySelectorAll('img').forEach(function (x) { x.setAttribute('data-try', 0); x.src = x.getAttribute('src').split('?')[0] + '?r=' + Date.now(); }); };
@@ -307,19 +311,13 @@ function imgRetry(im) {
 function renderKnot(k) {
   var idx = KNOTS.indexOf(k), prev = KNOTS[(idx + KNOTS.length - 1) % KNOTS.length], next = KNOTS[(idx + 1) % KNOTS.length];
   document.title = k.title + ' — узел';
-  var imgs = '', segs = '';
-  for (var n = 1; n <= k.steps; n++) {
-    imgs += '<img src="img/' + k.img + '-' + n + '.jpg" alt="Шаг ' + n + '"' + (n === 1 ? ' class="on"' : '') + ' onerror="imgRetry(this)">';
-    segs += '<button aria-label="Шаг ' + n + '" onclick="goStep(' + (n - 1) + ', true)"><i></i></button>';
-  }
+  var figs = k.photos.map(function (ph, n) {
+    var cap = ph[1] || k.title;
+    return '<figure class="card shot in" style="animation-delay:' + (200 + n * 120) + 'ms"><div class="photo"><img src="img/' + ph[0] + '.jpg" alt="' + esc(k.title + (ph[1] ? ' — ' + ph[1] : '')) + '" onerror="imgRetry(this)"></div><figcaption>' + esc(cap) + '</figcaption></figure>';
+  }).join('');
   document.getElementById('app').innerHTML = BLOBS + '<div class="hero"><div class="kick">Узел ' + (idx + 1) + ' из ' + KNOTS.length + '</div><h1>' + esc(k.title) + '</h1>' + ROPE + '</div>' +
     '<div class="wrap">' +
-      '<div class="card player in" style="animation-delay:200ms"><div class="stage" id="stage"><span class="num" id="num">Шаг 1 из ' + k.steps + '</span>' + imgs + '</div>' +
-        '<div class="segs" id="segs" style="--dur:' + STEP_MS + 'ms">' + segs + '</div>' +
-        '<div class="cap" id="cap"></div>' +
-        '<div class="ctrl"><button class="round" aria-label="Предыдущий шаг" onclick="goStep(P.i - 1, true)">‹</button>' +
-        '<button class="play" id="play" onclick="togglePlay()">Пауза</button>' +
-        '<button class="round" aria-label="Следующий шаг" onclick="goStep(P.i + 1, true)">›</button></div></div>' +
+      figs +
       '<div class="card in" style="animation-delay:450ms"><p class="lead">' + esc(k.lead) + '</p></div>' +
       '<div class="pm">' +
         '<div class="card plus reveal"><span class="ic">+</span><h3>Плюсы</h3><p>' + esc(k.plus) + '</p></div>' +
@@ -328,31 +326,7 @@ function renderKnot(k) {
       '<div class="nav reveal"><a href="#' + prev.slug + '"><small>← Предыдущий</small><b>' + esc(prev.title) + '</b></a>' +
         '<a class="next" href="#' + next.slug + '"><small>Следующий →</small><b>' + esc(next.title) + '</b></a></div>' +
       '<a class="btn reveal" href="#">Все узлы</a></div>';
-  P.k = k; P.i = 0; P.playing = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-  goStep(0); reveal();
-}
-function goStep(i, manual) {
-  var k = P.k, n = k.steps; i = (i + n) % n; P.i = i;
-  document.querySelectorAll('#stage img').forEach(function (im, j) { im.classList.toggle('on', j === i); });
-  document.querySelectorAll('#segs button').forEach(function (b, j) {
-    b.classList.remove('now'); b.classList.toggle('done', j < i);
-    if (j === i) { void b.offsetWidth; b.classList.add(P.playing ? 'now' : 'done'); }
-  });
-  document.getElementById('num').textContent = 'Шаг ' + (i + 1) + ' из ' + n;
-  document.getElementById('cap').textContent = k.caps ? k.caps[i] : (i === n - 1 ? 'Готово! Затяните узел и расправьте его' : '');
-  if (manual && P.playing) togglePlay();
-  schedule();
-}
-function schedule() {
-  clearTimeout(P.t);
-  if (P.playing) P.t = setTimeout(function () { goStep(P.i + 1); }, P.i === P.k.steps - 1 ? STEP_MS + 1200 : STEP_MS);
-}
-function togglePlay() {
-  P.playing = !P.playing;
-  document.getElementById('play').textContent = P.playing ? 'Пауза' : 'Смотреть по шагам';
-  var cur = document.querySelectorAll('#segs button')[P.i];
-  if (cur) { cur.classList.remove('now', 'done'); void cur.offsetWidth; cur.classList.add(P.playing ? 'now' : 'done'); }
-  schedule();
+  P.k = k; reveal();
 }
 function reveal() {
   var els = document.querySelectorAll('.reveal');
@@ -361,10 +335,8 @@ function reveal() {
   els.forEach(function (e, i) { e.style.transitionDelay = (i % 3) * 90 + 'ms'; io.observe(e); });
 }
 
-document.addEventListener('visibilitychange', function () { if (P.k && !document.hidden && P.playing) schedule(); else clearTimeout(P.t); });
-window.addEventListener('pageshow', function (e) { if (e.persisted && P.k) goStep(P.i); });   // Safari вернул страницу из кэша «Назад»
 function route() {
-  clearTimeout(P.t); P.k = null;
+  P.k = null;
   var k = KNOTS.filter(function (x) { return x.slug === slug(); })[0];
   if (k) renderKnot(k); else renderList();
 }
