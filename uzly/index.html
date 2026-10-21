@@ -7,6 +7,21 @@
 <meta name="theme-color" content="#F5EEDF">
 <link href="../assets/fonts/manrope.css" rel="stylesheet">
 <style>
+.photo{cursor:zoom-in}
+.zhint{position:absolute;right:10px;top:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(31,57,84,.9);color:#F5EEDF;border-radius:50%;pointer-events:none;animation:zh 1.6s ease-in-out 1s 3;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.zhint svg{width:18px;height:18px}
+.shot figcaption small{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700;color:var(--muted);margin-top:4px}
+.shot figcaption small svg{width:14px;height:14px}
+@keyframes zh{50%{transform:scale(1.08)}}
+.lb{position:fixed;inset:0;z-index:50;background:rgba(18,24,22,.97);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;
+  padding:max(14px,env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) max(14px,env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));animation:lbIn .25s ease both;cursor:zoom-out}
+.lb img{max-width:100%;max-height:calc(100% - 60px);object-fit:contain;border-radius:12px;background:#F5EEDF;animation:lbImg .35s cubic-bezier(.2,.8,.2,1) both}
+.lb .lbcap{color:#F5EEDF;font-weight:800;font-size:16px;text-align:center}
+.lb .lbx{position:absolute;top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));width:44px;height:44px;border-radius:14px;border:0;background:rgba(245,238,223,.16);color:#F5EEDF;font-size:24px;font-family:inherit;cursor:pointer}
+.lb .lbtip{color:rgba(245,238,223,.6);font-size:13px;font-weight:700;text-align:center}
+@media (orientation:landscape){.lb .lbtip .rot{display:none}}
+@keyframes lbIn{from{opacity:0}}
+@keyframes lbImg{from{opacity:0;transform:scale(.92)}}
 .shot{padding:12px;display:flex;flex-direction:column;gap:10px;margin:0}
 .photo{position:relative;border-radius:16px;overflow:hidden;background:#F5EEDF;aspect-ratio:16/9;max-width:100%}
 .photo img{display:block;width:100%;height:100%;object-fit:contain}
@@ -313,7 +328,7 @@ function renderKnot(k) {
   document.title = k.title + ' — узел';
   var figs = k.photos.map(function (ph, n) {
     var cap = ph[1] || k.title;
-    return '<figure class="card shot in" style="animation-delay:' + (200 + n * 120) + 'ms"><div class="photo"><img src="img/' + ph[0] + '.jpg" alt="' + esc(k.title + (ph[1] ? ' — ' + ph[1] : '')) + '" onerror="imgRetry(this)"></div><figcaption>' + esc(cap) + '</figcaption></figure>';
+    return '<figure class="card shot in" style="animation-delay:' + (200 + n * 120) + 'ms"><div class="photo" role="button" tabindex="0" aria-label="Открыть схему на весь экран" data-cap="' + esc(cap) + '"><img src="img/' + ph[0] + '.jpg" alt="' + esc(k.title + (ph[1] ? ' — ' + ph[1] : '')) + '" onerror="imgRetry(this)"><span class="zhint" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></div><figcaption>' + esc(cap) + '<small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>Нажмите на схему, чтобы увеличить</small></figcaption></figure>';
   }).join('');
   document.getElementById('app').innerHTML = BLOBS + '<div class="hero"><div class="kick">Узел ' + (idx + 1) + ' из ' + KNOTS.length + '</div><h1>' + esc(k.title) + '</h1>' + ROPE + '</div>' +
     '<div class="wrap">' +
@@ -340,7 +355,21 @@ function route() {
   var k = KNOTS.filter(function (x) { return x.slug === slug(); })[0];
   if (k) renderKnot(k); else renderList();
 }
-window.addEventListener('hashchange', function () { route(); window.scrollTo(0, 0); });
+
+// увеличение схемы на весь экран
+function openZoom(ph) {
+  var img = ph.querySelector('img'); if (!img || ph.querySelector('.retry')) return;
+  var lb = document.createElement('div'); lb.className = 'lb'; lb.setAttribute('role', 'dialog'); lb.setAttribute('aria-modal', 'true');
+  lb.innerHTML = '<button class="lbx" type="button" aria-label="Закрыть">×</button><img alt=""><div class="lbcap"></div><div class="lbtip">Нажмите в любом месте, чтобы закрыть<span class="rot"> · поверните телефон — схема станет крупнее</span></div>';
+  lb.querySelector('img').src = img.getAttribute('src'); lb.querySelector('img').alt = img.alt; lb.querySelector('.lbcap').textContent = ph.getAttribute('data-cap') || '';
+  function close() { lb.remove(); document.removeEventListener('keydown', key); document.body.style.overflow = ''; ph.focus && ph.focus(); }
+  function key(e) { if (e.key === 'Escape') close(); }
+  lb.addEventListener('click', close); document.addEventListener('keydown', key);
+  document.body.style.overflow = 'hidden'; document.body.appendChild(lb); lb.querySelector('.lbx').focus();
+}
+document.addEventListener('click', function (e) { var ph = e.target.closest && e.target.closest('.photo'); if (ph && !e.target.closest('.retry')) openZoom(ph); });
+document.addEventListener('keydown', function (e) { var ph = e.target.closest && e.target.closest('.photo'); if (ph && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openZoom(ph); } });
+window.addEventListener('hashchange', function () { var lb = document.querySelector('.lb'); if (lb) { lb.remove(); document.body.style.overflow = ''; } route(); window.scrollTo(0, 0); });
 route();
 </script>
 <script>
