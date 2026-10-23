@@ -414,7 +414,8 @@ function art2() {
 function art3() {
   var tent = function (x, c) { return '<path d="M' + (x - 50) + ' 214 L' + (x - 30) + ' 188 M' + (x + 50) + ' 214 L' + (x + 30) + ' 188" stroke="#2B2622" stroke-width=".7" opacity=".45"/><path d="M' + (x - 36) + ' 214 L' + x + ' 160 L' + (x + 36) + ' 214Z" fill="' + c + '"/><path d="M' + x + ' 160 L' + (x + 36) + ' 214 H' + (x + 14) + 'Z" fill="#000" opacity=".15"/><path d="M' + x + ' 160 L' + (x - 10) + ' 214 H' + (x + 10) + 'Z" fill="#1E3A28"/><path d="M' + x + ' 160 L' + (x - 10) + ' 214 L' + (x - 4) + ' 214 L' + (x + 1) + ' 175Z" fill="#fff" opacity=".2"/><path d="M' + (x - 18) + ' 187 L' + (x - 24) + ' 214 M' + (x + 18) + ' 187 L' + (x + 24) + ' 214" stroke="#000" stroke-width=".8" opacity=".2"/><path d="M' + x + ' 160 v-6" stroke="#6E4630" stroke-width="2"/><path d="M' + (x - 52) + ' 214 v-4 M' + (x + 52) + ' 214 v-4" stroke="#8A5A3A" stroke-width="2"/>'; };
   var notes = ''; for (var i = 0; i < 3; i++) notes += at(316, 120, 1, A('note', '<path d="M0 0 v-12 l8 -3 v12" stroke="#FFF3C4" stroke-width="2" fill="none"/><circle cx="-2" cy="0" r="3" fill="#FFF3C4"/><circle cx="6" cy="-3" r="3" fill="#FFF3C4"/>', -i * 1.1));
-  var bookFront = '<g transform="translate(0 -62)"><path d="M0 4 L-18 0 L-18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/><path d="M0 4 L18 0 L18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/>' + lily(-9, -7, 12, C.green) + '<path d="M4 -9 H14 M4 -5 H14" stroke="#C9C0AE" stroke-width="1.3"/></g>';
+  var bookFront = '<g transform="translate(0 -50)"><path d="M0 4 L-18 0 L-18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/><path d="M0 4 L18 0 L18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/>' + lily(-9, -7, 12, C.green) + '<path d="M4 -9 H14 M4 -5 H14" stroke="#C9C0AE" stroke-width="1.3"/></g>' +
+    '<circle cx="-17.5" cy="-47" r="4.3" fill="' + SK[0] + '"/><circle cx="17.5" cy="-47" r="4.3" fill="' + SK[0] + '"/><path d="M-20 -45 q2.5 1.6 5 0 M15 -45 q2.5 1.6 5 0" stroke="#000" stroke-width=".6" opacity=".18" fill="none"/>';
   var guitar = '<g transform="translate(0 -58) rotate(-28)"><rect x="-2.5" y="-40" width="5" height="34" fill="#6E4630"/><path d="M-2.5 -36 h5 M-2.5 -31 h5 M-2.5 -26 h5 M-2.5 -21 h5" stroke="#D9C9A0" stroke-width=".6"/><ellipse cx="0" cy="0" rx="12" ry="15" fill="#C9862F"/><ellipse cx="0" cy="-10" rx="9" ry="9" fill="#C9862F"/><ellipse cx="-3" cy="-4" rx="5" ry="8" fill="#fff" opacity=".12"/><circle cx="0" cy="-2" r="4.4" fill="#5A3328"/><circle cx="0" cy="-2" r="5.4" fill="none" stroke="#8A5A3A" stroke-width=".8"/><rect x="-5" y="7" width="10" height="2.5" rx="1" fill="#5A3328"/><path d="M-1.2 -42 V8 M0 -42 V8 M1.2 -42 V8" stroke="#F2E6C9" stroke-width=".35"/><rect x="-4" y="-46" width="8" height="7" rx="1.5" fill="#5A3328"/><circle cx="-5" cy="-44" r="1" fill="#D9C9A0"/><circle cx="5" cy="-44" r="1" fill="#D9C9A0"/><circle cx="-5" cy="-41" r="1" fill="#D9C9A0"/><circle cx="5" cy="-41" r="1" fill="#D9C9A0"/></g>';
   return '<svg viewBox="0 0 400 250" role="img" aria-label="Вечер в лагере: Анна с книгой и Алексей Васильков с гитарой у костра">' +
     '<defs><linearGradient id="ev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34527A"/><stop offset=".6" stop-color="#C98466"/><stop offset="1" stop-color="#F2B279"/></linearGradient></defs>' +
@@ -427,7 +428,7 @@ function art3() {
     [[150, 150], [258, 128], [60, 180], [370, 160], [190, 110]].map(function (p, k) { return at(p[0], p[1], 1, A('twinkle', '<circle r="1.8" fill="#FFF27A"/><circle r="4" fill="#FFF27A" opacity=".25"/>', -k * .6)); }).join('') +
     '<g transform="translate(214 138)"><rect x="0" y="0" width="3" height="76" fill="#6E4630"/>' + A('flag', '<path d="M3 2 H46 L40 11 L46 20 H3Z" fill="' + C.green + '"/>' + T(22, 14, 'Труверы', 7.5, '#F5EEDF')) + '</g>' +
     fire(200, 232, .9) +
-    P({x: 118, y: 244, s: .9, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#D85B21', skirt: C.navy, bot: '#3A3530', aA: 26, aB: -26, front: bookFront, hc: 'nod'}) +
+    P({x: 118, y: 244, s: .9, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#D85B21', skirt: C.navy, bot: '#3A3530', aA: 6, aB: -6, front: bookFront, hc: 'nod'}) +
     P({x: 290, y: 244, s: .9, hs: 'messy', hair: '#B8743A', top: C.green2, bot: '#4A4A42', skin: SK[1], aA: 30, aB: -40, cB: 'strum', hc: 'nod2', back: '<rect x="-20" y="-84" width="40" height="40" rx="8" fill="#8A5A3A"/><rect x="-20" y="-60" width="40" height="10" rx="3" fill="#6E4630"/><rect x="-14" y="-78" width="28" height="12" rx="3" fill="#9C6A44"/>', front: guitar + '<path d="M-11 -86 L-9 -50 M11 -86 L9 -50" stroke="#6E4630" stroke-width="3" opacity=".9"/>'}) + notes +
     '</svg>';
 }
@@ -580,7 +581,7 @@ function art7() {
     '</g>';
   var smoke = ''; for (var i = 0; i < 4; i++) smoke += at(200, 176, 1, A('smoke', '<circle r="9" fill="#fff" opacity=".35"/>', -i * 1.2));
   var log = function (x) { return '<rect x="' + (x - 34) + '" y="214" width="68" height="14" rx="7" fill="#6E4630"/><path d="M' + (x - 24) + ' 218 h18 M' + (x - 2) + ' 223 h22 M' + (x + 4) + ' 217 h14" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/><circle cx="' + (x - 30) + '" cy="221" r="6.5" fill="#C9A06A"/><circle cx="' + (x - 30) + '" cy="221" r="4" fill="none" stroke="#8A5A3A" stroke-width=".8"/><circle cx="' + (x - 30) + '" cy="221" r="1.6" fill="#8A5A3A"/>'; };
-  var kid = function (x, o) { o.x = x; o.y = 236; o.s = .6; o.top = o.top; o.scarf = C.orange; o.bot = '#3A3530'; return P(o); };
+  var kid = function (x, o) { o.x = x; o.y = 243; o.s = .6; o.top = o.top; o.scarf = C.orange; o.bot = '#3A3530'; return P(o); };
   return '<svg viewBox="0 0 400 250" role="img" aria-label="Ночь у костра: дети получают лесные имена — Багира, Соболь, Фретка">' +
     '<defs><linearGradient id="nt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14263A"/><stop offset="1" stop-color="#2C4A6A"/></linearGradient></defs>' +
     '<rect width="400" height="250" fill="url(#nt)"/>' + stars([[20, 20], [60, 50], [110, 14], [160, 34], [250, 18], [300, 44], [350, 16], [380, 60], [90, 80], [330, 90]]) +
@@ -596,6 +597,10 @@ function art7() {
     kid(98, {hs: 'tails', hair: '#B8743A', top: C.navy, skin: SK[2], hc: 'look', legs: false}) + kid(146, {hs: 'short', hair: '#3B2A20', top: C.green2, hc: 'look2', legs: false}) +
     kid(256, {hs: 'cap', hair: '#284F36', top: '#8C4A3A', skin: SK[1], hc: 'look', legs: false}) + kid(304, {hs: 'bob', hair: '#1E1A18', top: '#5C7FA6', hc: 'look2', legs: false}) +
     log(122) + log(280) +
+    [[98, '#3A3530'], [146, '#4A4A42'], [256, '#3A3530'], [304, '#4A4A42']].map(function (k, i) { var x = k[0]; return '<g transform="translate(' + x + ' 0)">' +
+      '<rect x="-6.6" y="211" width="5.6" height="30" rx="2.6" fill="' + k[1] + '"/><rect x="1" y="211" width="5.6" height="30" rx="2.6" fill="' + k[1] + '"/>' +
+      '<ellipse cx="-3.8" cy="212.5" rx="3.4" ry="2.2" fill="#fff" opacity=".12"/><ellipse cx="3.8" cy="212.5" rx="3.4" ry="2.2" fill="#fff" opacity=".12"/>' +
+      '<ellipse cx="-4.6" cy="241.5" rx="4.6" ry="2.3" fill="#2B2622"/><ellipse cx="4.6" cy="241.5" rx="4.6" ry="2.3" fill="#2B2622"/></g>'; }).join('') +
     '<g transform="translate(26 150)"><rect x="24" y="20" width="5" height="44" fill="#6E4630"/><rect width="54" height="26" rx="4" fill="#8A5A3A"/><path d="M4 8 h46 M4 18 h46" stroke="#6E4630" stroke-width=".8" opacity=".6"/><circle cx="4" cy="4" r="1.3" fill="#4E3020"/><circle cx="50" cy="4" r="1.3" fill="#4E3020"/>' + T(27, 12, 'АБС', 10, '#F5EEDF') + T(27, 22, '30.10.1991', 7, '#F2C55C') + '</g>' +
     A('rise', lily(200, 120, 26, '#E9A53B')) +
     '</svg>';
