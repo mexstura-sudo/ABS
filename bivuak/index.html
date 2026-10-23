@@ -464,12 +464,11 @@ function fitScene() {
   sc.setAttribute('preserveAspectRatio', w < h * 1.05 ? 'xMidYMax meet' : 'xMidYMax slice');
 }
 addEventListener('resize', fitScene);
-// Вариант подачи: A — «лента» (по умолчанию), B — «маршрут» (адрес bivuak/#marshrut).
-// Чтобы сделать «маршрут» основным, поменяйте DEFAULT_MODE на 'B'.
-var DEFAULT_MODE = 'A';
-function modeFromHash() { return location.hash === '#marshrut' ? 'B' : location.hash === '#lenta' ? 'A' : DEFAULT_MODE; }
+// Вариант подачи: B — «маршрут» (основной, адрес bivuak/), A — старая «лента» (адрес bivuak/#marshrut, также bivuak/#lenta).
+var DEFAULT_MODE = 'B';
+function modeFromHash() { return /^#(marshrut|lenta)$/.test(location.hash) ? 'A' : DEFAULT_MODE; }
 fitScene(); setMode(modeFromHash());
-addEventListener('hashchange', function () { if (/^#(marshrut|lenta)$/.test(location.hash)) setMode(modeFromHash()); });
+addEventListener('hashchange', function () { if (/^#(marshrut|lenta)$/.test(location.hash) || location.hash === '') setMode(modeFromHash()); });
 })();
 </script>
 </body>
