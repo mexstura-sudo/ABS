@@ -192,6 +192,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   <p class="end">Хорошего похода и безопасного возвращения!</p>
 </div>
 
+<script src="../assets/leaf.js"></script>
 <script>
 (function () {
 var CH = [
@@ -407,6 +408,10 @@ function render(animId) {
   document.querySelectorAll('.gi[data-t],.vchips span[data-t]').forEach(function (e) { e.classList.toggle('on', !!done[e.getAttribute('data-t')]); });
   var fin = document.getElementById('final'), ready = cnt === total;
   fin.classList.toggle('ready', ready);
+  // листик для книги «История АБС» — когда отмечены все пункты
+  var lf = fin.querySelector('.abs-leaf');
+  if (ready && !lf && window.ABSLeaf) ABSLeaf.put(fin, 'ДРУЖБА', {right: '22px', top: '-30px'});
+  if (!ready && lf) lf.remove();
   document.getElementById('fbig').textContent = ready ? '🏕️' : '🎒';
   document.getElementById('ftitle').textContent = ready ? 'Я готов(а) к походу!' : 'Почти готово';
   document.getElementById('flead').textContent = ready ? 'Все ' + total + ' пунктов выполнены. Хорошего маршрута!' : 'Осталось отметить: ' + (total - cnt) + '.';

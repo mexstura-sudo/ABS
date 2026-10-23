@@ -25,7 +25,7 @@ h1{font-size:38px;line-height:1.05;margin:8px 0 0;max-width:80%;letter-spacing:-
 .go{flex:1;min-width:0;display:flex;align-items:center;gap:16px;padding:8px 0 8px 10px;text-decoration:none;color:var(--navy);border-radius:22px;transition:transform .2s}
 .go:active{transform:scale(.98)}
 .ic{flex:none;width:60px;height:60px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:30px}
-.c1 .ic{background:#F6D9CB}.c2 .ic{background:#D7E4D6}.c3 .ic{background:#D5DEE8}.c4 .ic{background:#EADCC8}.c5 .ic{background:#F6D9CB}.c6 .ic{background:#D7E4D6}.c7 .ic{background:#D5DEE8}
+.c1 .ic{background:#F6D9CB}.c2 .ic{background:#D7E4D6}.c3 .ic{background:#D5DEE8}.c4 .ic{background:#EADCC8}.c5 .ic{background:#F6D9CB}.c6 .ic{background:#D7E4D6}.c7 .ic{background:#D5DEE8}.c8 .ic{background:#EADCC8}
 .tx{flex:1;min-width:0}
 .tx b{display:block;font-size:19px;line-height:1.2;font-weight:800}
 .tx span{display:block;font-size:14px;color:var(--muted);margin-top:4px}
@@ -82,8 +82,10 @@ h1{font-size:38px;line-height:1.05;margin:8px 0 0;max-width:80%;letter-spacing:-
       <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="bivuak/" data-t="Бивуак — ставим лагерь правильно"></button></div>
     <div class="card c7 in" style="animation-delay:540ms"><a class="go" href="podgotovka/"><span class="ic">🎒</span><span class="tx"><b>Как подготовиться к походу?</b><span>Статья · 26 шагов</span></span></a>
       <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="podgotovka/" data-t="Как подготовиться к походу?"></button></div>
-    <button class="btn in" style="animation-delay:610ms;margin-top:6px" type="button" onclick="printSheet()">Напечатать QR-коды (A4)</button>
-    <a class="btn ghost in" style="animation-delay:670ms" href="uzly/?print">QR-коды для каждого узла</a>
+    <div class="card c8 in" style="animation-delay:610ms"><a class="go" href="kniga/"><span class="ic">📖</span><span class="tx"><b>История АБС</b><span>Книга · 7 страниц</span></span></a>
+      <button class="qrb" type="button" aria-label="Показать QR-код" data-qr="kniga/" data-t="История АБС"></button></div>
+    <button class="btn in" style="animation-delay:680ms;margin-top:6px" type="button" onclick="printSheet()">Напечатать QR-коды (A4)</button>
+    <a class="btn ghost in" style="animation-delay:740ms" href="uzly/?print">QR-коды для каждого узла</a>
     <p class="hint">Значок <b>QR</b> на карточке — большой код на весь экран, чтобы класс отсканировал его с проектора.</p>
   </div>
 </div>

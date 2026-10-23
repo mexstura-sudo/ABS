@@ -176,6 +176,7 @@ body.tense.danger .card{box-shadow:0 0 0 3px var(--orange),0 10px 30px rgba(216,
 </head>
 <body>
 <div id="app"></div>
+<script src="../assets/leaf.js"></script>
 <script>
 var CODE = 'medicina';
 var PREVIEW = false;
@@ -641,7 +642,10 @@ function render() {
   if (S.error) { app.innerHTML = pv + '<div class="msg"><div class="big">😕</div>' + esc(S.error) + '</div>'; return; }
   if (!S.meta) { app.innerHTML = '<div class="msg"><div class="big">⏳</div>Загружаю квиз…</div>'; return; }
   document.body.classList.toggle('tense', !!(S.meta.mood === 'tense' && S.att && !S.result));
-  if (S.result) { setDanger(false); app.innerHTML = pv + BLOB_TR + renderResult(); animateRing(); return; }
+  if (S.result) { setDanger(false); app.innerHTML = pv + BLOB_TR + renderResult(); animateRing();
+    // листик для книги «История АБС» — появляется на экране результата
+    if (window.ABSLeaf) ABSLeaf.put(app.querySelector('.card.pop'), 'КЕДР', {right: '14px', top: '-30px'});
+    return; }
   if (S.att) { app.innerHTML = pv + BLOB_BL + BLOB_BR + renderQuestionPage() + (S.modal || ''); return; }
   app.innerHTML = pv + BLOB_TR + BLOB_BL + BLOB_BR + renderStart();
 }
