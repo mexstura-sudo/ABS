@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>История АБС</title>
+<meta name="description" content="Книга об истории «Байкальского скаута»: страницы открываются словами с листиков, спрятанных в интерактивах">
+<meta name="theme-color" content="#284F36">
+<link href="../assets/fonts/manrope.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+/* Книга «История АБС»: дети собирают слова с листиков на страницах интерактивов; любое верное слово открывает следующую страницу.
+   Бежевый фон сайта, книга — зелёный переплёт и страницы цвета слоновой кости; иллюстрации в стиле сайта. */
+:root{
+  --green:#284F36;--green2:#3E6B4C;--orange:#D85B21;--navy:#1F3954;--sand:#E4D5C2;--cream:#F5EEDF;--paper:#FFFDF8;--page:#FBF6EA;--muted:#5B6B7C;--ink:#1F3954;
+  --line:rgba(31,57,84,.12);--shadow:rgba(31,57,84,.14);--red:#C8412B;
+  --font:"Manrope",Gilroy,system-ui,-apple-system,"Segoe UI",sans-serif;--serif:"Lora",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{overflow-x:clip}
+body{background:var(--cream);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;overflow-x:clip}
+button,input{font-family:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.wrap{position:relative;max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.blob{position:absolute;pointer-events:none;z-index:0}
+.hero{position:relative;z-index:1;padding-block:44px 8px}
+.kick{font-size:13px;font-weight:800;color:var(--green);text-transform:uppercase;letter-spacing:1.5px}
+.kick a{text-decoration:none;color:inherit}
+h1{font-size:clamp(34px,7vw,52px);line-height:1.03;margin:8px 0 0;font-weight:800;letter-spacing:-.5px}
+.lead{font-size:17px;color:var(--muted);margin:12px 0 0;max-width:52ch}
+
+/* сбор слов */
+.collect{position:relative;z-index:1;background:var(--paper);border-radius:26px;padding:16px;box-shadow:0 10px 30px var(--shadow);margin-top:20px;display:flex;flex-direction:column;gap:12px}
+.leaves{display:flex;gap:6px;justify-content:space-between}
+.lf{flex:1;max-width:46px;aspect-ratio:1;position:relative}
+.lf svg{width:100%;height:100%;display:block}
+.lf .lfb{fill:#EDE3D1;stroke:#CDBFA6;stroke-width:3;stroke-dasharray:6 5;transition:fill .5s,stroke .5s}
+.lf .lfl{fill:#CDBFA6;transition:fill .5s}
+.lf.on .lfb{fill:var(--green);stroke:var(--green);stroke-dasharray:none}
+.lf.on .lfl{fill:#F5EEDF}
+.lf.pop{animation:pop .6s cubic-bezier(.2,.9,.3,1.5)}
+@keyframes pop{40%{transform:scale(1.3) rotate(-10deg)}}
+.cnt{font-size:14px;font-weight:800;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.form{display:flex;gap:8px}
+.form input{flex:1;min-width:0;border:0;border-radius:16px;background:var(--cream);padding:14px 16px;font-size:18px;font-weight:800;letter-spacing:1px;text-transform:uppercase;outline:none;box-shadow:inset 0 0 0 2px transparent;transition:box-shadow .2s}
+.form input:focus{box-shadow:inset 0 0 0 2px var(--green)}
+.form input::placeholder{text-transform:none;letter-spacing:0;font-weight:600;color:var(--muted)}
+.form button{border:0;border-radius:16px;padding:0 18px;background:var(--green);color:#fff;font-weight:800;font-size:16px;cursor:pointer;white-space:nowrap}
+.form.shake{animation:shake .45s}
+@keyframes shake{20%{transform:translateX(-8px)}40%{transform:translateX(7px)}60%{transform:translateX(-5px)}80%{transform:translateX(3px)}}
+.msg{min-height:20px;font-size:14px;font-weight:700;text-align:center}
+.msg.bad{color:var(--red)}.msg.ok{color:var(--green)}
+
+/* книга */
+.bookbox{position:relative;z-index:1;margin-top:22px}
+.stage{position:relative;perspective:2200px}
+.book{position:relative;background:var(--page);border-radius:6px 18px 18px 6px;min-height:520px;
+  box-shadow:inset 18px 0 22px -14px rgba(60,40,10,.28),inset -2px 0 0 #E8DDC6,0 2px 0 #E6DAC2,0 4px 0 #EFE6D3,0 6px 0 #E2D5BB,0 18px 36px var(--shadow)}
+.book::before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;border-radius:6px 0 0 6px;background:linear-gradient(90deg,#284F36,#3E6B4C)}
+.pg{padding:26px 22px 22px 34px;display:flex;flex-direction:column;gap:14px}
+.pg .ch{font-size:12px;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:1.6px}
+.pg h2{font-family:var(--serif);font-weight:600;font-size:30px;line-height:1.1;margin:-6px 0 0}
+.pg .sub{font-family:var(--serif);font-style:italic;color:var(--muted);margin-top:-8px}
+.art{border-radius:14px;overflow:hidden;background:#EADFCB;box-shadow:inset 0 0 0 1px rgba(31,57,84,.08)}
+.art svg{display:block;width:100%;height:auto}
+.txt{font-family:var(--serif);font-size:17px;line-height:1.65;color:#2A3442;display:flex;flex-direction:column;gap:12px}
+.txt p{margin:0;text-indent:1.2em}
+.txt p:first-child{text-indent:0}
+.txt p:first-child::first-letter{float:left;font-size:3.1em;line-height:.9;padding:4px 8px 0 0;color:var(--green);font-weight:600}
+.folio{text-align:center;font-family:var(--serif);color:var(--muted);font-size:14px;margin-top:6px}
+.soon{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;padding:20px 0;color:var(--muted);font-family:var(--serif);font-style:italic}
+
+/* обложка */
+.cover{position:relative;min-height:520px;border-radius:6px 18px 18px 6px;background:radial-gradient(120% 90% at 30% 20%,#356246,#22442F 70%);color:#F5EEDF;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding:30px;overflow:hidden;
+  box-shadow:inset 14px 0 18px -10px rgba(0,0,0,.45),0 18px 36px var(--shadow)}
+.cover::after{content:"";position:absolute;inset:14px 14px 14px 24px;border:2px solid rgba(245,238,223,.35);border-radius:4px 12px 12px 4px;pointer-events:none}
+.cover .lily{width:120px;height:120px;color:#E9A53B;filter:drop-shadow(0 4px 10px rgba(0,0,0,.3));animation:glow 3s ease-in-out infinite}
+@keyframes glow{50%{transform:translateY(-4px);filter:drop-shadow(0 0 18px rgba(233,165,59,.6))}}
+.cover .t{font-family:var(--serif);font-size:42px;font-weight:600;line-height:1.05}
+.cover .s{font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.cover .h{font-size:15px;font-weight:600;opacity:.85;max-width:30ch}
+
+/* закрытая страница */
+.locked{min-height:520px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:12px;padding:30px 30px 30px 40px;color:var(--muted)}
+.locked .lily{width:90px;height:90px;color:#D8CCB5}
+.locked b{font-family:var(--serif);font-size:24px;color:var(--ink);font-weight:600}
+.locked .lock{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.4px;color:var(--orange)}
+
+/* перелистывание */
+.flip{position:absolute;inset:0;transform-origin:left center;transform-style:preserve-3d;z-index:5;pointer-events:none}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;border-radius:6px 18px 18px 6px;background:var(--page)}
+.flip .face.back{transform:rotateY(180deg);background:linear-gradient(90deg,#F4EDDD,#FBF6EA);box-shadow:inset -18px 0 24px -14px rgba(60,40,10,.25)}
+.flip .shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.18));opacity:0;pointer-events:none}
+.flip.fwd{animation:fwd .9s cubic-bezier(.45,.05,.3,1) forwards}
+.flip.bwd{animation:bwd .9s cubic-bezier(.45,.05,.3,1) forwards}
+.flip.fwd .shade{animation:sh .9s forwards}.flip.bwd .shade{animation:sh .9s reverse forwards}
+@keyframes fwd{from{transform:rotateY(0)}to{transform:rotateY(-178deg)}}
+@keyframes bwd{from{transform:rotateY(-178deg)}to{transform:rotateY(0)}}
+@keyframes sh{50%{opacity:1}100%{opacity:0}}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px}
+.nb{width:48px;height:48px;border-radius:50%;border:0;background:var(--paper);box-shadow:0 6px 16px var(--shadow),inset 0 0 0 2px var(--sand);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:opacity .3s,transform .15s}
+.nb.next{background:var(--green);color:#fff;box-shadow:0 6px 16px var(--shadow)}
+.nb svg{width:22px;height:22px}
+.nb:active{transform:scale(.92)}
+.nb:disabled{opacity:.25;cursor:default}
+.dots{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--sand);transition:background .3s,transform .3s}
+.dots i.open{background:var(--green2)}
+.dots i.now{background:var(--orange);transform:scale(1.35)}
+
+/* анимации иллюстраций: работают только на открытой странице (.live) */
+.art svg .blink,.art svg .talkA,.art svg .talkB,.art svg .nod,.art svg .nod2,.art svg .tilt,.art svg .listen,.art svg .look,.art svg .look2,.art svg .breath,.art svg .hop,.art svg .reach,.art svg .explain,.art svg .strum,.art svg .wave,.art svg .ear,.art svg .legA,.art svg .legB,.art svg .drift,.art svg .twinkle,.art svg .flame,.art svg .spark,.art svg .glow,.art svg .lfall,.art svg .peck,.art svg .sway,.art svg .cycA,.art svg .cycB,.art svg .cone,.art svg .hand1,.art svg .hand2,.art svg .liftbook,.art svg .bubA,.art svg .bubB,.art svg .flag,.art svg .note,.art svg .flut,.art svg .ring,.art svg .ringtx,.art svg .wv,.art svg .travel,.art svg .steam,.art svg .spk,.art svg .door,.art svg .glowdoor,.art svg .idea,.art svg .pen,.art svg .march,.art svg .swing,.art svg .smoke,.art svg .spirit,.art svg .rise,.art svg .blink2,.art svg .dash,.art svg .needle,.art svg .tailw,.art svg .fhead{transform-box:fill-box}
+.tailw{transform-origin:100% 80%}.fhead{transform-origin:0 100%}
+.live .tailw{animation:tailw 1.6s ease-in-out infinite alternate}
+@keyframes tailw{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
+.live .fhead{animation:fhead 2.4s ease-in-out infinite}
+@keyframes fhead{0%,100%{transform:rotate(0)}50%{transform:rotate(-6deg) translateY(-1px)}}
+.blink{transform-origin:center}.talkA,.talkB{transform-origin:center}
+.nod,.nod2,.tilt,.listen,.look,.look2{transform-origin:50% 100%}
+.reach,.explain,.strum,.wave,.ear,.legA,.legB{transform-origin:50% 0}
+.flame{transform-origin:50% 100%}.glow{transform-origin:center}
+.peck{transform-origin:48% 92%}.sway{transform-origin:50% 100%}
+.hand1,.hand2{transform-origin:50% 100%}
+.flag{transform-origin:0 50%}.flut{transform-origin:50% 0}.ring{transform-origin:50% 100%}
+.wv{transform-origin:0 50%;opacity:0}.spk{transform-origin:center}.door{transform-origin:0 50%}
+.pen{transform-origin:50% 0;opacity:0}.march{opacity:0}
+.cycB,.bubA,.bubB,.idea,.spirit,.ringtx{opacity:0}
+.spirit{transform-origin:center}.idea{transform-origin:center}
+
+.live .blink{animation:eye 4.2s infinite}
+@keyframes eye{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+.live .breath,.live .hop{animation:breath 3s ease-in-out infinite}
+@keyframes breath{50%{transform:translateY(-1.5px)}}
+.live .nod{animation:nod 3.4s ease-in-out infinite}.live .nod2{animation:nod 3s ease-in-out infinite reverse}
+@keyframes nod{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(4deg)}}
+.live .tilt{animation:tilt 8s ease-in-out infinite}
+@keyframes tilt{0%,40%{transform:rotate(-6deg)}50%,90%{transform:rotate(5deg)}}
+.live .listen{animation:listen 4s ease-in-out infinite}
+@keyframes listen{0%,100%{transform:rotate(0)}30%,70%{transform:rotate(9deg)}}
+.live .look{animation:look 6s ease-in-out infinite}.live .look2{animation:look 6s ease-in-out infinite reverse}
+@keyframes look{0%,100%{transform:rotate(-8deg) translateY(1px)}50%{transform:rotate(6deg)}}
+.live .talkA{animation:talk 6s infinite}.live .talkB{animation:talk 6s infinite;animation-delay:-3s}
+@keyframes talk{0%,4%,12%,20%,28%,36%,44%{transform:scaleY(1)}8%,16%,24%,32%,40%,46%,100%{transform:scaleY(.25)}}
+.live .bubA{animation:bub 6s infinite}.live .bubB{animation:bub 6s infinite;animation-delay:-3s}
+@keyframes bub{0%{opacity:0;transform:translateY(6px) scale(.8)}6%,40%{opacity:1;transform:none}48%,100%{opacity:0;transform:translateY(-4px)}}
+.live .reach{animation:reach 6s ease-in-out infinite}
+@keyframes reach{0%,100%{transform:rotate(0)}40%,60%{transform:rotate(-14deg)}}
+.live .explain{animation:explain 1.4s ease-in-out infinite}
+@keyframes explain{50%{transform:rotate(-22deg)}}
+.live .strum{animation:strum .45s ease-in-out infinite alternate}
+@keyframes strum{to{transform:rotate(14deg)}}
+.live .wave{animation:wave .9s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(-16deg)}to{transform:rotate(18deg)}}
+.live .ear{animation:ear 4s ease-in-out infinite}
+@keyframes ear{0%,100%{transform:rotate(0)}30%,70%{transform:rotate(6deg)}}
+.live .legA{animation:leg .5s ease-in-out infinite alternate}.live .legB{animation:leg .5s ease-in-out infinite alternate-reverse}
+@keyframes leg{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+.live .drift{animation:drift 14s ease-in-out infinite alternate;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes drift{to{transform:translateX(40px)}}
+.live .twinkle{animation:tw 2.6s ease-in-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes tw{50%{opacity:.2}}
+.live .flame{animation:flick .35s ease-in-out infinite alternate}.live .f2{animation-duration:.28s}.live .f3{animation-duration:.22s}
+@keyframes flick{from{transform:scale(1,.86) skewX(-4deg)}to{transform:scale(.94,1.08) skewX(4deg)}}
+.live .glow{animation:glw 1.6s ease-in-out infinite alternate}
+@keyframes glw{to{transform:scale(1.12);opacity:.4}}
+.live .spark{animation:spark 2.7s ease-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes spark{0%{transform:translate(0,0);opacity:1}100%{transform:translate(8px,-70px);opacity:0}}
+.live .lfall{animation:lfall 6s linear infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes lfall{0%{transform:translate(0,0) rotate(0);opacity:0}10%{opacity:1}100%{transform:translate(-40px,150px) rotate(320deg);opacity:.6}}
+.live .peck{animation:peck 2.2s ease-in-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes peck{0%,55%,100%{transform:none}66%,80%{transform:rotate(26deg)}72%{transform:rotate(30deg)}}
+.live .sway{animation:sway 5s ease-in-out infinite}
+@keyframes sway{50%{transform:rotate(2deg)}}
+.live .cycA{animation:cycA 8s infinite}.live .cycB{animation:cycB 8s infinite}
+@keyframes cycA{0%,40%{opacity:1}48%,92%{opacity:0}100%{opacity:1}}
+@keyframes cycB{0%,44%{opacity:0;transform:scale(.8)}52%,90%{opacity:1;transform:none}96%,100%{opacity:0}}
+.cross{stroke-dasharray:70;stroke-dashoffset:70}
+.live .cross{animation:cross 8s infinite}
+@keyframes cross{0%,20%{stroke-dashoffset:70}32%,100%{stroke-dashoffset:0}}
+.live .cone{animation:cone 2.6s ease-in-out infinite}
+@keyframes cone{50%{opacity:.2}}
+.live .hand1{animation:spin 2s linear infinite}.live .hand2{animation:spin 24s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.live .liftbook{animation:lift 6s ease-in-out infinite}
+@keyframes lift{0%,100%{transform:none}40%,60%{transform:translate(-26px,-6px) rotate(-8deg)}}
+.dash{stroke-dashoffset:0}
+.live .dash{animation:dash 1.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-16}}
+.live .flag{animation:flag 1.2s ease-in-out infinite alternate}
+@keyframes flag{from{transform:skewY(-5deg) scaleX(.95)}to{transform:skewY(5deg)}}
+.live .note{animation:note 3.3s ease-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes note{0%{transform:translate(0,0);opacity:0}15%{opacity:1}100%{transform:translate(30px,-80px) rotate(20deg);opacity:0}}
+.live .flut{animation:flut 2s ease-in-out infinite alternate;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes flut{to{transform:rotate(8deg) translateY(-3px)}}
+.live .ring{animation:ring 3s infinite}
+@keyframes ring{0%,40%,100%{transform:none}44%,52%,60%,68%{transform:rotate(-12deg) translateY(-3px)}48%,56%,64%,72%{transform:rotate(12deg) translateY(-3px)}76%{transform:none}}
+.live .ringtx{animation:ringtx 3s infinite}
+@keyframes ringtx{0%,40%{opacity:0;transform:translateY(4px)}46%,72%{opacity:1;transform:none}80%,100%{opacity:0}}
+.live .wv{animation:wv 1.6s ease-out infinite}
+@keyframes wv{0%{opacity:0;transform:scale(.6)}30%{opacity:1}100%{opacity:0;transform:scale(1.3)}}
+.live .travel{animation:travel 3.2s linear infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes travel{0%{transform:translateX(0);opacity:0}10%{opacity:1}85%{opacity:1}100%{transform:translateX(130px);opacity:0}}
+.live .steam{animation:steam 2.1s ease-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes steam{0%{transform:translateY(0);opacity:0}30%{opacity:.9}100%{transform:translateY(-16px);opacity:0}}
+.live .spk{animation:spk .3s ease-in-out infinite alternate}
+@keyframes spk{to{transform:scale(1.25)}}
+.live .door{animation:door 6s ease-in-out infinite}
+@keyframes door{0%,20%{transform:none}40%,85%{transform:scaleX(.25)}100%{transform:none}}
+.live .glowdoor{animation:gd 6s ease-in-out infinite}
+@keyframes gd{0%,20%{opacity:.6}40%,85%{opacity:1}}
+.live .idea{animation:idea 6s ease-in-out infinite}
+@keyframes idea{0%,30%{opacity:0;transform:scale(.4) translateY(10px)}40%,85%{opacity:1;transform:none}95%,100%{opacity:0}}
+.live .pen{animation:penIn .6s cubic-bezier(.2,.9,.3,1.5) forwards,penSway 3s ease-in-out infinite;animation-delay:calc(var(--d) * 1s),calc(var(--d) * 1s + .6s)}
+@keyframes penIn{to{opacity:1;transform:none}}
+@keyframes penSway{0%,100%{opacity:1;transform:rotate(0)}50%{opacity:1;transform:rotate(4deg)}}
+.pen{transform:scale(.3) rotate(-20deg)}
+.live .march{animation:march .8s ease-out forwards;animation-delay:calc(var(--d) * 1s)}
+@keyframes march{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.live .hop{animation:hop 1.8s ease-in-out infinite;animation-delay:calc(var(--d,0) * 1s + .8s)}
+@keyframes hop{0%,70%,100%{transform:none}80%{transform:translateY(-6px)}}
+.live .swing{animation:swing 3.2s ease-in-out infinite}
+@keyframes swing{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+.live .smoke{animation:smoke 4.8s ease-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes smoke{0%{transform:translate(0,0) scale(.5);opacity:0}20%{opacity:1}100%{transform:translate(14px,-130px) scale(3);opacity:0}}
+.live .spirit{animation:spirit 6s ease-in-out infinite;animation-delay:calc(var(--d,0) * 1s)}
+@keyframes spirit{0%{opacity:0;transform:translateY(16px) scale(.7)}12%,30%{opacity:.95;transform:none}42%,100%{opacity:0;transform:translateY(-14px) scale(1.05)}}
+.live .rise{animation:rise 3.4s ease-in-out infinite}
+@keyframes rise{0%,100%{transform:translateY(3px)}50%{transform:translateY(-6px)}}
+.live .blink2{animation:b2 1.4s steps(2) infinite}
+@keyframes b2{50%{opacity:.25}}
+
+.needle{transform-origin:center}.live .needle{animation:needle 4s ease-in-out infinite}
+@keyframes needle{50%{transform:translateX(6px)}}
+
+.conf{position:fixed;top:-10px;width:9px;height:14px;z-index:40;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.end{padding-block:30px 60px;text-align:center;color:var(--muted);font-size:14px}
+@media (max-width:520px){.pg{padding:22px 16px 18px 26px}.pg h2{font-size:26px}.txt{font-size:16px}.book,.cover,.locked{min-height:480px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <svg class="blob" aria-hidden="true" viewBox="0 0 200 160" style="right:-50px;top:-20px;width:220px;height:176px"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#284F36"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#D85B21"/></svg>
+  <header class="hero">
+    <div class="kick">Байкальский скаут · Книга</div>
+    <h1>История АБС</h1>
+    <p class="lead">На страницах интерактивов спрятаны 7 листиков со скаутской лилией. Найди листик, узнай слово и впиши его сюда — книга откроет новую страницу.</p>
+  </header>
+  <section class="collect" aria-label="Слова с листиков">
+    <div class="leaves" id="leaves"></div>
+    <div class="cnt" id="cnt"></div>
+    <form class="form" id="form" autocomplete="off"><input id="word" type="text" placeholder="Слово с листика" aria-label="Слово с листика" maxlength="24" autocapitalize="characters" spellcheck="false"><button type="submit">Открыть</button></form>
+    <div class="msg" id="msg" role="status"></div>
+  </section>
+  <section class="bookbox" aria-label="Книга">
+    <div class="stage" id="stage"><div class="book-slot" id="slot"></div></div>
+    <div class="nav"><button class="nb prev" id="prev" type="button" aria-label="Предыдущая страница"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <div class="dots" id="dots"></div>
+      <button class="nb next" id="next" type="button" aria-label="Следующая страница"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button></div>
+  </section>
+
+  <p class="end">Иркутская областная общественная организация детей и молодёжи «Байкальский скаут»</p>
+</div>
+
+<script>
+(function () {
+var LILY = '<svg viewBox="0 0 100 100" aria-hidden="true"><g fill="currentColor"><path d="M50 3 C59 15 63 28 59 41 C57 48 54 54 50 60 C46 54 43 48 41 41 C37 28 41 15 50 3Z"/><path d="M45 57 C42 47 36 40 28 38 C19 36 11 42 11 51 C11 58 17 62 22 59 C18 57 17 52 21 49 C25 46 31 48 35 52 C38 55 40 58 41 62Z"/><path d="M55 57 C58 47 64 40 72 38 C81 36 89 42 89 51 C89 58 83 62 78 59 C82 57 83 52 79 49 C75 46 69 48 65 52 C62 55 60 58 59 62Z"/><rect x="32" y="59" width="36" height="8" rx="3"/><path d="M44 67 C42 74 38 79 32 82 C38 84 44 82 47 77 L50 90 L53 77 C56 82 62 84 68 82 C62 79 58 74 56 67Z"/></g></svg>';
+var LEAF = function (cls) { return '<svg viewBox="0 0 100 100"><g transform="rotate(-14 50 52)"><path class="' + cls + 'b" d="M50 4 C66 16 82 32 84 54 C86 76 68 90 50 92 C32 90 14 76 16 54 C18 32 34 16 50 4Z"/><path d="M50 91 V99" stroke="#284F36" stroke-width="4" stroke-linecap="round"/><path d="M50 76 V90" stroke="rgba(255,255,255,.2)" stroke-width="1.6"/></g><g class="' + cls + 'l" transform="translate(22 18) scale(.56)"><path d="M50 3 C59 15 63 28 59 41 C57 48 54 54 50 60 C46 54 43 48 41 41 C37 28 41 15 50 3Z"/><path d="M45 57 C42 47 36 40 28 38 C19 36 11 42 11 51 C11 58 17 62 22 59 C18 57 17 52 21 49 C25 46 31 48 35 52 C38 55 40 58 41 62Z"/><path d="M55 57 C58 47 64 40 72 38 C81 36 89 42 89 51 C89 58 83 62 78 59 C82 57 83 52 79 49 C75 46 69 48 65 52 C62 55 60 58 59 62Z"/><rect x="32" y="59" width="36" height="8" rx="3"/><path d="M44 67 C42 74 38 79 32 82 C38 84 44 82 47 77 L50 90 L53 77 C56 82 62 84 68 82 C62 79 58 74 56 67Z"/></g></svg>'; };
+
+// слова листиков: любое верное слово открывает следующую страницу
+var WORDS = [
+  {w: 'КЕДР', where: 'Квиз «Первая помощь»', when: 'на экране результата'},
+  {w: 'БАЙКАЛ', where: 'Квиз «Травоведение»', when: 'на экране результата'},
+  {w: 'ТРОПА', where: 'Узлы', when: 'когда открыты все 5 узлов'},
+  {w: 'ЛИЛИЯ', where: 'Лесные имена', when: 'после того как открыта карточка имени'},
+  {w: 'КОМПАС', where: 'Статья «Первая помощь»', when: 'в конце статьи'},
+  {w: 'КОСТЁР', where: 'Статья «Бивуак»', when: 'на финише, когда лагерь собран'},
+  {w: 'ДРУЖБА', where: 'Статья «Подготовка к походу»', when: 'когда отмечены все 26 пунктов'}
+];
+var norm = function (s) { return String(s || '').toUpperCase().replace(/Ё/g, 'Е').replace(/[^А-ЯA-Z]/g, ''); };
+var VALID = WORDS.map(function (x) { return norm(x.w); });
+
+var PAGES = [{"k": "Глава 1 · История", "t": "Случайности, которые не случайны", "sub": "Октябрь 1991 года", "p": ["В хрониках АБС написано коротко: в октябре 1991 года встретились Анна Шободоева, Ольга Ефименко, Алексей Васильков, Андрей Сергиенко. Все верно, но за этой строчкой – целая цепочка случайностей, которые оказались не случайны. Позже Ольга Ефименко вспоминала, что впервые познакомилась с инициативной группой только весной 1992 года, но так или иначе, осенью 1991-го в Иркутске собрались люди, которым было что сказать друг другу.", "У Анны Шободоевой все началось с диссертации. Ей было тридцать три: семья, сын, кандидатская степень и отпуск, взятый ради докторской. В Москве, в библиотеке имени Ленина, она собирала материалы об истории детского и молодежного движения – о том его русле, что шло в стороне от коммунистических идеалов. О скаутах Анна знала понаслышке, из советских книжек, где скаут – толстый сын буржуя, помогающий белым и враждующий с пионерами."]}, {"k": "Глава 1 · История", "t": "Встреча в читальном зале", "sub": "Москва, библиотека имени Ленина", "p": ["А в каталоге «Ленинки» вдруг нашелся целый раздел о скаутском движении. Часть книг уже выдавали свободно – раньше они лежали в спецхране. Но нужные Анне тома кто-то взял раньше нее. Пришлось идти по читальному залу и искать. На одном из столов лежали ее книги, а рядом – молодой человек, представившийся Андреем Вахтиным.", "Именно от него Анна узнала то, чего не было ни в одном каталоге: скаутинг в России живет и возрождается. Не страница истории, а настоящее дело. Разговоры затянулись надолго, и где-то между ними родилась мысль: а стоит ли писать еще одну абстрактную диссертацию? Может, сначала попробовать создать что-то подобное в Иркутске – свою опытную площадку?"]}, {"k": "Глава 1 · История", "t": "Теория встречает практику", "sub": "", "p": ["Идея ждала своего часа, и снова помог случай. Сосед Анны по общежитию рассказал, что у его друга, студента Алексея Василькова, курсовая по педагогике – и тема ее – скаутинг. Алексей оказался не просто студентом: он ездил в пионерские лагеря с педагогическим отрядом «Труверы» и знал работу с подростками не только по книжкам. Анна позже называла эту встречу эпохальной для АБС: теория наконец встретилась с практикой."]}, {"k": "Глава 2 · Люди", "t": "Нужны единомышленники", "sub": "Иркутск, осень 1991 года", "p": ["Плана не было. Было понимание: нужны единомышленники. Пошли во Дворец пионеров, в городской отдел по делам молодежи, на радио. Время оказалось подходящим: в пылу перемен «хоронили» и пионерию, и комсомол, а взамен никто ничего не предлагал.", "Легко, конечно, не было. На встречах с педагогами скаутинг порой ассоциировали с чем угодно – вплоть до фашизма. Но агитация и разговоры делали свое дело: постепенно начали звонить люди, которым стали интересны новые формы работы с детьми. Помещения у организации не было, и первое время собирались почти подпольно – в методическом кабинете «нархоза» (ныне – Байкальский Государственный Университет), где работала Анна."]}, {"k": "Глава 2 · Люди", "t": "Голос по радио", "sub": "ул. Декабрьских Событий, 107Б", "p": ["Все изменило одно из ее выступлений по радио. Его услышал отец Александра Верхозина. Сам Александр занимался туризмом с подростками и вел клуб «Сарма», у которого было собственное постоянное место – подвал. Этот подвал по адресу: ул. Декабрьских Событий, д. 107Б стал на долгие годы домом иркутского скаутинга: здесь собирались, репетировали, готовились к лагерям (и только в прошлом году АБС попрощался со своей родной штаб-квартирой: увы, техническое состояние помещения было признано аварийным)."]}, {"k": "Глава 2 · Люди", "t": "Первые отряды", "sub": "1991–1992", "p": ["Первый шаг зачинатели АБС сделали верно: сначала – база, методика, взрослые лидеры, и только потом – отряды. 20 октября 1991 года появилась «Акула» Андрея Сергиенко, следом «Соболь» Алексея Василькова, «Байкал» Андрея Тепляшина. 13 декабря ряды пополнил отряд «Арго» Ольги Ефименко, в феврале к ним присоединился отряд «Сарма» Александра Верхозина, а 28 апреля – «Ирбис» Ирины Борисенко."]}, {"k": "Глава 2 · Люди", "t": "День рождения и лесное имя", "sub": "30 октября 1991 года", "p": ["30 октября 1991 года считается официальной датой рождения АБС. В январе 1992 года организация зарегистрировалась как «Иркутская ассоциация возрождения скаутов», а в мае получила имя, которое теперь знает каждый: Ассоциация «Байкальский скаут» (годы и требования законодательства взяли свое – сейчас мы носим гордое название Иркутская областная общественная организация детей и молодежи «Байкальский скаут», но согласитесь: душе ближе все-таки родная аббревиатура – АБС!).", "И почти сразу же родилась традиция, которая живет до сих пор: лесное имя. Каждый, кто приходит в организацию, при желании (хотя бывали и исключения…) рано или поздно получает свое «природное» имя – Багира, Соболь, Фретка. Особое имя в качестве напоминания: здесь – твой дом, тебя здесь всегда любят и ждут."]}];
+
+// ===== Иллюстрации книги «История АБС» =====
+var C = {green:'#284F36', green2:'#3E6B4C', orange:'#D85B21', navy:'#1F3954', gold:'#E9A53B', wood:'#8A5A3A', wood2:'#6E4630', cream:'#F5EEDF', paper:'#FFFDF8'};
+var SK = ['#F2C9A5', '#E8B48E', '#F5D6B8', '#DDA57E'];
+var LILYP = '<path d="M50 3 C59 15 63 28 59 41 C57 48 54 54 50 60 C46 54 43 48 41 41 C37 28 41 15 50 3Z"/><path d="M45 57 C42 47 36 40 28 38 C19 36 11 42 11 51 C11 58 17 62 22 59 C18 57 17 52 21 49 C25 46 31 48 35 52 C38 55 40 58 41 62Z"/><path d="M55 57 C58 47 64 40 72 38 C81 36 89 42 89 51 C89 58 83 62 78 59 C82 57 83 52 79 49 C75 46 69 48 65 52 C62 55 60 58 59 62Z"/><rect x="32" y="59" width="36" height="8" rx="3"/><path d="M44 67 C42 74 38 79 32 82 C38 84 44 82 47 77 L50 90 L53 77 C56 82 62 84 68 82 C62 79 58 74 56 67Z"/>';
+function lily(x, y, size, fill) { return '<g transform="translate(' + (x - size / 2) + ' ' + (y - size / 2) + ') scale(' + (size / 100) + ')" fill="' + fill + '">' + LILYP + '</g>'; }
+function at(x, y, s, inner) { return '<g transform="translate(' + x + ' ' + y + ')' + (s && s !== 1 ? ' scale(' + s + ')' : '') + '">' + inner + '</g>'; }
+function A(cls, inner, d) { return '<g class="' + cls + '"' + (d != null ? ' style="--d:' + d + '"' : '') + '>' + inner + '</g>'; }
+function T(x, y, t, size, fill, w, anchor) { return '<text x="' + x + '" y="' + y + '" text-anchor="' + (anchor || 'middle') + '" style="font:' + (w || 800) + ' ' + size + 'px Manrope,sans-serif;fill:' + fill + '">' + t + '</text>'; }
+
+var HAIR = {
+  short: function (c) { return '<path d="M-13.5 -103 C-15 -115 -7 -119.5 0 -119.5 C8 -119.5 14.5 -115 13.5 -103 C12 -108 8 -111.5 2 -111 C-4 -112 -10 -110 -13.5 -103Z" fill="' + c + '"/>'; },
+  messy: function (c) { return '<path d="M-13.5 -102 C-16 -112 -10 -121 -2 -120 C2 -124 10 -121 12 -116 C16 -112 15 -106 13.5 -102 C12 -107 9 -110 5 -109 C3 -112 -2 -111 -4 -110 C-8 -111 -11 -107 -13.5 -102Z" fill="' + c + '"/>'; },
+  bob: function (c) { return '<path d="M-14 -91 C-17 -104 -16 -118 0 -119 C16 -118 17 -104 14 -91 L10 -91 C11 -99 10.5 -105 9 -109 C3 -110 -4 -113 -9 -110 C-11 -104 -11 -97 -10 -91Z" fill="' + c + '"/>'; },
+  bald: function (c) { return '<path d="M-13.6 -100 C-14.5 -108 -12 -114 -7 -116 C-9 -111 -10.5 -106 -11 -101Z M13.6 -100 C14.5 -108 12 -114 7 -116 C9 -111 10.5 -106 11 -101Z" fill="' + c + '"/>'; },
+  tails: function (c) { return HAIR.bob(c) + '<circle cx="-16" cy="-96" r="4.5" fill="' + c + '"/><circle cx="16" cy="-96" r="4.5" fill="' + c + '"/>'; },
+  side: function (c) { return '<path d="M-13.4 -103.5 C-14.6 -113 -9 -119 -2 -120.2 C4 -122.8 11.5 -121 13.6 -114.5 C14.5 -111 14 -107 13.4 -103.5 C12.6 -106.5 11.6 -109 9.6 -110.2 C6.2 -109.8 2.6 -111 -.4 -113 C-4.4 -110.6 -8.4 -110.2 -11 -108.6 C-12.2 -107.4 -13 -105.8 -13.4 -103.5Z" fill="' + c + '"/><path d="M-.4 -113 C1 -116.5 4 -119 8 -119.6" stroke="#000" stroke-width=".8" opacity=".25" fill="none"/><path d="M-13.4 -103.5 L-13.2 -100.5 L-12 -100.5 L-12.2 -104.5Z M13.4 -103.5 L13.2 -100.5 L12 -100.5 L12.2 -104.5Z" fill="' + c + '"/>'; },
+  anna: function (c) { return '<path d="M-14.2 -97 C-16.5 -108 -14 -118.5 0 -119.5 C14 -118.5 16.5 -108 14.2 -97 L11.2 -96.5 C11.6 -102 10.8 -106.5 9 -109 C3 -110.5 -4 -113 -9.5 -110 C-11.2 -106 -11.8 -101.5 -11.2 -96.5Z" fill="' + c + '"/>'; },
+  pixie: function (c) { return '<path d="M-13.8 -100 C-16 -113 -8 -120 0 -120 C9 -120 16 -113 13.8 -100 C13 -104 11 -108 8 -109 C4 -106 -3 -106 -9 -110 C-11 -107 -12.5 -104 -13.8 -100Z" fill="' + c + '"/><path d="M-13.8 -100 C-14.5 -97 -13.5 -94 -12 -93 C-12.5 -97 -12.6 -99 -12 -102Z M13.8 -100 C14.5 -97 13.5 -94 12 -93 C12.5 -97 12.6 -99 12 -102Z" fill="' + c + '"/>'; },
+  cap: function (c) { return '<path d="M-14 -106 C-14 -118 14 -118 14 -106Z" fill="' + c + '"/><path d="M8 -107 H22 Q22 -104 14 -104 H8Z" fill="' + c + '"/>'; }
+};
+function arm(x, a, col, sk, cls, item) {
+  return '<g transform="translate(' + x + ' -80) rotate(' + a + ')"><g class="' + (cls || '') + '"><rect x="-3.6" y="-2" width="7.2" height="36" rx="3.6" fill="' + col + '"/><rect x="-3.6" y="27" width="7.2" height="4" fill="#000" opacity=".14"/><circle cy="35" r="4.3" fill="' + sk + '"/><path d="M-2.5 37 q2.5 1.6 5 0" stroke="#000" stroke-width=".6" opacity=".18" fill="none"/>' + (item || '') + '</g></g>';
+}
+// человек: ноги в (x,y), рост ~120 при s=1
+function P(o) {
+  var sk = o.skin || SK[0], top = o.top, bot = o.bot || C.navy, h = '';
+  if (o.legs !== false) {
+    h += '<g class="' + (o.walk ? 'legA' : '') + '"><rect x="-10" y="-48" width="8.5" height="46" rx="3.5" fill="' + bot + '"/><ellipse cx="-6" cy="-2" rx="6.5" ry="3.2" fill="#2B2622"/><ellipse cx="-7.5" cy="-3.2" rx="2.4" ry=".9" fill="#fff" opacity=".25"/></g>';
+    h += '<g class="' + (o.walk ? 'legB' : '') + '"><rect x="1.5" y="-48" width="8.5" height="46" rx="3.5" fill="' + bot + '"/><ellipse cx="6" cy="-2" rx="6.5" ry="3.2" fill="#2B2622"/><ellipse cx="7.5" cy="-3.2" rx="2.4" ry=".9" fill="#fff" opacity=".25"/></g><path d="M1.5 -48 H4 V-6 H1.5Z" fill="#000" opacity=".12"/>';
+    if (o.skirt) h += '<path d="M-17 -50 L17 -50 L21 -24 L-21 -24Z" fill="' + o.skirt + '"/><path d="M8 -50 L17 -50 L21 -24 L12 -24Z" fill="#000" opacity=".12"/><path d="M-6 -48 L-8 -25 M4 -48 L5 -25" stroke="#000" stroke-width=".8" opacity=".12"/>';
+  }
+  if (o.back) h += o.back;
+  h += arm(-14, o.aA == null ? 10 : o.aA, top, sk, o.cA, o.iA);
+  h += arm(14, o.aB == null ? -10 : o.aB, top, sk, o.cB, o.iB);
+  h += '<path d="M-16 -46 L-15 -78 Q-15 -87 -6 -88 L6 -88 Q15 -87 15 -78 L16 -46Z" fill="' + top + '"/><path d="M7 -88 Q15 -87 15 -78 L16 -46 L9 -46 Q10 -70 7 -88Z" fill="#000" opacity=".12"/><path d="M-16 -50 H16" stroke="#000" stroke-width="2" opacity=".1"/>';
+  if (!o.scarf) h += '<path d="M-6.5 -88 L0 -81 L6.5 -88" stroke="#fff" stroke-width="1.6" opacity=".55" fill="none" stroke-linejoin="round"/>';
+  if (o.scarf) h += '<path d="M-10 -88.5 L10 -88.5 L0 -70Z" fill="' + o.scarf + '"/><path d="M-10 -88.5 L0 -70 L-2 -88.5Z" fill="#fff" opacity=".18"/><path d="M-10 -88.5 H10" stroke="#A8401A" stroke-width="1.4"/><rect x="-2.6" y="-86.5" width="5.2" height="4.2" rx="1.4" fill="#F2C55C"/><path d="M-1.6 -82.4 L-3.4 -77 M1.6 -82.4 L3.4 -77" stroke="' + o.scarf + '" stroke-width="2.2" stroke-linecap="round"/>';
+  if (o.front) h += o.front;
+  var hd = '<rect x="-3.5" y="-93" width="7" height="7" fill="' + sk + '"/><rect x="-3.5" y="-93" width="7" height="2.5" fill="#000" opacity=".1"/><circle cx="-12.8" cy="-103" r="3.2" fill="' + sk + '"/><circle cx="12.8" cy="-103" r="3.2" fill="' + sk + '"/><circle cx="-12.8" cy="-103" r="1.4" fill="#000" opacity=".1"/><circle cx="12.8" cy="-103" r="1.4" fill="#000" opacity=".1"/><circle cy="-104" r="13" fill="' + sk + '"/><path d="M6 -115 A13 13 0 0 1 9 -94 A14 14 0 0 0 6 -115Z" fill="#000" opacity=".06"/>';
+  hd += '<circle cx="-8.2" cy="-99" r="2.6" fill="#E8836B" opacity=".4"/><circle cx="8.2" cy="-99" r="2.6" fill="#E8836B" opacity=".4"/>';
+  hd += '<g class="blink"><circle cx="-4.6" cy="-105" r="1.8" fill="#1F2A36"/><circle cx="4.6" cy="-105" r="1.8" fill="#1F2A36"/><circle cx="-4" cy="-105.6" r=".6" fill="#fff"/><circle cx="5.2" cy="-105.6" r=".6" fill="#fff"/></g><path d="M.2 -103.2 q1.4 1.8 -.6 2.6" stroke="#B9785A" stroke-width=".9" fill="none" stroke-linecap="round" opacity=".7"/>';
+  if (o.hs !== 'bald') hd += '<path d="M-7 -109.6 q2.4 -1.3 4.6 -.2 M2.4 -109.8 q2.2 -1.1 4.6 .2" stroke="' + (o.hair || '#3B2A20') + '" stroke-width="1.2" fill="none" stroke-linecap="round"/>';
+  hd += o.talk ? '<ellipse class="' + o.talk + '" cx="0" cy="-97.5" rx="2.8" ry="2.1" fill="#7A3B2E"/>' : '<path d="M-3.8 -98.6 Q0 -95.4 3.8 -98.6" stroke="#7A3B2E" stroke-width="1.6" fill="none" stroke-linecap="round"/>';
+  if (o.must) hd += '<path d="M-6.5 -100 Q-3 -102.5 0 -100.6 Q3 -102.5 6.5 -100 Q3 -97.6 0 -99.3 Q-3 -97.6 -6.5 -100Z" fill="' + o.must + '"/>';
+  hd += HAIR[o.hs || 'short'](o.hair || '#3B2A20');
+  if (o.hs !== 'bald') hd += '<path d="M-8 -115.5 q5 -2.4 11 -.6" stroke="#fff" stroke-width="1.4" opacity=".22" fill="none" stroke-linecap="round"/>';
+  if (o.glasses) hd += '<g fill="none" stroke="#1F2A36" stroke-width="1.3" stroke-linecap="round"><circle cx="-4.6" cy="-105" r="3.9"/><circle cx="4.6" cy="-105" r="3.9"/><path d="M-0.7 -105 Q0 -106 0.7 -105"/>' + (o.temples ? '<path d="M-8.5 -105.5 L-13.4 -106.6 M8.5 -105.5 L13.4 -106.6"/>' : '') + '</g>';
+  h += '<g class="' + (o.hc || '') + '">' + hd + '</g>';
+  return at(o.x, o.y, o.s || 1, A(o.bob || '', h, o.d));
+}
+function cloud(x, y, s, d) { return at(x, y, s, A('drift', '<g fill="#fff" opacity=".9"><ellipse cx="0" cy="0" rx="22" ry="9"/><ellipse cx="-10" cy="-6" rx="11" ry="9"/><ellipse cx="8" cy="-9" rx="13" ry="11"/></g>', d)); }
+function stars(list) { return list.map(function (p, i) { return at(p[0], p[1], 1, A('twinkle', '<path d="M0 -3 L.9 -.9 L3 0 L.9 .9 L0 3 L-.9 .9 L-3 0 L-.9 -.9Z" fill="#FFF3C4"/>', -(i * .37) % 2.6)); }).join(''); }
+function fire(x, y, s) {
+  var sp = ''; for (var i = 0; i < 6; i++) sp += at((i % 3 - 1) * 6, -18, 1, A('spark', '<circle r="1.6" fill="#FFD36B"/>', -i * .45));
+  return at(x, y, s || 1, '<radialGradient id="fglow"><stop offset="0" stop-color="#FFC861" stop-opacity=".7"/><stop offset="1" stop-color="#FFC861" stop-opacity="0"/></radialGradient><ellipse class="glow" cx="0" cy="-14" rx="80" ry="46" fill="url(#fglow)"/>' +
+    '<g fill="#6E4630"><rect x="-22" y="-6" width="44" height="7" rx="3.5" transform="rotate(14)"/><rect x="-22" y="-6" width="44" height="7" rx="3.5" transform="rotate(-14)"/></g><circle cx="-20" cy="-8" r="3" fill="#C9A06A"/><circle cx="20" cy="-8" r="3" fill="#C9A06A"/><circle cx="-20" cy="-8" r="1.3" fill="#8A5A3A"/><circle cx="20" cy="-8" r="1.3" fill="#8A5A3A"/>' +
+    [[-30, 2, 6], [-20, 6, 5], [-8, 8, 5.5], [5, 8, 5], [17, 6.5, 5.5], [28, 2.5, 5]].map(function (p) { return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="' + p[2] + '" ry="' + (p[2] * .7) + '" fill="#8E8A82"/><ellipse cx="' + (p[0] - 1) + '" cy="' + (p[1] - 1.4) + '" rx="' + (p[2] * .5) + '" ry="' + (p[2] * .3) + '" fill="#B5B0A6"/>'; }).join('') +
+    A('flame', '<path d="M0 -40 C10 -26 16 -18 13 -8 C11 -1 5 2 0 2 C-5 2 -11 -1 -13 -8 C-16 -18 -10 -26 0 -40Z" fill="#E2602A"/>') +
+    A('flame f2', '<path d="M0 -28 C7 -18 10 -12 8 -6 C6 -1 3 0 0 0 C-3 0 -6 -1 -8 -6 C-10 -12 -7 -18 0 -28Z" fill="#F2A43A"/>') +
+    A('flame f3', '<path d="M0 -16 C4 -10 6 -6 4 -3 C3 -1 1 0 0 0 C-1 0 -3 -1 -4 -3 C-6 -6 -4 -10 0 -16Z" fill="#FFE29A"/>') + sp);
+}
+function pine(x, y, s, c) { return at(x, y, s, '<rect x="-2.5" y="-6" width="5" height="10" fill="#3A2A1E"/><path d="M0 -80 L14 -52 H7 L20 -28 H10 L24 0 H-24 L-10 -28 H-20 L-7 -52 H-14Z" fill="' + c + '"/><path d="M0 -80 L14 -52 H7 L20 -28 H10 L24 0 H3 Z" fill="#fff" opacity=".07"/><path d="M-14 -52 L-4 -58 M-20 -28 L-8 -34 M-24 0 L-10 -6" stroke="#000" stroke-width="1" opacity=".12"/>'); }
+function tuft(x, y, c) { return '<path d="M' + x + ' ' + y + ' l-3 -7 l4 4 l1 -8 l2 8 l3 -6 l-1 9Z" fill="' + c + '"/>'; }
+function book(x, y, c, w, h, r) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="1.5" fill="' + c + '"' + (r ? ' transform="rotate(' + r + ' ' + x + ' ' + y + ')"' : '') + '/>'; }
+
+// ---------- 1. Москва, «Ленинка» ----------
+function art1() {
+  var cols = '', i;
+  for (i = 0; i < 10; i++) cols += '<rect x="' + (30 + i * 20) + '" y="80" width="11" height="108" fill="#F1E7D3"/><rect x="' + (28 + i * 20) + '" y="78" width="15" height="5" fill="#E2D4BA"/><rect x="' + (38 + i * 20) + '" y="83" width="3" height="105" fill="#DCCDB2"/>';
+  var leaves = ''; for (i = 0; i < 7; i++) leaves += at(330 + (i * 13) % 50, 60 + (i * 7) % 20, 1, A('lfall', '<path d="M0 0 q5 -5 10 0 q-5 5 -10 0z" fill="' + ['#E9A53B', '#D85B21', '#C9A13A'][i % 3] + '"/>', -i * .9));
+  var bubbleA = A('cycA', '<g transform="translate(316 50)"><circle cx="0" cy="6" r="13" fill="#8C4A3A"/><circle cx="0" cy="-12" r="7" fill="#F2C9A5"/><rect x="-6" y="-26" width="12" height="9" fill="#2B2622"/><rect x="-9" y="-18" width="18" height="2.5" fill="#2B2622"/><circle cx="-2.5" cy="-12" r="1" fill="#1F2A36"/><circle cx="2.5" cy="-12" r="1" fill="#1F2A36"/>' + T(26, 6, '?', 18, C.orange) + '<path d="M-24 -26 L24 22 M24 -26 L-24 22" class="cross" stroke="' + C.orange + '" stroke-width="4" stroke-linecap="round"/></g>');
+  var bubbleB = A('cycB', '<g transform="translate(316 52)"><path d="M0 14 L-30 9 L-31 -16 L0 -11Z" fill="#fff" stroke="#C9B79C"/><path d="M0 14 L30 9 L31 -16 L0 -11Z" fill="#fff" stroke="#C9B79C"/>' + lily(-15, -2, 22, C.green) + '<path d="M6 -6 H24 M6 0 H24 M6 6 H20" stroke="#C9C0AE" stroke-width="1.5"/>' + T(0, -20, 'СКАУТИНГ', 7.5, C.green) + '</g>');
+  // голубь: клюёт всем телом (наклон вокруг лап), голова не отделяется
+  var pig = function (x, y, d, flip) { return at(x, y, 1, '<g' + (flip ? ' transform="scale(-1 1)"' : '') + '><ellipse cx="0" cy="0.5" rx="9" ry="1.6" fill="#000" opacity=".12"/>' +
+    '<path d="M-2 -2 L-3.5 0 M-2 -2 L-.5 0 M2 -2 L.5 0 M2 -2 L3.5 0" stroke="#D9746A" stroke-width="1.1" stroke-linecap="round"/><path d="M-2 -5 V-2 M2 -5 V-2" stroke="#D9746A" stroke-width="1.4"/>' +
+    A('peck', '<path d="M-10 -9 L-21 -12 L-20.5 -8.5 L-22 -6 L-10 -5Z" fill="#6F7882"/><path d="M-21 -11 L-20.5 -8.5" stroke="#3E454D" stroke-width="1.2"/>' +
+      '<ellipse cx="-1" cy="-8.5" rx="11.5" ry="6.5" fill="#A3ACB6"/><path d="M-11 -9 C-5 -14 4 -13 7 -9 C2 -6 -5 -5 -11 -7Z" fill="#8C96A1"/><path d="M-6.5 -9.6 L-1 -10.6 M-5.5 -7.6 L.5 -8.4" stroke="#4C545D" stroke-width="1.3" stroke-linecap="round"/>' +
+      '<path d="M5 -11 C6.5 -16.5 10 -18.5 13 -17 L12.5 -9 C10 -7 7 -7 5 -9Z" fill="url(#pgn)"/>' +
+      '<circle cx="12.6" cy="-18.4" r="4.3" fill="#8E98A3"/><circle cx="13.9" cy="-19" r="1.35" fill="#E9701E"/><circle cx="14.1" cy="-19" r=".65" fill="#111"/><path d="M16.4 -18.8 L20.2 -17.6 L16.5 -16.7Z" fill="#4A4A4A"/><ellipse cx="16.5" cy="-18.6" rx=".9" ry=".6" fill="#E8E8E8"/>', d) + '</g>'); };
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Москва, осень 1991 года: Анна у библиотеки имени Ленина думает о скаутах">' +
+    '<defs><linearGradient id="sk1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9DCEA"/><stop offset="1" stop-color="#EEF3F2"/></linearGradient><linearGradient id="pgn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6E9C86"/><stop offset=".5" stop-color="#8A7AA6"/><stop offset="1" stop-color="#9AA3AD"/></linearGradient></defs>' +
+    '<rect width="400" height="250" fill="url(#sk1)"/>' + cloud(90, 26, 1, 0) + cloud(250, 20, .8, -6) +
+    // силуэт башни Кремля вдали
+    '<g fill="#BFCDD8"><rect x="300" y="132" width="34" height="74"/><rect x="304" y="112" width="26" height="22"/><path d="M306 112 L317 74 L328 112Z"/><rect x="270" y="168" width="96" height="38"/><path d="M270 168 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5 h6 v-5 h6 v5Z"/></g><circle cx="317" cy="122" r="4.5" fill="#D9E3EA"/><path d="M317 66 l1.6 3.6 3.9 .4 -2.9 2.6 .9 3.8 -3.5 -2 -3.5 2 .9 -3.8 -2.9 -2.6 3.9 -.4Z" fill="#C8412B"/>' +
+    '<g fill="#BFA982">' + [40, 92, 160, 212].map(function (x) { return '<rect x="' + (x - 3) + '" y="40" width="6" height="8"/><circle cx="' + x + '" cy="37" r="3"/><rect x="' + (x - 5) + '" y="46" width="10" height="3"/>'; }).join('') + '</g>' +
+    '<rect x="18" y="48" width="216" height="9" fill="#BFA982"/><rect x="14" y="56" width="224" height="22" fill="#CDB896"/>' + T(126, 71, 'БИБЛИОТЕКА им. В. И. ЛЕНИНА', 8.5, '#6E4630') + '<path d="M14 77.5 H238" stroke="#B5A07C" stroke-width="1.5"/><path d="M18 57.5 H234" stroke="#E2D4BA" stroke-width="1"/>' +
+    '<rect x="22" y="78" width="208" height="112" fill="#D2BF9F"/><g fill="#B9A585">' + [36, 56, 176, 196].map(function (x) { return '<rect x="' + x + '" y="96" width="14" height="20" rx="1"/><rect x="' + x + '" y="134" width="14" height="20" rx="1"/>'; }).join('') + '</g><rect x="100" y="126" width="52" height="62" fill="#6E4630"/><rect x="104" y="130" width="20" height="58" fill="#8FA9B8"/><rect x="128" y="130" width="20" height="58" fill="#8FA9B8"/><path d="M104 152 H124 M128 152 H148" stroke="#6E4630" stroke-width="2"/><path d="M107 133 L113 133 L107 145Z M131 133 L137 133 L131 145Z" fill="#fff" opacity=".35"/>' + cols +
+    '<rect x="14" y="186" width="224" height="8" fill="#C4B190"/><rect x="24" y="194" width="204" height="6" fill="#B9A585"/><rect x="34" y="200" width="184" height="6" fill="#AE9A79"/>' +
+    '<rect y="206" width="400" height="44" fill="#CBBFA6"/><path d="M0 222 H400 M0 236 H400" stroke="#BCAE93" stroke-width="1.5"/>' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].map(function (k) { return '<path d="M' + (k * 30 + (k % 2) * 8) + ' 206 v16 M' + (k * 30 + 15) + ' 222 v14 M' + (k * 30 + 4) + ' 236 v14" stroke="#BCAE93" stroke-width="1.2"/>'; }).join('') +
+    [[330, 214], [346, 220], [372, 216], [388, 224], [320, 228]].map(function (p, k) { return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="4" ry="1.8" fill="' + ['#D85B21', '#E9A53B', '#C9862F'][k % 3] + '" transform="rotate(' + (k * 37 % 60 - 30) + ' ' + p[0] + ' ' + p[1] + ')"/>'; }).join('') +
+    '<rect x="252" y="110" width="4" height="96" fill="#3A4652"/><rect x="249" y="200" width="10" height="6" rx="1" fill="#3A4652"/><path d="M246 112 h16 l-3 -10 h-10z" fill="#3A4652"/><path d="M251 102 h6 l-3 -4z" fill="#3A4652"/><circle class="blink2" cx="254" cy="114" r="3" fill="#FFE29A"/><g transform="translate(232 128)"><rect width="44" height="16" rx="3" fill="' + C.navy + '"/>' + T(22, 11, 'МОСКВА', 7.5, '#F5EEDF') + '</g>' +
+    '<path d="M356 208 V110 h8 V208Z" fill="#6E4630"/><path d="M361 120 v84" stroke="#5A3A28" stroke-width="1.5"/><path d="M360 130 L340 112 M362 122 L384 104" stroke="#6E4630" stroke-width="4" stroke-linecap="round"/><g class="sway"><circle cx="360" cy="86" r="30" fill="#D85B21"/><circle cx="338" cy="104" r="20" fill="#E9A53B"/><circle cx="384" cy="102" r="20" fill="#C9862F"/><circle cx="362" cy="64" r="18" fill="#E9A53B"/><circle cx="372" cy="94" r="12" fill="#B9481A" opacity=".5"/><circle cx="346" cy="80" r="9" fill="#F2C55C" opacity=".55"/><circle cx="380" cy="72" r="6" fill="#F2C55C" opacity=".5"/></g>' + leaves +
+    pig(166, 222, 0) + pig(204, 230, -.8, true) +
+    '<g><circle cx="282" cy="118" r="3.5" fill="#fff"/><circle cx="292" cy="104" r="5.5" fill="#fff"/><ellipse cx="316" cy="50" rx="54" ry="38" fill="#fff"/></g>' + bubbleA + bubbleB +
+    P({x: 290, y: 238, s: .95, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#3E6B4C', skirt: C.navy, bot: '#3A3530', scarf: null, aB: -14, iB: '<rect x="-12" y="30" width="22" height="16" rx="2" fill="#E9A53B" transform="rotate(10)"/>', hc: 'tilt', bob: 'breath'}) +
+    '</svg>';
+}
+
+// ---------- 2. Читальный зал ----------
+function art2() {
+  var bubble = function (x, y, inner, cls) { return A(cls, '<g transform="translate(' + x + ' ' + y + ')"><rect x="-26" y="-18" width="52" height="34" rx="12" fill="#fff"/><path d="M-6 15 L-2 26 L6 15Z" fill="#fff"/>' + inner + '</g>'); };
+  var shelf = '', i, cs = ['#284F36', '#D85B21', '#1F3954', '#B9862F', '#6B4A28', '#3E6B4C', '#8C4A3A', '#5C7FA6'];
+  [[10, 40], [10, 80], [10, 120], [346, 40], [346, 80], [346, 120]].forEach(function (p, s) { var x = p[0]; for (i = 0; x < p[0] + 44; i++) { var w = 5 + (i * 5 + s) % 4, h = 22 + (i * 7 + s * 3) % 9; shelf += '<rect x="' + x + '" y="' + (p[1] - h) + '" width="' + w + '" height="' + h + '" fill="' + cs[(i + s * 2) % 8] + '"/><rect x="' + x + '" y="' + (p[1] - h + 3) + '" width="' + w + '" height="1.3" fill="#F2C55C" opacity=".7"/><rect x="' + x + '" y="' + (p[1] - 5) + '" width="' + w + '" height="1.3" fill="#F2C55C" opacity=".7"/>'; x += w + 1; } shelf += '<rect x="' + (p[0] - 3) + '" y="' + p[1] + '" width="50" height="4" fill="#8A5A3A"/>'; });
+  var lamp = function (x) { return '<rect x="' + (x - 1.5) + '" y="134" width="3" height="28" fill="#B9862F"/><ellipse cx="' + x + '" cy="162" rx="9" ry="2.5" fill="#B9862F"/><path d="M' + (x - 16) + ' 136 Q' + x + ' 116 ' + (x + 16) + ' 136Z" fill="#2E7D4F"/><path class="cone" d="M' + (x - 14) + ' 136 L' + (x - 28) + ' 162 H' + (x + 28) + ' L' + (x + 14) + ' 136Z" fill="#FFE9A8" opacity=".5"/>'; };
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Читальный зал: Анна и Андрей Вахтин разговаривают о скаутинге">' +
+    '<rect width="400" height="250" fill="#E8DAC0"/><g fill="#E0D0B2">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (k) { return '<rect x="' + (k * 40 + 18) + '" y="0" width="4" height="176"/>'; }).join('') + '</g>' +
+    '<rect y="128" width="400" height="48" fill="#D6C09A"/><path d="M0 128 H400" stroke="#B9A07A" stroke-width="2"/>' + [0, 1, 2, 3, 4, 5, 6].map(function (k) { return '<rect x="' + (k * 58 + 6) + '" y="134" width="50" height="36" rx="2" fill="none" stroke="#C4AA80" stroke-width="1.5"/>'; }).join('') +
+    '<rect y="176" width="400" height="74" fill="#C9AE85"/>' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(function (k) { return '<path d="M' + (k * 40) + ' 176 L' + (k * 40 - 20) + ' 250" stroke="#B89A70" stroke-width="1.2"/>'; }).join('') + '<path d="M0 206 H400 M0 232 H400" stroke="#B89A70" stroke-width="1"/>' + shelf +
+    [[120, '#4E3828'], [282, '#4E3828']].map(function (c) { return '<path d="M' + (c[0] - 22) + ' 166 V140 Q' + c[0] + ' 132 ' + (c[0] + 22) + ' 140 V166Z" fill="' + c[1] + '"/><path d="M' + (c[0] - 17) + ' 160 V143 Q' + c[0] + ' 137 ' + (c[0] + 17) + ' 143 V160Z" fill="#6B4A32"/>'; }).join('') +
+    '<g transform="translate(128 14)"><rect width="144" height="64" rx="4" fill="#8A5A3A"/><rect x="5" y="5" width="134" height="54" fill="#CFE0D8"/><path d="M14 40 C30 22 60 30 80 20 C100 12 120 22 132 16 L132 54 L14 54Z" fill="#B7CFA3"/>' +
+    '<circle cx="28" cy="40" r="3.5" fill="' + C.navy + '"/>' + T(28, 52, 'Москва', 7, C.navy) + '<circle cx="118" cy="30" r="3.5" fill="' + C.orange + '"/>' + T(118, 46, 'Иркутск', 7, C.orange) +
+    '<path d="M40 22 q6 -4 10 0 M60 46 h12 M96 44 q6 2 10 -2" stroke="#8FB083" stroke-width="1.2" fill="none"/><path class="dash" d="M28 40 Q72 -4 118 30" stroke="' + C.orange + '" stroke-width="2.2" fill="none" stroke-dasharray="4 4"/></g>' +
+    '<g transform="translate(316 40)"><circle r="17" fill="#FFFDF8" stroke="#8A5A3A" stroke-width="3"/>' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(function (k) { var a = k * Math.PI / 6; return '<circle cx="' + (Math.sin(a) * 13).toFixed(1) + '" cy="' + (-Math.cos(a) * 13).toFixed(1) + '" r="' + (k % 3 ? .7 : 1.3) + '" fill="#1F3954"/>'; }).join('') + '<rect class="hand1" x="-1" y="-13" width="2" height="13" fill="#1F3954"/><rect class="hand2" x="-1.5" y="-8" width="3" height="8" fill="#1F3954"/><circle r="2" fill="#1F3954"/></g>' +
+    P({x: 120, y: 216, s: .95, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#D85B21', aB: -64, cB: 'reach', talk: 'talkA', hc: 'nod', legs: false}) +
+    P({x: 282, y: 216, s: .95, hs: 'side', hair: '#5A3B26', top: '#5C7FA6', glasses: true, aA: 20, aB: -118, cB: 'explain', talk: 'talkB', hc: 'nod2', legs: false}) +
+    '<rect x="20" y="160" width="360" height="11" rx="3" fill="#8A5A3A"/><rect x="26" y="160" width="348" height="4" rx="2" fill="#2E6B47"/><path d="M40 167 H360" stroke="#6E4630" stroke-width=".8" opacity=".6"/><rect x="34" y="171" width="332" height="30" fill="#7A4D31"/><path d="M60 176 v20 M140 176 v20 M260 176 v20 M340 176 v20" stroke="#6E4630" stroke-width="1.5"/><rect x="40" y="201" width="9" height="40" fill="#6E4630"/><rect x="351" y="201" width="9" height="40" fill="#6E4630"/><rect x="190" y="201" width="20" height="40" fill="#6E4630"/>' +
+    lamp(80) + lamp(320) +
+    '<g transform="translate(126 154)"><path d="M0 6 L-26 4 L-26 -2 L0 0Z" fill="#FFFDF8" stroke="#C9B79C" stroke-width=".8"/><path d="M0 6 L26 4 L26 -2 L0 0Z" fill="#FFFDF8" stroke="#C9B79C" stroke-width=".8"/><path d="M-22 1 H-4 M-22 3 H-6 M4 1 H22 M4 3 H18" stroke="#9AA3AD" stroke-width=".6"/></g>' +
+    '<g transform="translate(250 150)"><rect x="-6" y="0" width="12" height="9" rx="2" fill="#1F3954"/><rect x="-3" y="-3" width="6" height="3" fill="#2B2622"/><path d="M8 -6 L22 8" stroke="#B9862F" stroke-width="2" stroke-linecap="round"/></g>' +
+    '<g>' + book(178, 152, C.green, 46, 10) + book(182, 142, C.navy, 40, 10) + book(176, 132, '#B9862F', 44, 10) + '</g>' +
+    A('liftbook', '<g transform="translate(176 116)"><rect width="44" height="12" rx="2" fill="' + C.orange + '"/>' + T(22, 9, 'СКАУТЫ', 7, '#fff') + '</g>') +
+    bubble(320, 104, lily(0, -1, 26, C.green), 'bubB') + bubble(80, 104, T(0, 7, '!', 22, C.orange), 'bubA') +
+    '</svg>';
+}
+
+// ---------- 3. Теория встречает практику ----------
+function art3() {
+  var tent = function (x, c) { return '<path d="M' + (x - 50) + ' 214 L' + (x - 30) + ' 188 M' + (x + 50) + ' 214 L' + (x + 30) + ' 188" stroke="#2B2622" stroke-width=".7" opacity=".45"/><path d="M' + (x - 36) + ' 214 L' + x + ' 160 L' + (x + 36) + ' 214Z" fill="' + c + '"/><path d="M' + x + ' 160 L' + (x + 36) + ' 214 H' + (x + 14) + 'Z" fill="#000" opacity=".15"/><path d="M' + x + ' 160 L' + (x - 10) + ' 214 H' + (x + 10) + 'Z" fill="#1E3A28"/><path d="M' + x + ' 160 L' + (x - 10) + ' 214 L' + (x - 4) + ' 214 L' + (x + 1) + ' 175Z" fill="#fff" opacity=".2"/><path d="M' + (x - 18) + ' 187 L' + (x - 24) + ' 214 M' + (x + 18) + ' 187 L' + (x + 24) + ' 214" stroke="#000" stroke-width=".8" opacity=".2"/><path d="M' + x + ' 160 v-6" stroke="#6E4630" stroke-width="2"/><path d="M' + (x - 52) + ' 214 v-4 M' + (x + 52) + ' 214 v-4" stroke="#8A5A3A" stroke-width="2"/>'; };
+  var notes = ''; for (var i = 0; i < 3; i++) notes += at(316, 120, 1, A('note', '<path d="M0 0 v-12 l8 -3 v12" stroke="#FFF3C4" stroke-width="2" fill="none"/><circle cx="-2" cy="0" r="3" fill="#FFF3C4"/><circle cx="6" cy="-3" r="3" fill="#FFF3C4"/>', -i * 1.1));
+  var bookFront = '<g transform="translate(0 -62)"><path d="M0 4 L-18 0 L-18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/><path d="M0 4 L18 0 L18 -18 L0 -14Z" fill="#fff" stroke="#C9B79C"/>' + lily(-9, -7, 12, C.green) + '<path d="M4 -9 H14 M4 -5 H14" stroke="#C9C0AE" stroke-width="1.3"/></g>';
+  var guitar = '<g transform="translate(0 -58) rotate(-28)"><rect x="-2.5" y="-40" width="5" height="34" fill="#6E4630"/><path d="M-2.5 -36 h5 M-2.5 -31 h5 M-2.5 -26 h5 M-2.5 -21 h5" stroke="#D9C9A0" stroke-width=".6"/><ellipse cx="0" cy="0" rx="12" ry="15" fill="#C9862F"/><ellipse cx="0" cy="-10" rx="9" ry="9" fill="#C9862F"/><ellipse cx="-3" cy="-4" rx="5" ry="8" fill="#fff" opacity=".12"/><circle cx="0" cy="-2" r="4.4" fill="#5A3328"/><circle cx="0" cy="-2" r="5.4" fill="none" stroke="#8A5A3A" stroke-width=".8"/><rect x="-5" y="7" width="10" height="2.5" rx="1" fill="#5A3328"/><path d="M-1.2 -42 V8 M0 -42 V8 M1.2 -42 V8" stroke="#F2E6C9" stroke-width=".35"/><rect x="-4" y="-46" width="8" height="7" rx="1.5" fill="#5A3328"/><circle cx="-5" cy="-44" r="1" fill="#D9C9A0"/><circle cx="5" cy="-44" r="1" fill="#D9C9A0"/><circle cx="-5" cy="-41" r="1" fill="#D9C9A0"/><circle cx="5" cy="-41" r="1" fill="#D9C9A0"/></g>';
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Вечер в лагере: Анна с книгой и Алексей Васильков с гитарой у костра">' +
+    '<defs><linearGradient id="ev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34527A"/><stop offset=".6" stop-color="#C98466"/><stop offset="1" stop-color="#F2B279"/></linearGradient></defs>' +
+    '<rect width="400" height="250" fill="url(#ev)"/>' + stars([[30, 20], [80, 40], [140, 16], [210, 30], [260, 14], [330, 34], [380, 18], [170, 50]]) +
+    '<circle cx="340" cy="70" r="22" fill="#FFE9B8" opacity=".15"/><circle cx="340" cy="70" r="14" fill="#FFE9B8" opacity=".9"/><circle cx="336" cy="66" r="2.5" fill="#E8CF98"/><circle cx="344" cy="74" r="1.8" fill="#E8CF98"/>' +
+    '<path d="M0 150 L50 112 L100 140 L160 96 L220 136 L280 104 L340 138 L400 112 V250 H0Z" fill="#6D8578"/><path d="M160 96 L172 106 L166 108 L176 118 L160 104Z M280 104 L290 112 L284 113 L292 122 L280 110Z" fill="#E8E0D0" opacity=".7"/>' +
+    '<path d="M0 170 L40 130 L80 160 L130 110 L190 160 L240 120 L300 165 L350 125 L400 160 V250 H0Z" fill="#4C6A5C"/>' +
+    pine(20, 214, 1.1, '#1E3A28') + pine(60, 214, .8, '#24452F') + pine(376, 214, 1.2, '#1E3A28') + pine(350, 214, .8, '#24452F') +
+    '<rect y="206" width="400" height="44" fill="#3E5A3A"/><path d="M0 206 Q100 200 200 206 T400 206" fill="#4A6844"/>' + [12, 44, 150, 172, 236, 256, 340, 384, 70, 214].map(function (x, k) { return tuft(x, 218 + (k * 7) % 26, k % 2 ? '#2F4A2E' : '#527A4A'); }).join('') + tent(100, '#D85B21') + tent(300, '#E9A53B') +
+    [[150, 150], [258, 128], [60, 180], [370, 160], [190, 110]].map(function (p, k) { return at(p[0], p[1], 1, A('twinkle', '<circle r="1.8" fill="#FFF27A"/><circle r="4" fill="#FFF27A" opacity=".25"/>', -k * .6)); }).join('') +
+    '<g transform="translate(214 138)"><rect x="0" y="0" width="3" height="76" fill="#6E4630"/>' + A('flag', '<path d="M3 2 H46 L40 11 L46 20 H3Z" fill="' + C.green + '"/>' + T(22, 14, 'Труверы', 7.5, '#F5EEDF')) + '</g>' +
+    fire(200, 232, .9) +
+    P({x: 118, y: 244, s: .9, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#D85B21', skirt: C.navy, bot: '#3A3530', aA: 26, aB: -26, front: bookFront, hc: 'nod'}) +
+    P({x: 290, y: 244, s: .9, hs: 'messy', hair: '#B8743A', top: C.green2, bot: '#4A4A42', skin: SK[1], aA: 30, aB: -40, cB: 'strum', hc: 'nod2', back: '<rect x="-20" y="-84" width="40" height="40" rx="8" fill="#8A5A3A"/><rect x="-20" y="-60" width="40" height="10" rx="3" fill="#6E4630"/><rect x="-14" y="-78" width="28" height="12" rx="3" fill="#9C6A44"/>', front: guitar + '<path d="M-11 -86 L-9 -50 M11 -86 L9 -50" stroke="#6E4630" stroke-width="3" opacity=".9"/>'}) + notes +
+    '</svg>';
+}
+
+// ---------- 4. Нужны единомышленники ----------
+function art4() {
+  var win = function (x, y, n, m, w, h, gx, gy, c) { var s = ''; for (var i = 0; i < n; i++) for (var j = 0; j < m; j++) { var X = x + i * gx, Y = y + j * gy; s += '<rect x="' + (X - 1) + '" y="' + (Y - 1) + '" width="' + (w + 2) + '" height="' + (h + 2) + '" fill="#fff" opacity=".6"/><rect x="' + X + '" y="' + Y + '" width="' + w + '" height="' + h + '" fill="' + ((i + j * 3) % 5 === 1 ? '#F2D58A' : c) + '"/><path d="M' + (X + w / 2) + ' ' + Y + ' v' + h + ' M' + X + ' ' + (Y + h * .4) + ' h' + w + '" stroke="#fff" stroke-width=".8" opacity=".8"/><rect x="' + (X - 1.5) + '" y="' + (Y + h) + '" width="' + (w + 3) + '" height="1.6" fill="#fff" opacity=".7"/>'; } return s; };
+  var tree = function (x, y, s) { return at(x, y, s, '<rect x="-2" y="-14" width="4" height="14" fill="#6E4630"/><circle cy="-24" r="13" fill="#3E6B4C"/><circle cx="-7" cy="-18" r="8" fill="#4E7E5A"/><circle cx="6" cy="-28" r="6" fill="#5C8E67"/>'); };
+  var bird = function (x, y, d) { return at(x, y, 1, A('drift', '<path d="M-6 0 q3 -4 6 0 q3 -4 6 0" stroke="#4A5866" stroke-width="1.4" fill="none" stroke-linecap="round"/>', d)); };
+  var flyer = function (x, y, r, d) { return at(x, y, 1, A('flut', '<g transform="rotate(' + r + ')"><rect x="-11" y="-14" width="22" height="28" fill="#FFFDF8" stroke="#C9B79C"/>' + lily(0, -4, 13, C.green) + '<path d="M-7 7 H7 M-7 10 H5" stroke="#C9C0AE" stroke-width="1.3"/></g>', d)); };
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Иркутск: Анна ходит во Дворец пионеров, отдел молодёжи и на радио, звонит телефон">' +
+    '<rect width="400" height="250" fill="#DCE8F0"/>' + cloud(70, 24, .9, -3) + cloud(300, 30, 1, -9) + bird(180, 30, 0) + bird(200, 22, -4) + bird(222, 34, -8) +
+    '<g fill="#C9D6DE"><rect x="0" y="120" width="30" height="60"/><rect x="120" y="100" width="34" height="80"/><rect x="226" y="126" width="40" height="54"/><rect x="330" y="96" width="30" height="84"/><rect x="360" y="130" width="40" height="50"/></g>' +
+    // Дворец пионеров
+    '<rect x="14" y="90" width="110" height="88" fill="#E9D7B5"/><path d="M8 92 L69 58 L130 92Z" fill="#D2B98E"/><g fill="#F7EEDC">' + [24, 44, 64, 84, 104].map(function (x) { return '<rect x="' + x + '" y="96" width="8" height="82"/>'; }).join('') + '</g><path d="M8 92 H130" stroke="#C4A97C" stroke-width="2"/><circle cx="69" cy="78" r="7" fill="#F7EEDC"/><circle cx="69" cy="78" r="4" fill="#C8412B"/><rect x="14" y="174" width="110" height="4" fill="#D2B98E"/><rect x="50" y="170" width="38" height="4" fill="#D2B98E"/><rect x="56" y="140" width="26" height="34" fill="#8A5A3A"/><path d="M69 140 v34" stroke="#6E4630" stroke-width="1.5"/><path d="M56 140 Q69 132 82 140" fill="#D2B98E"/>' +
+    '<rect x="68" y="34" width="2" height="26" fill="#6E4630"/>' + A('flag', '<path d="M70 34 H88 L84 40 L88 46 H70Z" fill="#C8412B"/>') +
+    // Отдел молодёжи
+    '<rect x="146" y="70" width="86" height="108" fill="#C9D3DA"/>' + win(154, 78, 4, 5, 13, 11, 19, 17, '#8FA9B8') + '<rect x="146" y="68" width="86" height="4" fill="#A9B6BF"/><rect x="176" y="150" width="26" height="28" fill="#5C7FA6"/><path d="M189 150 v28" stroke="#3E5C80" stroke-width="1.5"/><rect x="170" y="146" width="38" height="5" fill="#3E5C80"/>' +
+    // Радио
+    '<rect x="258" y="104" width="76" height="74" fill="#E8C9A0"/>' + win(266, 112, 3, 2, 14, 14, 22, 22, '#8FA9B8') + '<rect x="284" y="152" width="22" height="26" fill="#8A5A3A"/>' +
+    '<rect x="256" y="100" width="80" height="5" fill="#C9A77A"/><path d="M286 104 L294 30 H298 L306 104" fill="none" stroke="#6B7580" stroke-width="2"/><path d="M288 92 L304 80 L289 68 L303 56 L291 44 L301 34 M304 92 L288 80 L303 68 L289 56 L301 44" stroke="#6B7580" stroke-width="1" fill="none"/><path d="M287 92 H305 M289 68 H303 M291 46 H301" stroke="#6B7580" stroke-width="1.5"/><circle class="blink2" cx="296" cy="28" r="3.5" fill="#E2302A"/>' +
+    '<g fill="none" stroke="' + C.orange + '" stroke-width="2.4" stroke-linecap="round"><path class="wv" d="M308 26 q6 4 0 10"/><path class="wv" style="animation-delay:.4s" d="M314 20 q10 8 0 22"/><path class="wv" style="animation-delay:.8s" d="M320 14 q14 12 0 34"/><path class="wv" d="M284 26 q-6 4 0 10"/><path class="wv" style="animation-delay:.4s" d="M278 20 q-10 8 0 22"/></g>' +
+    tree(140, 180, .8) + tree(244, 180, .7) + tree(348, 180, .9) + tree(386, 180, .7) +
+    '<g transform="translate(14 182)"><rect width="110" height="14" rx="3" fill="' + C.navy + '"/>' + T(55, 10, 'ДВОРЕЦ ПИОНЕРОВ', 7.5, '#F5EEDF') + '</g>' +
+    '<g transform="translate(140 182)"><rect width="98" height="14" rx="3" fill="' + C.navy + '"/>' + T(49, 10, 'ОТДЕЛ МОЛОДЁЖИ', 7.5, '#F5EEDF') + '</g>' +
+    '<g transform="translate(262 182)"><rect width="68" height="14" rx="3" fill="' + C.navy + '"/>' + T(34, 10, 'РАДИО', 7.5, '#F5EEDF') + '</g>' +
+    '<rect y="196" width="400" height="4" fill="#A8A397"/><rect y="200" width="400" height="50" fill="#CBBFA6"/>' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (k) { return '<path d="M' + (k * 44 + 10) + ' 244 h22" stroke="#E8DFC9" stroke-width="2.5" stroke-linecap="round"/>'; }).join('') +
+    [131, 249].map(function (x) { return '<rect x="' + x + '" y="150" width="3" height="50" fill="#3A4652"/><path d="M' + (x - 5) + ' 152 h13 l-3 -6 h-7z" fill="#3A4652"/><circle cx="' + (x + 1.5) + '" cy="154" r="2" fill="#FFE29A"/>'; }).join('') +
+    '<path id="route4" d="M69 214 C110 236 150 206 189 214 C230 222 260 240 296 214" fill="none" stroke="' + C.orange + '" stroke-width="2.4" stroke-dasharray="5 5"/>' +
+    '<g><animateMotion dur="7s" repeatCount="indefinite" keyPoints="0;1;1" keyTimes="0;.85;1" calcMode="linear"><mpath href="#route4"/></animateMotion>' + at(0, 6, .4, P({x: 0, y: 0, hs: 'anna', hair: '#3B2A20', glasses: true, temples: true, top: '#D85B21', skirt: C.navy, bot: '#3A3530', walk: true})) + '</g>' +
+    flyer(150, 228, -8, 0) + flyer(240, 232, 6, -1.2) +
+    '<g transform="translate(360 226)"><rect x="-26" y="0" width="52" height="24" fill="#8A5A3A"/>' + A('ring', '<path d="M-20 0 L-16 -16 H16 L20 0Z" fill="#C8412B"/><circle cy="-8" r="7" fill="#F5EEDF"/><circle cy="-8" r="2.5" fill="#C8412B"/><path d="M-20 -20 Q0 -30 20 -20 L22 -15 Q0 -22 -22 -15Z" fill="#A6301F"/>') +
+    A('ringtx', T(0, -34, 'дзынь!', 9, C.orange) + '<path d="M-26 -24 l-6 -4 M26 -24 l6 -4 M-28 -14 h-7 M28 -14 h7" stroke="' + C.orange + '" stroke-width="2" stroke-linecap="round"/>') + '</g>' +
+    '</svg>';
+}
+
+// ---------- 5. Голос по радио ----------
+function art5() {
+  var waves = ''; for (var i = 0; i < 4; i++) waves += at(184, 146, 1, A('travel', '<path d="M0 -10 q8 10 0 20" stroke="' + C.orange + '" stroke-width="3" fill="none" stroke-linecap="round"/>', -i * .8));
+  var steam = ''; for (i = 0; i < 3; i++) steam += at(104 + i * 4, 140, 1, A('steam', '<path d="M0 0 q-3 -5 0 -10 q3 -5 0 -10" stroke="#fff" stroke-width="2" fill="none" opacity=".8"/>', -i * .7));
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Отец Александра Верхозина слышит Анну по радио; Александр открывает подвал клуба «Сарма»">' +
+    // кухня
+    '<rect width="190" height="250" fill="#EADFCB"/><g fill="#DCCBAE">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (r) { return [0, 1, 2, 3, 4, 5, 6, 7].map(function (c) { return '<circle cx="' + (c * 24 + (r % 2) * 12 + 6) + '" cy="' + (r * 18 + 8) + '" r="2.2"/>'; }).join(''); }).join('') + '</g><rect y="168" width="190" height="82" fill="#D9C9AC"/>' +
+    '<g transform="translate(116 48)"><rect width="62" height="4" fill="#8A5A3A"/><rect x="4" y="-14" width="10" height="14" rx="2" fill="#B9D3C2" opacity=".9"/><rect x="5" y="-17" width="8" height="3" fill="#C8412B"/><rect x="20" y="-12" width="10" height="12" rx="2" fill="#F2C55C" opacity=".9"/><rect x="21" y="-15" width="8" height="3" fill="#8A5A3A"/><path d="M38 0 h20 l-3 -12 h-14z" fill="#C8412B"/><circle cx="48" cy="-12" r="2" fill="#2B2622"/></g>' +
+    '<g transform="translate(120 70)"><rect width="30" height="34" rx="2" fill="#FFFDF8" stroke="#C9B79C"/><rect width="30" height="9" fill="#C8412B"/>' + T(15, 7, '1991', 6, '#fff') + T(15, 26, 'ОКТ', 9, C.navy) + '</g>' +
+    '<g transform="translate(22 22)"><rect width="76" height="62" rx="3" fill="#8A5A3A"/><rect x="5" y="5" width="66" height="52" fill="#2C4A6A"/>' + stars([[30, 34], [52, 40], [70, 28]]) + '<circle cx="56" cy="18" r="7" fill="#FFF3C4"/><path d="M38 5 V57 M5 31 H71" stroke="#8A5A3A" stroke-width="3"/><rect x="-6" y="60" width="88" height="5" rx="2" fill="#8A5A3A"/><path d="M-4 -4 Q8 30 2 58 L-6 58 L-6 -4Z M80 -4 Q68 30 74 58 L82 58 L82 -4Z" fill="#D85B21"/><path d="M-6 -6 H82" stroke="#6E4630" stroke-width="3"/></g>' +
+    P({x: 60, y: 220, s: .95, hs: 'bald', hair: '#A9A9A9', must: '#9A9A9A', top: '#8C4A3A', skin: SK[1], aB: -72, hc: 'listen', legs: false}) +
+    '<rect x="0" y="166" width="190" height="8" rx="2" fill="#8A5A3A"/><rect x="4" y="172" width="182" height="34" fill="#FFFDF8"/><g fill="#C8412B" opacity=".75">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map(function (k) { return '<rect x="' + (4 + k * 10.1) + '" y="' + (172 + (k % 2) * 8.5) + '" width="10.1" height="8.5"/><rect x="' + (4 + k * 10.1) + '" y="' + (189 + (k % 2) * 8.5) + '" width="10.1" height="8.5"/>'; }).join('') + '</g><path d="M4 206 l5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 5 -4 5 4 2 -2" fill="#FFFDF8"/><rect x="20" y="210" width="8" height="40" fill="#6E4630"/><rect x="162" y="210" width="8" height="40" fill="#6E4630"/>' +
+    '<g transform="translate(100 150)"><path d="M0 0 h14 v12 a4 4 0 0 1 -4 4 h-6 a4 4 0 0 1 -4 -4z" fill="#fff"/><path d="M14 4 q6 0 6 4 t-6 4" stroke="#fff" stroke-width="2" fill="none"/></g>' + steam +
+    '<g transform="translate(124 126)"><rect width="56" height="40" rx="6" fill="#8C4A3A"/><circle cx="17" cy="20" r="11" fill="#5A3328"/><g class="spk"><circle cx="17" cy="20" r="6" fill="#3A221B"/></g><rect x="32" y="9" width="18" height="6" rx="2" fill="#F2C55C"/><path d="M34 9 v6 M38 9 v6 M42 9 v6 M46 9 v6" stroke="#8C4A3A" stroke-width=".5"/><rect class="needle" x="39" y="8.5" width="1.3" height="7" fill="#C8412B"/><circle cx="37" cy="28" r="3" fill="#F2C55C"/><circle cx="46" cy="28" r="3" fill="#F2C55C"/><rect x="2" y="40" width="8" height="3" fill="#5A3328"/><rect x="46" y="40" width="8" height="3" fill="#5A3328"/><path d="M4 4 h48" stroke="#fff" stroke-width="1" opacity=".25"/></g>' +
+    T(152, 116, '«…скауты…»', 8, C.navy, 700) +
+    // переход
+    '<path d="M190 0 V250" stroke="#B9A585" stroke-width="4"/>' + waves +
+    // подвал
+    '<rect x="192" width="208" height="250" fill="#C9D7DF"/><rect x="192" width="208" height="120" fill="#D9A77A"/><g fill="#CE9A6C">' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map(function (r) { return [0, 1, 2, 3, 4, 5, 6, 7, 8].map(function (c) { return '<rect x="' + (192 + c * 24 + (r % 2) * 12) + '" y="' + (r * 10) + '" width="22" height="8.5"/>'; }).join(''); }).join('') + '</g>' +
+    [[206, 16], [246, 16], [326, 16], [366, 16], [206, 66], [366, 66]].map(function (p) { return '<rect x="' + (p[0] - 2) + '" y="' + (p[1] - 2) + '" width="28" height="26" fill="#F5EEDF"/><rect x="' + p[0] + '" y="' + p[1] + '" width="24" height="22" fill="#8FA9B8"/><path d="M' + (p[0] + 12) + ' ' + p[1] + ' v22 M' + p[0] + ' ' + (p[1] + 9) + ' h24" stroke="#F5EEDF" stroke-width="1.6"/><rect x="' + (p[0] - 3) + '" y="' + (p[1] + 22) + '" width="30" height="3" fill="#B5A58A"/>'; }).join('') +
+    '<rect x="386" y="0" width="5" height="250" fill="#8E9AA3"/><rect x="384" y="40" width="9" height="3" fill="#6E7A83"/><rect x="384" y="110" width="9" height="3" fill="#6E7A83"/>' +
+    '<rect x="192" y="118" width="208" height="8" fill="#A8A397"/>' +
+    '<g transform="translate(264 52)"><rect width="76" height="24" rx="5" fill="' + C.navy + '"/>' + T(38, 10, 'Декабрьских Событий', 6.5, '#F5EEDF') + T(38, 20, '107Б', 9, '#F2C55C') + '</g>' +
+    '<path d="M248 126 H344 V250 H248Z" fill="#8E8A80"/><g fill="#B5A58A"><rect x="248" y="126" width="22" height="124"/><rect x="322" y="126" width="22" height="124"/></g>' +
+    '<path d="M270 126 V250 M322 126 V250" stroke="#6E6A60" stroke-width="2"/>' + [0, 1, 2, 3, 4].map(function (k) { return '<rect x="248" y="' + (140 + k * 22) + '" width="22" height="4" fill="#9C8D74"/><rect x="322" y="' + (140 + k * 22) + '" width="22" height="4" fill="#9C8D74"/>'; }).join('') +
+    '<rect x="270" y="150" width="52" height="96" fill="#3A2A20"/>' + A('glowdoor', '<rect x="276" y="156" width="40" height="90" fill="#FFE29A"/>') +
+    '<g transform="translate(276 156)">' + A('door', '<rect width="40" height="90" fill="#6E4630"/><rect x="5" y="6" width="30" height="34" rx="2" fill="none" stroke="#5A3A28" stroke-width="2"/><rect x="5" y="48" width="30" height="36" rx="2" fill="none" stroke="#5A3A28" stroke-width="2"/><circle cx="33" cy="46" r="2.5" fill="#F2C55C"/>') + '</g>' +
+    '<g transform="translate(296 126)"><path d="M-8 0 h16 l-3 6 h-10z" fill="#2B2622"/>' + A('blink2', '<circle cy="8" r="3" fill="#FFE29A"/><circle cy="8" r="9" fill="#FFE29A" opacity=".25"/>') + '</g>' +
+    [[212, 240], [228, 246], [372, 236], [356, 246]].map(function (p, k) { return '<ellipse cx="' + p[0] + '" cy="' + p[1] + '" rx="4" ry="1.8" fill="' + ['#D85B21', '#E9A53B'][k % 2] + '" transform="rotate(' + (k * 40 - 30) + ' ' + p[0] + ' ' + p[1] + ')"/>'; }).join('') +
+    '<g transform="translate(272 132)"><rect width="48" height="14" rx="3" fill="' + C.green + '"/>' + T(24, 10.5, 'САРМА', 8, '#F5EEDF') + '</g>' +
+    P({x: 364, y: 240, s: .92, hs: 'short', hair: '#2B2420', top: C.green, bot: '#4A4A42', aA: 120, cA: 'wave', back: '<circle cx="12" cy="-70" r="13" fill="none" stroke="#C9862F" stroke-width="4"/>', hc: 'nod2'}) +
+    A('idea', lily(364, 104, 22, C.orange)) +
+    '</svg>';
+}
+
+// ---------- 6. Первые отряды ----------
+function art6() {
+  var sq = [['Акула', '20.10.1991', '#1F3954', 'Сергиенко', 'short', '#3B2A20', SK[0]], ['Соболь', '1991', '#6B4A28', 'Васильков', 'messy', '#B8743A', SK[1]], ['Байкал', '1991', '#2C6E8A', 'Тепляшин', 'short', '#1E1A18', SK[2]],
+    ['Арго', '13.12.1991', '#D85B21', 'Ефименко', 'bob', '#E3C27E', SK[0]], ['Сарма', 'февраль 1992', '#3E6B4C', 'Верхозин', 'short', '#2B2420', SK[3]], ['Ирбис', '28.04.1992', '#7C7F75', 'Борисенко', 'pixie', '#1E1A18', SK[2]]];
+  var flags = '', people = '', chairs = '', plates = '', i;
+  sq.forEach(function (p, i) {
+    var cx = 36 + i * 65.5, fy = 26 + Math.sin(i / 5 * Math.PI) * 8, d = .4 + i * .55;
+    flags += A('pen', '<path d="M' + (cx - 30) + ' ' + fy + ' H' + (cx + 30) + ' V' + (fy + 44) + ' L' + cx + ' ' + (fy + 33) + ' L' + (cx - 30) + ' ' + (fy + 44) + 'Z" fill="' + p[2] + '"/>' +
+      T(cx, fy + 14, p[0], 10, '#fff') + T(cx, fy + 25, p[1], p[1].length > 10 ? 6.2 : 7, 'rgba(255,255,255,.9)', 700), d);
+    chairs += '<rect x="' + (cx - 17) + '" y="124" width="34" height="50" rx="6" fill="#5A3A28"/><rect x="' + (cx - 13) + '" y="128" width="26" height="42" rx="4" fill="#7A4D31"/><path d="M' + (cx - 10) + ' 131 q10 -3 20 0" stroke="#fff" stroke-width="1.2" opacity=".2" fill="none"/>';
+    var talk = i === 1 ? 'talkA' : i === 3 ? 'talkB' : null;
+    people += A('march', P({x: cx, y: 214, s: .7, hs: p[4], hair: p[5], skin: p[6], top: p[2], scarf: C.orange, legs: false, talk: talk,
+      aA: i === 4 ? 150 : 12, cA: i === 4 ? 'wave' : '', aB: i === 1 ? -110 : -12, cB: i === 1 ? 'explain' : '', hc: i % 2 ? 'nod' : 'nod2', bob: 'breath', d: d}), d);
+    plates += A('march', '<path d="M' + (cx - 24) + ' 196 L' + (cx - 21) + ' 184 H' + (cx + 21) + ' L' + (cx + 24) + ' 196Z" fill="#FFFDF8" stroke="#C9B79C"/>' + T(cx, 193, p[3], 6.6, C.navy), d);
+  });
+  var cups = [70, 330].map(function (x) { return '<path d="M' + x + ' 170 h8 l-1 12 h-6z" fill="#CFE3EE" opacity=".9"/><path d="M' + (x + 1) + ' 175 h6 l-.6 6 h-4.8z" fill="#9CC4DA" opacity=".8"/><path d="M' + (x + 1.5) + ' 171 v9" stroke="#fff" stroke-width=".8" opacity=".8"/>'; }).join('') +
+    '<g transform="translate(196 156)"><path d="M0 26 h14 l-1 -18 q4 0 4 5 v6 q0 3 -3 3" fill="none" stroke="#9CC4DA" stroke-width="1.4"/><path d="M0 26 h14 l-1 -20 h-12z" fill="#CFE3EE" opacity=".85"/><path d="M1.5 14 h11 l-.5 12 h-10z" fill="#9CC4DA" opacity=".8"/><path d="M3 8 v16" stroke="#fff" stroke-width="1" opacity=".8"/></g>' +
+    [[96, 170], [236, 172], [298, 170]].map(function (p, k) { return '<g transform="rotate(' + (k * 7 - 5) + ' ' + p[0] + ' ' + p[1] + ')"><rect x="' + p[0] + '" y="' + p[1] + '" width="18" height="10" rx="1" fill="' + [C.green, C.navy, '#8C4A3A'][k] + '"/>' + lily(p[0] + 9, p[1] + 5, 7, '#F2C55C') + '</g><path d="M' + (p[0] + 20) + ' ' + (p[1] + 9) + ' l9 -3" stroke="#1F3954" stroke-width="1.4" stroke-linecap="round"/>'; }).join('');
+  var papers = [120, 262].map(function (x, k) { return '<rect x="' + x + '" y="174" width="22" height="7" fill="#fff" transform="rotate(' + (k ? 6 : -5) + ' ' + x + ' 174)"/>'; }).join('');
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Конференц-зал: руководители первых отрядов в скаутских галстуках за общим столом, над ними флаги отрядов">' +
+    '<rect width="400" height="250" fill="#E8DAC0"/><g fill="#E0CFAF">' + [0, 1, 2, 3, 4, 5, 6, 7].map(function (k) { return '<rect x="' + (k * 52 + 8) + '" y="76" width="40" height="28" rx="2" fill="none" stroke="#D6C29E" stroke-width="1.5"/>'; }).join('') + '</g>' +
+    '<rect y="110" width="400" height="80" fill="#C9A882"/><path d="M0 110 H400" stroke="#A9865F" stroke-width="3"/><path d="M0 114 H400" stroke="#E2C9A2" stroke-width="1"/>' +
+    [40, 120, 200, 280, 360].map(function (x) { return '<path d="M' + x + ' 116 V188" stroke="#B8956C" stroke-width="2"/>'; }).join('') +
+    '<path d="M0 22 Q200 50 400 22" stroke="#6E4630" stroke-width="2" fill="none"/>' + flags +
+    '<g transform="translate(176 82)"><rect width="48" height="24" rx="4" fill="#FFFDF8" stroke="#C9B79C"/>' + lily(14, 12, 18, C.green) + T(34, 16, 'АБС', 9, C.green) + '</g>' +
+    chairs + people +
+    '<rect x="8" y="176" width="384" height="12" rx="4" fill="#8A5A3A"/><rect x="8" y="176" width="384" height="3" rx="2" fill="#A87450"/><rect x="16" y="188" width="368" height="34" fill="#7A4D31"/>' + [0, 1, 2, 3, 4, 5].map(function (k) { return '<rect x="' + (24 + k * 60) + '" y="194" width="52" height="22" rx="2" fill="none" stroke="#6E4630" stroke-width="1.6"/>'; }).join('') + '<rect x="24" y="222" width="10" height="28" fill="#6E4630"/><rect x="366" y="222" width="10" height="28" fill="#6E4630"/>' +
+    '<rect y="222" width="400" height="28" fill="#A63D2A"/><path d="M0 226 H400 M0 246 H400" stroke="#E9A53B" stroke-width="1.5" opacity=".7"/>' + [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (k) { return '<path d="M' + (k * 42 + 12) + ' 236 l6 -5 6 5 -6 5z" fill="#E9A53B" opacity=".6"/>'; }).join('') + cups + papers + plates +
+    '</svg>';
+}
+
+// ---------- 7. День рождения и лесное имя ----------
+function art7() {
+  var glowA = function (r) { return '<ellipse cx="0" cy="-2" rx="' + r + '" ry="' + (r * .55) + '" fill="url(#sglow)"/>'; };
+  var cat = '<defs><linearGradient id="pnb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A4658"/><stop offset=".6" stop-color="#26232D"/><stop offset="1" stop-color="#1B1920"/></linearGradient></defs>' +
+    A('tailw', '<path d="M-30 -6 C-42 -4 -50 -12 -52 -24 C-53 -29 -48 -30 -47.5 -25.5 C-46 -16 -40 -10 -30 -10.5Z" fill="#26232D" stroke="#6E6A82" stroke-width=".7"/>') +
+    '<path d="M-27 0 C-31 7 -29 14 -27 17 L-21 17.5 C-22 13 -21 8 -18 4Z" fill="#1F1D25"/><ellipse cx="-24" cy="17.6" rx="4.4" ry="1.8" fill="#1B1920"/>' +
+    '<path d="M-33 0 C-37 -9 -28 -15 -12 -13.5 C0 -12.5 8 -15 18 -15 C26 -14 29 -6 25 3 C12 8 -20 8.5 -33 0Z" fill="url(#pnb)" stroke="#6E6A82" stroke-width=".7"/>' +
+    '<g fill="#5A566C" opacity=".35"><circle cx="-18" cy="-9" r="2"/><circle cx="-10" cy="-12" r="1.8"/><circle cx="-2" cy="-9" r="2"/><circle cx="7" cy="-11" r="1.8"/><circle cx="-12" cy="-3" r="1.6"/><circle cx="2" cy="-3" r="1.6"/></g>' +
+    '<path d="M-18 4 C-21 9 -20 14 -18 17 L-12.5 17.5 C-13.5 13 -13 9 -11 6Z" fill="#2E2B36"/><ellipse cx="-15" cy="17.6" rx="4.2" ry="1.7" fill="#24212B"/>' +
+    '<path d="M12 3 C11 8 11 13 12 17 L17.5 17.5 C16.5 13 16.5 8 17 4Z" fill="#1F1D25"/><ellipse cx="15" cy="17.6" rx="4" ry="1.7" fill="#1B1920"/>' +
+    '<path d="M19 2 C18 7 19 13 20 17 L25.5 17.5 C24.5 13 24.5 7 24 3Z" fill="#2E2B36"/><ellipse cx="23" cy="17.6" rx="4" ry="1.7" fill="#24212B"/>' +
+    A('fhead', '<path d="M27 -26 L29 -34 L34 -27Z M35 -28 L39 -35 L41 -26Z" fill="#26232D" stroke="#6E6A82" stroke-width=".7"/><path d="M29.5 -28 L30 -31.5 L32.5 -28Z M37 -28 L38.8 -31.6 L39.8 -27.5Z" fill="#8C6B7A"/>' +
+      '<path d="M21 -13 C21 -23 29 -28 37 -27.5 C45 -27 51 -21 52 -15 C52 -10 47 -7 40 -7 C30 -7 21 -8 21 -13Z" fill="url(#pnb)" stroke="#6E6A82" stroke-width=".7"/>' +
+      '<path d="M44 -12 C47 -12.5 50 -12 52 -13 C51 -9 47 -7.5 44 -8.5Z" fill="#3B3744"/><path d="M50 -15.5 L53 -15 L51.5 -12.8Z" fill="#6B5E6E"/>' +
+      '<g class="blink"><path d="M38 -19 Q42 -22.5 46 -19 Q42 -16.5 38 -19Z" fill="#E9C44A"/><ellipse cx="42" cy="-19" rx=".8" ry="2" fill="#1A1820"/><circle cx="43.2" cy="-19.8" r=".5" fill="#fff"/></g>' +
+      '<g stroke="#B9B4C8" stroke-width=".5" opacity=".9" stroke-linecap="round"><path d="M47 -10.5 L59 -13"/><path d="M47 -10 L58.5 -8.5"/><path d="M47 -9.5 L56 -4.5"/></g>') ;
+  var sable = '<defs><linearGradient id="sbb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4E3322"/><stop offset=".6" stop-color="#6E4A30"/><stop offset="1" stop-color="#8A6242"/></linearGradient><linearGradient id="sbt" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#5A3B27"/><stop offset="1" stop-color="#3A2518"/></linearGradient></defs>' +
+    A('tailw', '<path d="M-27 -4 C-36 -10 -46 -10 -53 -3 C-57 1 -55 7 -50 7 C-46 2 -40 0 -36 1 C-32 2 -29 3 -27 4Z" fill="url(#sbt)"/><path d="M-30 -2 C-38 -6 -46 -6 -51 -1" stroke="#7A5638" stroke-width=".8" fill="none"/>') +
+    '<path d="M-26 1 C-30 7 -29 12 -25 14 L-19 14.5 C-20 11 -19 7 -16 4Z" fill="#3A2518"/><ellipse cx="-22" cy="14.6" rx="4.6" ry="1.8" fill="#2E1D12"/>' +
+    '<path d="M-29 3 C-34 -5 -27 -14 -12 -15 C1 -16 11 -13 17 -10 C21 -8 24 -2 22 4 C14 9 -16 9 -29 3Z" fill="url(#sbb)"/>' +
+    '<g stroke="#8E6848" stroke-width=".8" fill="none" stroke-linecap="round"><path d="M-20 -10 q3 -2 6 -1"/><path d="M-8 -12 q3 -2 6 -1"/><path d="M4 -11 q3 -1 6 0"/><path d="M-14 -4 q3 -1 6 0"/></g>' +
+    '<path d="M-19 4 C-22 8 -21 12 -18 14 L-13 14.5 C-14 11 -13 8 -11 6Z" fill="#4A3020"/><ellipse cx="-15.5" cy="14.6" rx="4" ry="1.6" fill="#3A2518"/>' +
+    '<path d="M11 2 C10 7 10 11 11 14 L16 14.5 C15 11 15 7 16 3Z" fill="#3A2518"/><ellipse cx="13.5" cy="14.6" rx="3.8" ry="1.6" fill="#2E1D12"/>' +
+    '<path d="M17 1 C16 6 17 11 18 14 L23 14.5 C22 11 22 6 22 2Z" fill="#4A3020"/><ellipse cx="20.5" cy="14.6" rx="3.8" ry="1.6" fill="#3A2518"/>' +
+    '<path d="M14 -8 C16 -2 20 3 24 2 C27 1 27 -4 25 -7Z" fill="#E9B56A"/>' +
+    A('fhead', '<path d="M13 -10 C15 -20 25 -25 33 -23 C40 -21 46 -16 51 -12 C49 -8 44 -6 37 -5 C28 -4 17 -4 13 -10Z" fill="#9A7050"/>' +
+      '<path d="M15 -14 C18 -20 25 -23 31 -22 C26 -20 21 -17 17 -12Z" fill="#7A5638"/>' +
+      '<circle cx="24.5" cy="-21.5" r="5" fill="#6E4A30"/><circle cx="24.5" cy="-21.5" r="5" fill="none" stroke="#E2C9A2" stroke-width="1.2"/><circle cx="24.8" cy="-21" r="2.4" fill="#C49A7A"/>' +
+      '<g class="blink"><circle cx="37" cy="-15.2" r="2.1" fill="#120C08"/><circle cx="37.8" cy="-16" r=".7" fill="#fff"/></g>' +
+      '<path d="M41 -11.5 C44 -12 47.5 -11.5 51 -12 C49 -8.5 45 -7 41 -8Z" fill="#B8916E"/><ellipse cx="50.8" cy="-11.8" rx="1.9" ry="1.5" fill="#2A1C14"/>' +
+      '<g stroke="#E2C9A2" stroke-width=".55" opacity=".9" stroke-linecap="round"><path d="M46 -10 L58 -12.5"/><path d="M46 -9.5 L57.5 -8"/><path d="M46 -9 L55.5 -4"/></g>');
+  var ferret = '<defs><linearGradient id="frb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9BC93"/><stop offset=".5" stop-color="#FFF4E0"/><stop offset="1" stop-color="#FFFAF0"/></linearGradient><linearGradient id="frt" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#B8916A"/><stop offset="1" stop-color="#7E5A3E"/></linearGradient></defs><g>' +
+    A('tailw', '<path d="M-28 -1 C-38 -4 -46 -3 -52 5 C-55 9 -52 12 -48 10 C-43 5 -36 4 -28 5Z" fill="url(#frt)"/><path d="M-30 -1 C-37 -2 -43 0 -47 5" stroke="#9C7656" stroke-width=".8" fill="none" opacity=".6"/>') +
+    '<path d="M-27 0 C-31 6 -30 12 -26 14 L-19 14.5 C-20 11 -19 7 -16 4Z" fill="#8E6A4C"/><ellipse cx="-22" cy="14.6" rx="4.6" ry="1.8" fill="#7A5A40"/>' +
+    '<path d="M-31 3 C-36 -4 -29 -13 -13 -14 C1 -15 11 -13 17 -10.5 C21 -8 24 -2 22 4 C14 8.5 -17 8.5 -31 3Z" fill="url(#frb)"/>' +
+    '<g stroke="#E8D3B4" stroke-width=".8" fill="none" stroke-linecap="round" opacity=".9"><path d="M-22 -9 q3 -2 6 -1"/><path d="M-9 -11 q3 -2 6 -1"/><path d="M4 -10.5 q3 -1 6 0"/><path d="M-15 -4 q3 -1 6 0"/></g>' +
+    '<path d="M-19 4 C-22 8 -21 12 -18 14 L-13 14.5 C-14 11 -13 8 -11 6Z" fill="#A27C5A"/><ellipse cx="-15.5" cy="14.6" rx="4" ry="1.6" fill="#8E6A4C"/>' +
+    '<path d="M11 2 C10 7 10 11 11 14 L16 14.5 C15 11 15 7 16 3Z" fill="#8E6A4C"/><ellipse cx="13.5" cy="14.6" rx="3.8" ry="1.6" fill="#7A5A40"/>' +
+    '<path d="M17 1 C16 6 17 11 18 14 L23 14.5 C22 11 22 6 22 2Z" fill="#A27C5A"/><ellipse cx="20.5" cy="14.6" rx="3.8" ry="1.6" fill="#8E6A4C"/>' +
+    '<path d="M13 -9 C15 -3 19 3 23 2 C26 1 26 -4 24 -7Z" fill="#FFFDF6"/>' +
+    A('fhead', '<path d="M13 -10 C15 -20 25 -25 33 -23 C40 -21 46 -16 52 -12 C50 -8 45 -6 38 -5 C28 -4 17 -4 13 -10Z" fill="#FFF7E6"/>' +
+      '<path d="M15 -14 C18 -20 25 -23 31 -22 C26 -20 21 -17 17 -12Z" fill="#E8D3B4"/>' +
+      '<ellipse cx="24.5" cy="-21" rx="4.6" ry="5" fill="#F2E3CB"/><ellipse cx="24.8" cy="-20.6" rx="2.5" ry="3" fill="#E9AFA0"/>' +
+      '<path d="M27 -15.5 C30 -20 39 -20.5 44 -15 C41 -11.5 34 -11 29.5 -13Z" fill="#8E6A4C"/>' +
+      '<g class="blink"><circle cx="37" cy="-15.2" r="2.1" fill="#1A1D22"/><circle cx="37.8" cy="-16" r=".7" fill="#fff"/></g>' +
+      '<path d="M40 -11.5 C44 -12 48 -11.5 52 -12 C50 -8 45 -6.5 40 -7.5Z" fill="#FFFFFF"/><ellipse cx="51.6" cy="-11.8" rx="1.9" ry="1.5" fill="#C97A74"/><path d="M50 -9.6 q-1.5 1.4 -3.5 1" stroke="#C9A27E" stroke-width=".6" fill="none"/>' +
+      '<g stroke="#FFF7E6" stroke-width=".55" opacity=".9" stroke-linecap="round"><path d="M46 -10 L58 -12.5"/><path d="M46 -9.5 L57.5 -8"/><path d="M46 -9 L55.5 -4"/></g>') +
+    '</g>';
+  var smoke = ''; for (var i = 0; i < 4; i++) smoke += at(200, 176, 1, A('smoke', '<circle r="9" fill="#fff" opacity=".35"/>', -i * 1.2));
+  var log = function (x) { return '<rect x="' + (x - 34) + '" y="214" width="68" height="14" rx="7" fill="#6E4630"/><path d="M' + (x - 24) + ' 218 h18 M' + (x - 2) + ' 223 h22 M' + (x + 4) + ' 217 h14" stroke="#4E3020" stroke-width="1" stroke-linecap="round"/><circle cx="' + (x - 30) + '" cy="221" r="6.5" fill="#C9A06A"/><circle cx="' + (x - 30) + '" cy="221" r="4" fill="none" stroke="#8A5A3A" stroke-width=".8"/><circle cx="' + (x - 30) + '" cy="221" r="1.6" fill="#8A5A3A"/>'; };
+  var kid = function (x, o) { o.x = x; o.y = 236; o.s = .6; o.top = o.top; o.scarf = C.orange; o.bot = '#3A3530'; return P(o); };
+  return '<svg viewBox="0 0 400 250" role="img" aria-label="Ночь у костра: дети получают лесные имена — Багира, Соболь, Фретка">' +
+    '<defs><linearGradient id="nt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#14263A"/><stop offset="1" stop-color="#2C4A6A"/></linearGradient></defs>' +
+    '<rect width="400" height="250" fill="url(#nt)"/>' + stars([[20, 20], [60, 50], [110, 14], [160, 34], [250, 18], [300, 44], [350, 16], [380, 60], [90, 80], [330, 90]]) +
+    '<circle cx="340" cy="44" r="30" fill="#FFF3C4" opacity=".08"/><circle cx="340" cy="44" r="18" fill="#FFF3C4"/><circle cx="348" cy="38" r="16" fill="url(#nt)"/>' +
+    '<path d="M0 190 Q60 160 120 180 T240 176 T400 170 V250 H0Z" fill="#1A3324"/>' + [30, 72, 150, 250, 322, 372].map(function (x, k) { return pine(x, 190 + (k % 2) * 6, .5, '#16301F'); }).join('') +
+    '<g transform="translate(338 196)"><path d="M-22 14 L0 -14 L22 14Z" fill="#3E5A3A"/><path d="M0 -14 L-6 14 H6Z" fill="#14261A"/></g>' +
+    pine(16, 214, 1.4, '#10261A') + pine(54, 214, 1, '#16301F') + pine(384, 214, 1.5, '#10261A') + pine(348, 214, 1, '#16301F') + pine(110, 210, .7, '#16301F') + pine(296, 210, .7, '#16301F') +
+    '<rect y="206" width="400" height="44" fill="#1D3526"/>' + [20, 60, 178, 230, 330, 368, 90].map(function (x, k) { return tuft(x, 232 + (k * 5) % 16, k % 2 ? '#2A4A33' : '#163020'); }).join('') +
+    [[70, 150], [330, 130], [250, 160], [150, 140], [380, 180], [30, 120]].map(function (p, k) { return at(p[0], p[1], 1, A('twinkle', '<circle r="1.6" fill="#FFF27A"/><circle r="4" fill="#FFF27A" opacity=".22"/>', -k * .7)); }).join('') + smoke +
+    '<radialGradient id="sglow"><stop offset="0" stop-color="#FFF3C4" stop-opacity=".45"/><stop offset="1" stop-color="#FFF3C4" stop-opacity="0"/></radialGradient>' +
+    [[cat, 'Багира', 112, 82, 0], [sable, 'Соболь', 200, 58, 2], [ferret, 'Фретка', 288, 82, 4]].map(function (a) { return at(a[2], a[3], 1, A('spirit', at(0, 0, .82, glowA(64) + a[0]) + T(0, 30, a[1], 9, '#FFF3C4'), a[4])); }).join('') +
+    fire(200, 224, 1) +
+    kid(98, {hs: 'tails', hair: '#B8743A', top: C.navy, skin: SK[2], hc: 'look', legs: false}) + kid(146, {hs: 'short', hair: '#3B2A20', top: C.green2, hc: 'look2', legs: false}) +
+    kid(256, {hs: 'cap', hair: '#284F36', top: '#8C4A3A', skin: SK[1], hc: 'look', legs: false}) + kid(304, {hs: 'bob', hair: '#1E1A18', top: '#5C7FA6', hc: 'look2', legs: false}) +
+    log(122) + log(280) +
+    '<g transform="translate(26 150)"><rect x="24" y="20" width="5" height="44" fill="#6E4630"/><rect width="54" height="26" rx="4" fill="#8A5A3A"/><path d="M4 8 h46 M4 18 h46" stroke="#6E4630" stroke-width=".8" opacity=".6"/><circle cx="4" cy="4" r="1.3" fill="#4E3020"/><circle cx="50" cy="4" r="1.3" fill="#4E3020"/>' + T(27, 12, 'АБС', 10, '#F5EEDF') + T(27, 22, '30.10.1991', 7, '#F2C55C') + '</g>' +
+    A('rise', lily(200, 120, 26, '#E9A53B')) +
+    '</svg>';
+}
+var ARTS = [art1, art2, art3, art4, art5, art6, art7];
+
+// ---------- страницы ----------
+function pageHtml(i) {
+  var c = PAGES[i];
+  return '<div class="book"><div class="pg"><div class="ch">' + c.k + '</div><h2>' + c.t + '</h2>' + (c.sub ? '<div class="sub">' + c.sub + '</div>' : '') +
+    '<div class="art">' + ARTS[i]() + '</div><div class="txt">' + c.p.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div><div class="folio">— ' + (i + 1) + ' —</div></div></div>';
+}
+function coverHtml() { return '<div class="cover"><div class="lily">' + LILY + '</div><div class="s">Байкальский скаут</div><div class="t">История<br>АБС</div><div class="h">7 страниц. Каждая открывается словом с листика.</div></div>'; }
+function lockedHtml(i) { return '<div class="book"><div class="locked"><div class="lily">' + LILY + '</div><div class="lock">Страница закрыта</div><b>Страница ' + (i + 1) + '</b><div>Найди листик со скаутской лилией на странице одного из интерактивов и впиши слово выше.</div></div></div>'; }
+
+// ---------- состояние ----------
+var KEY = 'abs-book-v1', used = [];
+try { used = JSON.parse(localStorage.getItem(KEY) || '[]').filter(function (w) { return VALID.indexOf(w) >= 0; }); } catch (e) { used = []; }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(used)); } catch (e) {} }
+var view = used.length ? used.length : 0; // 0 — обложка, 1..7 — главы, 8 — следующая закрытая
+function maxView() { return Math.min(7, used.length + 1); }
+function html(v) { return v === 0 ? coverHtml() : v <= used.length ? pageHtml(v - 1) : lockedHtml(v - 1); }
+var slot = document.getElementById('slot'), stage = document.getElementById('stage'), busy = false;
+function paint() { slot.innerHTML = html(view); slot.firstChild.classList.add('live'); ui(); }
+function ui() {
+  var lv = document.getElementById('leaves');
+  lv.innerHTML = WORDS.map(function (_, i) { return '<div class="lf' + (i < used.length ? ' on' : '') + '" aria-hidden="true">' + LEAF('lf') + '</div>'; }).join('');
+  document.getElementById('cnt').textContent = used.length < 7 ? 'Собрано листиков: ' + used.length + ' из 7' : 'Все 7 листиков собраны — книга открыта целиком!';
+  document.getElementById('dots').innerHTML = Array.from({length: 8}, function (_, v) { return '<i class="' + (v <= used.length ? 'open' : '') + (v === view ? ' now' : '') + '"></i>'; }).join('');
+  document.getElementById('prev').disabled = busy || view <= 0;
+  document.getElementById('next').disabled = busy || view >= maxView();
+}
+function go(to) {
+  if (busy || to === view || to < 0 || to > maxView()) return;
+  var fwd = to > view, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { view = to; paint(); return; }
+  busy = true;
+  var oldH = html(view), newH = html(to);
+  var f = document.createElement('div'); f.className = 'flip ' + (fwd ? 'fwd' : 'bwd');
+  f.innerHTML = '<div class="face front">' + (fwd ? oldH : newH) + '</div><div class="face back"></div><div class="shade"></div>';
+  slot.innerHTML = fwd ? newH : oldH;
+  var under = slot.firstChild; if (fwd) under.classList.add('live'); else f.firstChild.firstChild.classList.add('live');
+  stage.appendChild(f);
+  view = to; ui();
+  setTimeout(function () { f.remove(); if (!fwd) { slot.innerHTML = newH; slot.firstChild.classList.add('live'); } busy = false; ui(); }, 920);
+  if (!fwd || to > 0) stage.scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+document.getElementById('prev').onclick = function () { go(view - 1); };
+document.getElementById('next').onclick = function () { go(view + 1); };
+var tx = null;
+stage.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; }, {passive: true});
+stage.addEventListener('touchend', function (e) { if (tx === null) return; var dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) go(view + (dx < 0 ? 1 : -1)); }, {passive: true});
+
+var msg = document.getElementById('msg'), form = document.getElementById('form'), inp = document.getElementById('word');
+function say(t, ok) { msg.textContent = t; msg.className = 'msg ' + (ok ? 'ok' : 'bad'); }
+form.addEventListener('submit', function (e) {
+  e.preventDefault(); var w = norm(inp.value);
+  if (!w) return say('Впиши слово с листика', false);
+  if (used.length >= 7) return say('Книга уже открыта целиком', true);
+  if (used.indexOf(w) >= 0) { form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake'); return say('Это слово уже открыло страницу — ищи другой листик', false); }
+  if (VALID.indexOf(w) < 0) { form.classList.remove('shake'); void form.offsetWidth; form.classList.add('shake'); return say('Такого слова нет. Проверь, как написано на листике', false); }
+  used.push(w); save(); inp.value = '';
+  var n = used.length;
+  say(n < 7 ? 'Верно! Открывается страница ' + n : 'Верно! Ты собрал всю книгу!', true);
+  ui(); var lf = document.querySelectorAll('.lf')[n - 1]; if (lf) lf.classList.add('pop');
+  view = Math.max(0, n - 1); paint(); setTimeout(function () { go(n); }, 250);
+  if (n === 7) setTimeout(confetti, 1100);
+});
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var cols = ['#D85B21', '#284F36', '#E9A53B', '#1F3954', '#7DD6A1'];
+  for (var i = 0; i < 70; i++) { var c = document.createElement('div'); c.className = 'conf'; c.style.left = Math.random() * 96 + 'vw'; c.style.background = cols[i % cols.length]; c.style.animationDuration = (1.8 + Math.random() * 1.8) + 's'; c.style.animationDelay = Math.random() * .5 + 's'; document.body.appendChild(c); setTimeout(c.remove.bind(c), 4200); }
+}
+
+paint();
+})();
+</script>
+
+</body>
+</html>

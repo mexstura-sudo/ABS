@@ -156,6 +156,7 @@ figure{margin:0}
 <div id="app"></div>
 <button class="tocbtn hide" type="button" id="tocbtn">↑ Оглавление</button>
 
+<script src="../assets/leaf.js"></script>
 <script>
 (function () {
 var INTRO = 'Первая помощь — это не просто набор медицинских манипуляций. Это тонкая грань между жизнью и смертью, которая часто зависит не от оборудования, а от знаний и решимости человека, оказавшегося рядом. Многие боятся навредить, оказывая помощь. Это нормально. Наша цель — не сделать из вас врачей, а дать вам уверенность в том, что вы не навредите и сможете спасти жизнь, просто следуя чёткому алгоритму.';
@@ -276,6 +277,8 @@ var app = document.getElementById('app'), cleanup = [];
 function mount(v) {
   cleanup.forEach(function (f) { f(); }); cleanup = []; V = v;
   app.className = v; app.innerHTML = renderD();
+  // листик для книги «История АБС» — в самом конце статьи
+  if (window.ABSLeaf) ABSLeaf.put(app.querySelector('.wrap.end'), 'КОМПАС', {left: 'calc(50% - 39px)', top: '-28px'});
   window.scrollTo(0, 0);
   var H = innerHeight, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var io = new IntersectionObserver(function (es) {

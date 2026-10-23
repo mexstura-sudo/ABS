@@ -110,6 +110,7 @@ a{color:var(--green)}
 <body>
 <div id="app"></div>
 <div class="qrsheet" id="qrsheet"></div>
+<script src="../assets/leaf.js"></script>
 <script>
 /* QR-код без библиотек: байтовый режим, уровень коррекции M, версии 1–6 (до 106 байт).
    Перенос liga/qr.py на JavaScript. qrSvg(text) → строка <svg>, qrDataUrl(text) → картинка для <img>. */
@@ -354,6 +355,15 @@ function route() {
   P.k = null;
   var k = KNOTS.filter(function (x) { return x.slug === slug(); })[0];
   if (k) renderKnot(k); else renderList();
+  leafCheck(k);
+}
+// листик для книги «История АБС»: появляется, когда открыты все 5 узлов
+function leafCheck(k) {
+  var seen = {};
+  try { seen = JSON.parse(localStorage.getItem('abs-uzly-seen') || '{}') || {}; } catch (e) {}
+  if (k) { seen[k.slug] = 1; try { localStorage.setItem('abs-uzly-seen', JSON.stringify(seen)); } catch (e) {} }
+  var all = KNOTS.every(function (x) { return seen[x.slug]; });
+  if (all && window.ABSLeaf) ABSLeaf.put(document.querySelector(k ? '#app .wrap > .card:not(.shot)' : '#app .list'), 'ТРОПА', k ? {right: '14px', top: '-34px'} : {right: '14%', bottom: '60px'});
 }
 
 // увеличение схемы на весь экран

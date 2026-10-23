@@ -104,6 +104,7 @@ h1{font-size:clamp(38px,7vw,60px);line-height:1;margin:0;font-weight:800;letter-
 
 <script src="config.js"></script>
 <script src="common.js"></script>
+<script src="../assets/leaf.js"></script>
 <script>
 (function () {
 var esc = LI.esc, norm = LI.norm, TINT = LI.TINT;
@@ -200,6 +201,8 @@ function reveal(p) {
     (p.fio ? '<div class="fio">' + esc(p.fio) + '</div>' : '') + tags(p) +
     '<div class="sub">' + (p.year ? 'Имя получено в ' + esc(p.year) + ' году' : 'Год не указан') + '</div>';
   $('#revVeil').hidden = false; $('#rev .x').focus();
+  // листик для книги «История АБС» — в любой открытой карточке
+  if (window.ABSLeaf) ABSLeaf.put($('#rev'), 'ЛИЛИЯ', {left: '44px', top: '-26px'});
 }
 
 function openForm(pre) {

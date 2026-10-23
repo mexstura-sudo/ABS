@@ -318,6 +318,7 @@ body.vB .story{display:none}
 <div class="rstory" id="rstory"></div>
 <div class="rpanel hide" id="rpanel"><div class="mtrail" id="mtrail"></div><div class="trail" id="trail"><div class="track"></div><div class="done" id="tdone"></div><div class="walker" id="walker"><svg viewBox="0 0 26 26"><circle cx="13" cy="13" r="11" fill="currentColor"/><path d="M8 17 L13 7 L18 17Z" fill="#FFFDF8"/></svg></div></div><div class="rcards" id="rcards"></div></div>
 
+<script src="../assets/leaf.js"></script>
 <script>
 (function () {
 var CH = [
@@ -347,6 +348,8 @@ trail.insertAdjacentHTML('beforeend', FLAT.map(function (f) { return '<span clas
 document.getElementById('rcards').innerHTML = '<div class="rcard c-place" data-k="0"><div class="lab">Маршрут</div><div class="tx">Листайте — пройдём 19 пунктов и поставим лагерь.</div><div class="hint">' + CH.map(function (c) { return c.name; }).join(' → ') + '</div><div class="swipe">Листайте вниз или смахивайте карточку ← →</div></div>' +
   FLAT.map(function (f) { return '<div class="rcard c-' + f.cid + '" data-k="' + f.n + '"><div class="lab"><i>' + f.n + '</i>' + esc(f.ch) + ' · ' + f.n + ' из ' + TOTAL + '</div><div class="tx">' + esc(f.t) + '</div></div>'; }).join('') +
   '<div class="rcard c-morning" data-k="end"><div class="lab">Финиш</div><div class="tx">Лагерь собран и убран. Хорошего похода!</div></div>';
+// листик для книги «История АБС» — на финише, когда лагерь собран (в обоих вариантах)
+if (window.ABSLeaf) { ABSLeaf.put(document.getElementById('story'), 'КОСТЁР', {left: 'calc(50% - 39px)', bottom: 'calc(40vh - 130px)'}); ABSLeaf.put(document.querySelector('.rcard[data-k="end"]'), 'КОСТЁР', {right: '18px', top: '-34px'}); }
 var stops = trail.querySelectorAll('.stop'), rcards = document.querySelectorAll('.rcard'), walker = document.getElementById('walker'), tdone = document.getElementById('tdone');
 function layoutTrail() {
   var wide = innerWidth >= 900, L = wide ? trail.clientHeight : trail.clientWidth - 16;
