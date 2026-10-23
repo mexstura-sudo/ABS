@@ -30,8 +30,12 @@ a{color:inherit}
 
 /* сцена */
 #scene{position:fixed;left:0;top:0;width:100%;height:60vh;z-index:0;display:block}
-.fade{position:fixed;left:0;right:0;top:46vh;height:18vh;z-index:1;pointer-events:none;background:linear-gradient(to bottom,rgba(247,241,230,0),var(--cream))}
-.floor{position:fixed;left:0;right:0;top:63.5vh;bottom:0;z-index:1;background:var(--cream);pointer-events:none}
+/* кромка леса: тёмные ели стоят на границе сцены и светлой панели (вместо светлого перехода) */
+.edge{position:fixed;left:0;right:0;top:calc(60vh - 64px);height:64px;z-index:1;pointer-events:none}
+.edge svg{position:absolute;bottom:0;height:64px;fill:#12221A}
+.edge .l{left:0;width:70px}.edge .r{right:0;width:62px}.edge .m{left:50%;margin-left:-150px;width:300px}
+.edge::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:#12221A}
+.floor{position:fixed;left:0;right:0;top:60vh;bottom:0;z-index:1;background:var(--cream);pointer-events:none}
 .el{opacity:0;transition:opacity .7s,transform .8s cubic-bezier(.2,.9,.3,1.2);transform-box:fill-box;transform-origin:center bottom}
 .el.on{opacity:1}
 .grow{transform:scale(.2)}.grow.on{transform:none}
@@ -92,7 +96,7 @@ h1{font-size:clamp(34px,6vw,52px);line-height:1.05;margin:10px 0 0;font-weight:8
 
 @media (min-width:900px){
   #scene{width:58vw;height:100vh}
-  .fade,.floor{display:none}
+  .edge,.floor{display:none}
   .wrap{margin:0 0 0 60vw;max-width:440px}
   .story{padding-top:46vh;gap:40vh}
   .chap{scroll-margin-top:30vh}
@@ -293,14 +297,18 @@ body.vB .story{display:none}
     <path class="spark" d="M300 330 l2 5 l5 2 l-5 2 l-2 5 l-2 -5 l-5 -2 l5 -2z" style="animation-delay:1s"/>
   </g>
 </svg>
-<div class="fade"></div><div class="floor"></div>
+<div class="edge" aria-hidden="true">
+  <svg class="l" viewBox="0 0 70 64"><path d="M10 6.0 L18.6 28.0 L14.2 29.2 L24.2 46.6 L18.6 47.8 L29 60.5 L12.5 60.5 L12.5 64.0 L7.5 64.0 L7.5 60.5 L-9 60.5 L1.4 47.8 L-4.2 46.6 L5.8 29.2 L1.4 28.0Z M33 24.0 L38.9 39.2 L35.9 40.0 L42.8 52.0 L38.9 52.8 L46 61.6 L34.7 61.6 L34.7 64.0 L31.3 64.0 L31.3 61.6 L20 61.6 L27.1 52.8 L23.2 52.0 L30.1 40.0 L27.1 39.2Z M52 40.0 L56 49.1 L54 49.6 L58.8 56.8 L56 57.3 L61 62.6 L53.2 62.6 L53.2 64.0 L50.8 64.0 L50.8 62.6 L43 62.6 L48 57.3 L45.2 56.8 L50 49.6 L48 49.1Z"/></svg>
+  <svg class="m" viewBox="0 0 300 64"><path d="M60 50.0 L62.7 55.3 L61.3 55.6 L64.5 59.8 L62.7 60.1 L66 63.2 L60.8 63.2 L60.8 64.0 L59.2 64.0 L59.2 63.2 L54 63.2 L57.3 60.1 L55.5 59.8 L58.7 55.6 L57.3 55.3Z M250 52.0 L252.2 56.6 L251.1 56.8 L253.8 60.4 L252.2 60.6 L255 63.3 L250.7 63.3 L250.7 64.0 L249.3 64.0 L249.3 63.3 L245 63.3 L247.8 60.6 L246.2 60.4 L248.9 56.8 L247.8 56.6Z"/><path d="M20 64 l3 -7 l2 7 M27 64 l2 -5 l2 5 M110 64 l3 -8 l2 8 M118 64 l2 -5 l2 5 M170 64 l2 -6 l2 6 M205 64 l3 -7 l2 7 M212 64 l2 -4 l2 4 M280 64 l2 -5 l2 5" fill="none" stroke="#12221A" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  <svg class="r" viewBox="0 0 62 64"><path d="M46 18.0 L52.8 35.5 L49.3 36.4 L57.2 50.2 L52.8 51.1 L61 61.2 L48 61.2 L48 64.0 L44 64.0 L44 61.2 L31 61.2 L39.2 51.1 L34.8 50.2 L42.7 36.4 L39.2 35.5Z M23 34.0 L27.5 45.4 L25.2 46.0 L30.5 55.0 L27.5 55.6 L33 62.2 L24.3 62.2 L24.3 64.0 L21.7 64.0 L21.7 62.2 L13 62.2 L18.5 55.6 L15.5 55.0 L20.8 46.0 L18.5 45.4Z M6 46.0 L9.2 52.8 L7.5 53.2 L11.2 58.6 L9.2 59.0 L13 62.9 L6.9 62.9 L6.9 64.0 L5.1 64.0 L5.1 62.9 L-1 62.9 L2.8 59.0 L0.8 58.6 L4.5 53.2 L2.8 52.8Z"/></svg>
+</div><div class="floor"></div>
 <div class="step hide" id="step"></div>
 <button class="tocbtn hide" type="button" id="tocbtn">↑ Оглавление</button>
 
 <header class="hero">
   <div class="in">
     <svg class="blob" aria-hidden="true" viewBox="0 0 200 160"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#5E9A6E"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#F08A57"/></svg>
-    <div class="kick"><a href="../" style="text-decoration:none">← Главная</a> · Статья</div>
+    <div class="kick">Статья</div>
     <h1>Бивуак — ставим лагерь правильно</h1>
     <p class="lead">Листайте вниз: по каждому пункту на фоне будет вырастать лагерь.</p>
     <nav class="toc" id="toc" aria-label="Оглавление"></nav>

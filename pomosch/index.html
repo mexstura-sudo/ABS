@@ -250,7 +250,7 @@ function extra(s) { return (s.warn ? '<div class="imp warn rv">' + s.warn + '</d
 function nonoW(t) { return t.no ? '<div class="nono rv"><b>Нельзя</b>' + t.no.map(function (x) { return '<span><i>✕</i>' + esc(x) + '</span>'; }).join('') + '</div>' : ''; }
 function heroW() {
   return '<div class="wrap" style="position:relative"><svg class="blob" aria-hidden="true" viewBox="0 0 200 160" style="right:-70px;top:-20px;width:230px;height:180px"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#5E9A6E"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#F08A57"/></svg>' +
-    '<header class="hero" id="top"><div class="kick"><a href="../" style="text-decoration:none">← Главная</a> · Статья</div><h1>Первая помощь в экстренных ситуациях</h1><p class="lead">' + INTRO + '</p>' +
+    '<header class="hero" id="top"><div class="kick">Статья</div><h1>Первая помощь в экстренных ситуациях</h1><p class="lead">' + INTRO + '</p>' +
     '<div class="sos"><p>' + SAFETY + '</p><div class="nums"><a href="tel:103">103<small>скорая</small></a><a href="tel:112">112<small>единый</small></a></div></div>' +
     '<nav class="toc" id="toc" aria-label="Оглавление">' + T.map(function (t, i) { return '<a class="t-' + t.id + '" href="#' + V + '-' + t.id + '"><span>' + (i + 1) + '</span>' + esc(t.title) + '</a>'; }).join('') + '</nav></header></div>';
 }

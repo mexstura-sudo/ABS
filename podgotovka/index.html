@@ -46,7 +46,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .meter b{font-size:14px;font-weight:800;font-variant-numeric:tabular-nums}
 .meter .track{height:8px;border-radius:99px;background:var(--sand);overflow:hidden}
 .meter .track i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--green),var(--orange));transition:width .6s cubic-bezier(.4,0,.2,1)}
-.back{flex:none;width:40px;height:40px;border-radius:14px;background:var(--paper);display:flex;align-items:center;justify-content:center;text-decoration:none;font-weight:800}
 
 .hero{position:relative;padding-block:38px 6px}
 .toc{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:22px}
@@ -167,7 +166,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <body>
 <canvas id="forest" aria-hidden="true"></canvas>
 <div class="bar"><div class="wrap in">
-  <a class="back" href="../" aria-label="На главную">←</a>
   <div class="pack" id="pack" aria-hidden="true"><svg viewBox="0 0 40 44"><defs><clipPath id="pc"><rect x="7" y="9" width="26" height="31" rx="7"/></clipPath></defs>
     <path d="M14 9 V6 a6 6 0 0 1 12 0 V9" fill="none" stroke="#A3B5AA" stroke-width="2.4"/>
     <rect x="7" y="9" width="26" height="31" rx="7" fill="#24372C" stroke="#A3B5AA" stroke-width="2"/>
@@ -179,7 +177,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 <div class="wrap">
   <header class="hero">
     <svg class="blob" aria-hidden="true" viewBox="0 0 200 160"><path d="M40 0h160v150c-30 10-55-10-62-40-8-34-40-30-70-46C40 50 20 20 40 0z" fill="#5E9A6E"/><path d="M110 0h90v40c-25 12-55 0-70-14-8-8-15-16-20-26z" fill="#F08A57"/></svg>
-    <div class="kick"><a href="../" style="text-decoration:none">← Главная</a> · Статья</div>
+    <div class="kick">Статья</div>
     <h1>Как подготовиться к походу?</h1>
     <p class="lead">Готовимся вместе: отмечайте то, что уже сделали, — рюкзак вверху будет наполняться.</p>
     <nav class="toc" id="toc" aria-label="Оглавление"></nav>
